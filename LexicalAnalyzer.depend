@@ -1,0 +1,43 @@
+# depslib dependency file v1.0
+1446671344 source:e:\projects\c++\lexicalanalyzer\main.cpp
+	<iostream>
+
+1460670337 source:e:\projects\c++\lexicalanalyzer\src\exception.cpp
+	<sstream>
+	"exception.h"
+
+1460669361 e:\projects\c++\lexicalanalyzer\include\exception.h
+	<exception>
+	<string>
+
+1460670310 source:e:\projects\c++\lexicalanalyzer\src\hw11.cpp
+	<iostream>
+	<fstream>
+	<memory>
+	"token.h"
+	"lexer.h"
+	"exception.h"
+
+1460669361 e:\projects\c++\lexicalanalyzer\include\token.h
+	<string>
+
+1460671195 e:\projects\c++\lexicalanalyzer\include\lexer.h
+	<istream>
+	"token.h"
+
+1460671195 source:e:\projects\c++\lexicalanalyzer\src\lexer.cpp
+	<iostream>
+	<istream>
+	<sstream>
+	<string>
+	<cstdio>
+	<cctype>
+	"token.h"
+	"lexer.h"
+	"exception.h"
+
+1460670427 source:e:\projects\c++\lexicalanalyzer\src\token.cpp
+	<iostream>
+	<string>
+	"token.h"
+

@@ -1,0 +1,9 @@
+# Tells you the greater of two numbers
+println("Enter two numbers:");
+num1 = readint("First number: ");
+num2 = readint("Second number: ");
+if num1 > num2 then
+	println(num1 + " is the greater number.");
+else
+	println(num2 + " is the greater number.");
+end
