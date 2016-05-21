@@ -1,9 +1,48 @@
-# Tells you the greater of two numbers
-println("Enter two numbers:");
-num1 = readint("First number: ");
-num2 = readint("Second number: ");
-if num1 > num2 then
-	println(num1 + " is the greater number.");
+
+# more comment statements and other gibberish
+
+println("Hello World");
+print(yep);
+
+id = 6 + 5 ;
+
+bool = false;
+
+if 4 > 3 then
+	id2 = 4;
+elif 2< 5 then
+	id3 = 1;
+elif true then
+	print("ok");
 else
-	println(num2 + " is the greater number.");
+	id2 = 5;
 end
+
+while 4 < 5 or true do
+	num = readint("message");
+	char = readstr("number");
+end
+
+# list copy
+xs = [1,2,3,4,5];
+ys = [10,20,30,40,50];
+
+i = 0;
+
+# complicated nonsense
+while i < 5 do
+	xs[i] = ys[i];
+	i = i + 1;
+	if statement > sentence then
+		while false do
+			addition = multiplication - repetition;
+		end
+		statement = sentence + 4 - 3;
+	end
+end
+
+# lack of statements
+while test do
+end
+
+success = false;

@@ -12,6 +12,9 @@
 #include "lexer.h"
 #include "exception.h"
 
+// For ease of typing
+#define TT TokenType
+
 // Lexer constructor definition
 Lexer::Lexer(std::istream& input_stream) :
 	input_stream(input_stream),
@@ -51,57 +54,57 @@ Token Lexer::next_token()
 
 	case ';': // Semicolon
 		input_stream.get();
-		return Token(TokenType::SEMICOLON, ";", line, column);
+		return Token(TT::SEMICOLON, ";", line, column);
 
 	case ',': // Comma
 		input_stream.get();
-		return Token(TokenType::COMMA, ",", line, column);
+		return Token(TT::COMMA, ",", line, column);
 
 	case '+': // Addition
 		input_stream.get();
-		return Token(TokenType::PLUS, "+", line, column);
+		return Token(TT::PLUS, "+", line, column);
 
 	case '-': // Subtraction
 		input_stream.get();
-		return Token(TokenType::MINUS, "-", line, column);
+		return Token(TT::MINUS, "-", line, column);
 
 	case '*': // Multiplication
 		input_stream.get();
-		return Token(TokenType::MULTIPLY, "*", line, column);
+		return Token(TT::MULTIPLY, "*", line, column);
 
 	case '/': // Division
 		input_stream.get();
-		return Token(TokenType::DIVIDE, "/", line, column);
+		return Token(TT::DIVIDE, "/", line, column);
 
-	case '{': // Left bracket
+	case '[': // Left bracket
 		input_stream.get();
-		return Token(TokenType::LBRACKET, "{", line, column);
+		return Token(TT::LBRACKET, "[", line, column);
 
-	case '}': // Right bracket
+	case ']': // Right bracket
 		input_stream.get();
-		return Token(TokenType::RBRACKET, "}", line, column);
+		return Token(TT::RBRACKET, "]", line, column);
 
 	case '(': // Left parenthese
 		input_stream.get();
-		return Token(TokenType::LPAREN, "(", line, column);
+		return Token(TT::LPAREN, "(", line, column);
 
 	case ')': // Right parenthese
 		input_stream.get();
-		return Token(TokenType::RPAREN, ")", line, column);
+		return Token(TT::RPAREN, ")", line, column);
 
 	case EOF: // End of file
-		return Token(TokenType::EOS, "EOF", line, column);
+		return Token(TT::EOS, "EOF", line, column);
 
 	case '#': // Comment
 		do { input_stream.get(); }
 		while (input_stream.peek() != '\n');
-		return Token(TokenType::COMMENT, "#...",line,column);
+		return next_token();
 
 	case '"': // String
 	{
 		input_stream.get();
 		std::string str = getString();
-		Token t = Token(TokenType::STRING, str, line, column);
+		Token t = Token(TT::STRING, str, line, column);
 		column += str.length() + 1;
 		return t;
 	}
@@ -110,10 +113,10 @@ Token Lexer::next_token()
 	{
 		input_stream.get();
 		if (input_stream.peek() != '=')
-			return Token(TokenType::UNKNOWN, "!",line, column);
+			return Token(TT::UNKNOWN, "!",line, column);
 		input_stream.get();
 		column++;
-		return Token(TokenType::NOT_EQUAL, "!=", line, column);
+		return Token(TT::NOT_EQUAL, "!=", line, column);
 	}
 
 	case '=': // Either ASSIGN token or EQUAL token
@@ -124,9 +127,9 @@ Token Lexer::next_token()
 		{
 			input_stream.get();
 			column++;
-			return Token(TokenType::EQUAL, "==", line, column);
+			return Token(TT::EQUAL, "==", line, column);
 		}
-		return Token(TokenType::ASSIGN, "=", line, column);
+		return Token(TT::ASSIGN, "=", line, column);
 	}
 
 	case '<': // Either LESS_THAN or LESS_THAN_EQUAL
@@ -137,9 +140,9 @@ Token Lexer::next_token()
 		{
 			input_stream.get();
 			column++;
-			return Token(TokenType::LESS_THAN_EQUAL, "<=", line, column);
+			return Token(TT::LESS_THAN_EQUAL, "<=", line, column);
 		}
-		return Token(TokenType::LESS_THAN, "<", line, column);
+		return Token(TT::LESS_THAN, "<", line, column);
 	}
 
 	case '>': // Either GREATER_THAN or GREATER_THAN_EQUAL
@@ -150,9 +153,9 @@ Token Lexer::next_token()
 		{
 			input_stream.get();
 			column++;
-			return Token(TokenType::GREATER_THAN_EQUAL, "<=", line, column);
+			return Token(TT::GREATER_THAN_EQUAL, "<=", line, column);
 		}
-		return Token(TokenType::GREATER_THAN, "<", line, column);
+		return Token(TT::GREATER_THAN, "<", line, column);
 	}
 	} // switch (c)
 
@@ -161,60 +164,60 @@ Token Lexer::next_token()
 	{
 		// Get the entire word
 		std::string word = getWord();
-		TokenType t;
+		TT t;
 
 		if (word.compare("while") == 0)
-			t = TokenType::WHILE;
+			t = TT::WHILE;
 		else if (word.compare("do") == 0)
-			t = TokenType::DO;
+			t = TT::DO;
 		else if (word.compare("end") == 0)
-			t = TokenType::END;
+			t = TT::END;
 		else if (word.compare("readint") == 0)
-			t = TokenType::READINT;
+			t = TT::READINT;
 		else if (word.compare("readstr") == 0)
-			t = TokenType::READSTR;
+			t = TT::READSTR;
 		else if (word.compare("print") == 0)
-			t = TokenType::PRINT;
+			t = TT::PRINT;
 		else if (word.compare("println") == 0)
-			t = TokenType::PRINTLN;
+			t = TT::PRINTLN;
 		else if (word.compare("and") == 0)
-			t = TokenType::AND;
+			t = TT::AND;
 		else if (word.compare("or") == 0)
-			t = TokenType::OR;
+			t = TT::OR;
 		else if (word.compare("not") == 0)
-			t = TokenType::NOT;
+			t = TT::NOT;
 		else if (word.compare("if") == 0)
-			t = TokenType::IF;
+			t = TT::IF;
 		else if (word.compare("then") == 0)
-			t = TokenType::THEN;
+			t = TT::THEN;
 		else if (word.compare("elif") == 0)
-			t = TokenType::ELIF;
+			t = TT::ELIF;
 		else if (word.compare("else") == 0)
-			t = TokenType::ELSE;
+			t = TT::ELSE;
 		else if (word.compare("true") == 0)
-			t = TokenType::TRUE;
+			t = TT::BOOL;
 		else if (word.compare("false") == 0)
-			t = TokenType::FALSE;
+			t = TT::BOOL;
 		else // It's not a keyword, so it must be a variable
-			t = TokenType::ID;
+			t = TT::ID;
 
 		Token token = Token(t, word, line, column);
 		column += word.length() - 1;
 		return token;
 	}
 
-	// IS this a number?
+	// Is this a number?
 	if (std::isdigit(c))
 	{
 		// Read the entire number
 		std::string number = getNumber();
 		column += number.length() - 1;
-		return Token(TokenType::INT, number, line, column);
+		return Token(TT::INT, number, line, column);
 	}
 
 	// Only reached when a case is not accounted for.
 	input_stream.get();
-	return Token(TokenType::UNKNOWN, std::string(1,c), line, column);
+	return Token(TT::UNKNOWN, std::string(1,c), line, column);
 }
 
 // Lexer getNumber() definition

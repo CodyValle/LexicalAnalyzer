@@ -23,7 +23,6 @@ std::ostream& operator<<(std::ostream& out, const TokenType value)
 	case TokenType::RBRACKET:  return out << "RBRACKET";
 	case TokenType::STRING:    return out << "STRING";
 	case TokenType::INT:       return out << "INT";
-	case TokenType::BOOL:      return out << "BOOL";
 	case TokenType::COMMA:     return out << "COMMA";
 	case TokenType::ASSIGN:    return out << "ASSIGN";
 	case TokenType::PLUS:      return out << "PLUS";
@@ -47,11 +46,9 @@ std::ostream& operator<<(std::ostream& out, const TokenType value)
 	case TokenType::WHILE:     return out << "WHILE";
 	case TokenType::DO:        return out << "DO";
 	case TokenType::EOS:       return out << "EOS";
-	case TokenType::COMMENT:   return out << "COMMENT";
 	case TokenType::DEFAULT:   return out << "DEFAULT_TOKEN";
 	case TokenType::UNKNOWN:   return out << "UNKNOWN_TOKEN";
-	case TokenType::TRUE:      return out << "TRUE";
-	case TokenType::FALSE:     return out << "FALSE";
+	case TokenType::BOOL:      return out << "BOOL";
 	}
 
 	return out << "UNKNOWN_TOKEN_TYPE";

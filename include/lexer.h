@@ -4,6 +4,7 @@
 // Declares the Lexer class
 
 /* TODO:
+ * -Lexer should be an interface for multiple types of lexers (comment lexer, different grammar lexers, etc.).
  * -The Lexer class should likely be a singleton.
  */
 

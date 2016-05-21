@@ -33,17 +33,23 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
+			<Add option="-std=c++14" />
 			<Add directory="include" />
 		</Compiler>
-		<Unit filename="bin/test.txt" />
+		<Unit filename="bin/test.txt">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="include/ast.h" />
 		<Unit filename="include/exception.h" />
 		<Unit filename="include/lexer.h" />
+		<Unit filename="include/parser.h" />
 		<Unit filename="include/token.h" />
+		<Unit filename="src/ast.cpp" />
 		<Unit filename="src/exception.cpp" />
-		<Unit filename="src/hw11.cpp" />
 		<Unit filename="src/lexer.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/parser.cpp" />
 		<Unit filename="src/token.cpp" />
 		<Extensions>
 			<code_completion />
