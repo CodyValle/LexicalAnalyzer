@@ -1,0 +1,29 @@
+This project is an Independent Study to develop a compiler/interpreter/etc.
+
+
+The language follwed by the current master is described by:
+
+<stmts>     ::= <stmt> <stmts> | empty
+<stmt>      ::= <output> | <assign> | <cond> | <loop>
+<output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
+<input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
+<assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
+<listindex> ::= LBRACKET <expr> RBRACKET | empty
+<expr>      ::= <value> <exprt>
+<exprt>     ::= <math_rel> <expr> | empty
+<value>     ::= ID <listindex> | STRING | INT | BOOL | <input> | LBRACKET <exprlist> RBRACKET
+<exprlist>  ::= <expr> <exprtail> | empty
+<exprtail>  ::= COMMA <expr> <exprtail> | empty
+<math_rel>  ::= PLUS | MINUS | DIVIDE | MULTIPLY
+<cond>      ::= IF <ifstmt> <condt> END
+<condt>     ::= ELIF <ifstmt> <condt> | ELSE <stmts> | empty
+<ifstmt>    ::= <bexpr> THEN <stmts>
+<bexpr>     ::= <expr> <bexprt> | NOT <expr> <bexprt>
+<bexprt>    ::= <bool_rel> <expr> <bconnct> | empty
+<bconnct>   ::= AND <bexpr> | OR <bexpr> | empty
+<bool_rel>  ::= EQUAL | LESS_THAN | GREATER_THAN | LESS_THAN_EQUAL | GREATER_THAN_EQUAL | NOT_EQUAL
+<loop>      ::= WHILE <bexpr> DO <stmts> END
+
+To build:
+1. Open the accompanying Code::Blocks project and build it there. (Recommended for Windows users)
+2. Utilize the accompanying makefile. (Recommended for Unix users, but using Code::Blocks is cool, too)
