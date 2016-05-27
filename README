@@ -1,7 +1,7 @@
 This project is an Independent Study to develop a compiler/interpreter/etc.
 
 
-The language follwed by the current master is described by:
+The language followed by the current master is described by:
 
 <stmts>     ::= <stmt> <stmts> | empty
 <stmt>      ::= <output> | <assign> | <cond> | <loop>
