@@ -6,49 +6,51 @@
 
 #include "token.h"
 
+#define TT TokenType
+
 // Print operator for a TokenType object
 std::ostream& operator<<(std::ostream& out, const TokenType value)
 {
 	switch (value)
 	{
-	case TokenType::PRINT:     return out << "PRINT";
-	case TokenType::PRINTLN:   return out << "PRINTLN";
-	case TokenType::READINT:   return out << "READINT";
-	case TokenType::READSTR:   return out << "READSTR";
-	case TokenType::LPAREN:    return out << "LPAREN";
-	case TokenType::RPAREN:    return out << "RPAREN";
-	case TokenType::SEMICOLON: return out << "SEMICOLON";
-	case TokenType::ID:        return out << "ID";
-	case TokenType::LBRACKET:  return out << "LBRACKET";
-	case TokenType::RBRACKET:  return out << "RBRACKET";
-	case TokenType::STRING:    return out << "STRING";
-	case TokenType::INT:       return out << "INT";
-	case TokenType::COMMA:     return out << "COMMA";
-	case TokenType::ASSIGN:    return out << "ASSIGN";
-	case TokenType::PLUS:      return out << "PLUS";
-	case TokenType::MINUS:     return out << "MINUS";
-	case TokenType::DIVIDE:    return out << "DIVIDE";
-	case TokenType::MULTIPLY:  return out << "MULTIPLY";
-	case TokenType::IF:        return out << "IF";
-	case TokenType::THEN:      return out << "THEN";
-	case TokenType::ELIF:      return out << "ELIF";
-	case TokenType::ELSE:      return out << "ELSE";
-	case TokenType::END:       return out << "END";
-	case TokenType::NOT:       return out << "NOT";
-	case TokenType::AND:       return out << "AND";
-	case TokenType::OR:        return out << "OR";
-	case TokenType::EQUAL:     return out << "EQUAL";
-	case TokenType::LESS_THAN: return out << "LESS_THAN";
-	case TokenType::GREATER_THAN: return out << "GREATER_THAN";
-	case TokenType::LESS_THAN_EQUAL: return out << "LESS_THAN_EQUAL";
-	case TokenType::GREATER_THAN_EQUAL: return out << "GREATER_THAN_EQUAL";
-	case TokenType::NOT_EQUAL: return out << "NOT_EQUAL";
-	case TokenType::WHILE:     return out << "WHILE";
-	case TokenType::DO:        return out << "DO";
-	case TokenType::EOS:       return out << "EOS";
-	case TokenType::DEFAULT:   return out << "DEFAULT_TOKEN";
-	case TokenType::UNKNOWN:   return out << "UNKNOWN_TOKEN";
-	case TokenType::BOOL:      return out << "BOOL";
+	case TT::PRINT:     return out << "PRINT";
+	case TT::PRINTLN:   return out << "PRINTLN";
+	case TT::READINT:   return out << "READINT";
+	case TT::READSTR:   return out << "READSTR";
+	case TT::LPAREN:    return out << "LPAREN";
+	case TT::RPAREN:    return out << "RPAREN";
+	case TT::SEMICOLON: return out << "SEMICOLON";
+	case TT::ID:        return out << "ID";
+	case TT::LBRACKET:  return out << "LBRACKET";
+	case TT::RBRACKET:  return out << "RBRACKET";
+	case TT::STRING:    return out << "STRING";
+	case TT::INT:       return out << "INT";
+	case TT::COMMA:     return out << "COMMA";
+	case TT::ASSIGN:    return out << "ASSIGN";
+	case TT::PLUS:      return out << "PLUS";
+	case TT::MINUS:     return out << "MINUS";
+	case TT::DIVIDE:    return out << "DIVIDE";
+	case TT::MULTIPLY:  return out << "MULTIPLY";
+	case TT::IF:        return out << "IF";
+	case TT::THEN:      return out << "THEN";
+	case TT::ELIF:      return out << "ELIF";
+	case TT::ELSE:      return out << "ELSE";
+	case TT::END:       return out << "END";
+	case TT::NOT:       return out << "NOT";
+	case TT::AND:       return out << "AND";
+	case TT::OR:        return out << "OR";
+	case TT::EQUAL:     return out << "EQUAL";
+	case TT::LESS_THAN: return out << "LESS_THAN";
+	case TT::GREATER_THAN: return out << "GREATER_THAN";
+	case TT::LESS_THAN_EQUAL: return out << "LESS_THAN_EQUAL";
+	case TT::GREATER_THAN_EQUAL: return out << "GREATER_THAN_EQUAL";
+	case TT::NOT_EQUAL: return out << "NOT_EQUAL";
+	case TT::WHILE:     return out << "WHILE";
+	case TT::DO:        return out << "DO";
+	case TT::EOS:       return out << "EOS";
+	case TT::DEFAULT:   return out << "DEFAULT_TOKEN";
+	case TT::UNKNOWN:   return out << "UNKNOWN_TOKEN";
+	case TT::BOOL:      return out << "BOOL";
 	}
 
 	return out << "UNKNOWN_TOKEN_TYPE";

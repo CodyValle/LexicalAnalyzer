@@ -1,0 +1,13 @@
+# Testing output variables
+println("Hello World");
+print(identifier);
+
+# Testing different values
+println(identifier2);
+print("string value");
+
+println(2);
+print(8 * 4 + 13);
+
+println(true);
+print(false);

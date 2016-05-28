@@ -42,7 +42,12 @@ while i < 5 do
 end
 
 # lack of statements
-while test do
+while yes == no or no == false do
+end
+
+if 2 == 2 then
 end
 
 success = false;
+
+index[this - t] = outdex[t + hat] * some_value;

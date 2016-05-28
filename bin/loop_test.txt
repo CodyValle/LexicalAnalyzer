@@ -1,0 +1,42 @@
+# This file tests while loops and boolean expressions
+
+# Simple while loop with constant boolean expression
+while true do
+  print("Infinite loop.");
+end
+
+# No statements
+while false do
+end
+
+# Simple boolean expressions
+while variable >= 4 do
+  variable = variable - 1;
+end
+
+while some_constant == integer do
+  variable = some_constant;
+  integer = readint("Throw some numbers this way.");
+end
+
+# Complex boolean expressions
+while integer < variable or a_number <= some_constant do
+  print("The expression is true.");
+end
+
+while 4 < 5 or true do
+	num = readint("message");
+	char = readstr("number");
+end
+
+# Nested loops
+while i < 5 do
+	xs[i] = ys[i];
+	i = i + 1;
+	while statement > sentence do
+		while not boolean do
+			boolean = true;
+		end
+		statement = sentence + offset;
+	end
+end

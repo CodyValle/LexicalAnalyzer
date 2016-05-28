@@ -16,8 +16,8 @@
 #define TT TokenType
 
 // Lexer constructor definition
-Lexer::Lexer(std::istream& input_stream) :
-	input_stream(input_stream),
+Lexer::Lexer(std::istream& stream) :
+	input_stream(stream),
 	line(1),
 	column(0)
 {
@@ -103,7 +103,7 @@ Token Lexer::next_token()
 	case '"': // String
 	{
 		input_stream.get();
-		std::string str = getString();
+		std::string str = get_string();
 		Token t = Token(TT::STRING, str, line, column);
 		column += str.length() + 1;
 		return t;
@@ -163,7 +163,7 @@ Token Lexer::next_token()
 	if (std::isalpha(c))
 	{
 		// Get the entire word
-		std::string word = getWord();
+		std::string word = get_word();
 		TT t;
 
 		if (word.compare("while") == 0)
@@ -210,7 +210,7 @@ Token Lexer::next_token()
 	if (std::isdigit(c))
 	{
 		// Read the entire number
-		std::string number = getNumber();
+		std::string number = get_number();
 		column += number.length() - 1;
 		return Token(TT::INT, number, line, column);
 	}
@@ -221,7 +221,7 @@ Token Lexer::next_token()
 }
 
 // Lexer getNumber() definition
-std::string Lexer::getNumber()
+std::string Lexer::get_number()
 {
 	std::ostringstream ss;
 	char c = input_stream.get();
@@ -239,7 +239,7 @@ std::string Lexer::getNumber()
 }
 
 // Lexer getString() definition
-std::string Lexer::getString()
+std::string Lexer::get_string()
 {
 	std::ostringstream ss;
 	char c = input_stream.get();
@@ -259,7 +259,7 @@ std::string Lexer::getString()
 }
 
 // Lexer getWord() definition
-std::string Lexer::getWord()
+std::string Lexer::get_word()
 {
 	std::ostringstream ss;
 	char c = input_stream.get();

@@ -1,0 +1,52 @@
+# Testing if statements
+
+# Basic if statements with constant boolean expression
+if true then
+  id = 1;
+end
+
+# An empty if statement
+if false then
+end
+
+# With multiple statements
+if true then
+  id = 1 + 2;
+  id = 2 * 3;
+end
+
+# Adding an else clause
+if boolean then
+  foo = bar;
+else
+  foo = baz;
+end
+
+# Adding an else if
+if boolean == true and other_bool == true or number < 0 then
+  a = b;
+elif boolean then
+  a = c;
+end
+
+# Multiple else if clauses
+if 4 > i then
+	id2 = 4;
+elif 2 < 5 then
+	id3 = 1;
+elif true then
+	print("ok");
+else
+	id2 = 5;
+end
+
+# Multiple else if clauses and a then clause
+if ret <= max then
+  alpha = beta;
+elif min >= range then
+  alpha = gamma;
+elif variable == some_constant then
+  alpha = delta;
+else
+  alpha = epsilon;
+end
