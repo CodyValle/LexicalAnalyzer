@@ -11,7 +11,7 @@
 // 	<stmts>     ::= <stmt> <stmts> | empty
 // 	<stmt>      ::= <output> | <assign> | <cond> | <loop>
 // 	<output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
-// 	<input>     ::= READINT LPAREN <string> RPAREN | READSTR LPAREN <string> RPAREN
+// 	<input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
 // 	<assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
 // 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
 // 	<expr>      ::= <value> <exprt>
@@ -45,7 +45,7 @@ class Parser
 public:
 	// Constructor
 	// Takes a lexer object as the source for the token stream
-	Parser(Lexer& lexer);
+	Parser(Lexer&);
 
 	// Does the meat of the parser duties
 	std::shared_ptr<StmtList> parse();
@@ -55,12 +55,12 @@ private:
 	Lexer& lexer;
 
 	// Reference to the current token
-	Token current_token;
+	Token cur_token;
 
 	/// Helper functions
 	// Advances the parser to the next token
 	inline void advance()
-	{ current_token = lexer.next_token(); }
+	{ cur_token = lexer.next_token(); }
 
 	// Takes an expected token from the stream.
 	// Throws an error using @param msg if the token is not what was expected
@@ -92,7 +92,7 @@ private:
 	// Applies the input rule
 	// Expects some sort of input
 	// Grammar Rule:
-	// 	<input> ::= READINT LPAREN <string> RPAREN | READSTR LPAREN <string> RPAREN
+	// 	<input> ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
 	std::shared_ptr<ReadExpr> input();
 
 	// Applies the assign rule
@@ -105,7 +105,7 @@ private:
 	// Expects an index for a list surrounded by brackets
 	// Grammar Rule:
 	// 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
-	std::shared_ptr<ListExpr> listindex();
+	std::shared_ptr<Expr> listindex();
 
 	// Applies the expr rule
 	// Expects some type of expression
@@ -184,7 +184,7 @@ private:
 	void bconnct(std::shared_ptr<ComplexBoolExpr>);
 
 	// Applies the bool_rel rule
-	// Expects a boolean realtion, but will return nullptr if one is not found
+	// Expects a boolean relation, but will return nullptr if one is not found
 	// Grammar Rule:
 	// 	<bool_rel> ::= EQUAL | LESS_THAN | GREATER_THAN | LESS_THAN_EQUAL | GREATER_THAN_EQUAL | NOT_EQUAL
 	std::shared_ptr<ComplexBoolExpr> bool_rel();

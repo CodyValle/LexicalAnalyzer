@@ -3,13 +3,7 @@
 
 // Declares the Lexer class
 
-/* TODO:
- * -Lexer should be an interface for multiple types of lexers (comment lexer, different grammar lexers, etc.).
- * -The Lexer class should likely be a singleton.
- */
-
 #include <istream>
-
 #include "token.h"
 
 // Reads the opened file and generates tokens
@@ -21,10 +15,10 @@ class Lexer
 {
 public:
 	// Constructor
-	// @param input_stream: The opened file stream that needs to be tokenized
-	Lexer(std::istream& input_stream);
+	// @param: The opened file stream that needs to be tokenized
+	Lexer(std::istream&);
 
-	// Returns the next token from property input_stream
+	// Returns the next token from input_stream
 	Token next_token();
 
 private:
@@ -44,7 +38,7 @@ private:
 	//		std::string str = getString();
 	//		Token t = Token(TokenType::STRING, str, line, column);
 	//	}
-	std::string getString();
+	std::string get_string();
 
 	// Internal function that gets the entire number when a digit is found.
 	// Example:
@@ -53,7 +47,7 @@ private:
 	//		std::string str = getNumber();
 	//		Token t = Token(TokenType::INT, str, line, column);
 	//	}
-	std::string getNumber();
+	std::string get_number();
 
 	// Internal function that gets the entire word (alphanumeric and/or '_') when a character is found.
 	// Example:
@@ -65,7 +59,7 @@ private:
 	//		else if (word.compare("then") == 0)
 	//			t = Token(TokenType::THEN, "then", line, column);
 	//	}
-	std::string getWord();
+	std::string get_word();
 };
 
 #endif // LEXER_H

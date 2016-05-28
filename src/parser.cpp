@@ -16,10 +16,10 @@
 //  SP(Expr, sptr); // Expands to std::shared_ptr<Expr> sptr = std::make_shared<Expr>();
 #define SP(type, name) std::shared_ptr<type> name = std::make_shared<type>()
 
-// Parser constructor definition
+// Parser constructor (lexer) definition
 Parser::Parser(Lexer& lexer) :
 	lexer(lexer),
-	current_token(TokenType::EOS, "", 0, 0)
+	cur_token(TokenType::EOS, "", 0, 0)
 {
 }
 
@@ -27,7 +27,7 @@ Parser::Parser(Lexer& lexer) :
 void Parser::eat(TokenType token_type, const std::string& msg)
 {
 	// Consume the expected TokenType
-	if (token_type == current_token.get_type())
+	if (token_type == cur_token.get_type())
 		advance();
 
 	// Otherwise throw the error
@@ -40,12 +40,12 @@ void Parser::error(const std::string& msg)
 {
 	// Create the error message
 	std::ostringstream error_str;
-	error_str << msg << ", found " << current_token.get_type() << "{" << current_token.get_lexeme() << "}.";
+	error_str << msg << ", found " << cur_token.get_type() << "{" << cur_token.get_lexeme() << "}.";
 
 	// Throw the error
 	throw Exception(error_str.str(),
-									current_token.get_line(),
-									current_token.get_column(),
+									cur_token.get_line(),
+									cur_token.get_column(),
 									ExceptionType::PARSER);
 }
 
@@ -73,7 +73,7 @@ std::shared_ptr<StmtList> Parser::parse()
 void Parser::stmts(std::shared_ptr<StmtList> ret)
 {
 	// Check the base cases
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 	case TokenType::EOS: // Done reading file
 	case TokenType::END: // Done reading an if/elif/else/while statement
@@ -88,8 +88,7 @@ void Parser::stmts(std::shared_ptr<StmtList> ret)
 	std::shared_ptr<Stmt> st = stmt();
 
 	// Add the statement if it exists (it always should, or an error will be thrown before we get here)
-	if (st)
-		ret->add_stmt(st);
+	if (st) ret->add_stmt(st);
 
 	// Check for more statements
 	stmts(ret);
@@ -101,7 +100,7 @@ void Parser::stmts(std::shared_ptr<StmtList> ret)
 std::shared_ptr<Stmt> Parser::stmt()
 {
 	// What kind of statement is this?
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 		// An output statement
 	case TokenType::PRINT:
@@ -139,18 +138,16 @@ std::shared_ptr<PrintStmt> Parser::output()
 	SP(PrintStmt, ret);
 
 	// What type of output is this?
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 		// Normal print call
 	case TokenType::PRINT:
-		advance();
-		ret.get()->set_println(false);
-		break;
+		ret->set_print_type(TokenType::PRINT);
+		// We want to fall through to the PRINTLN case
 
 		// println call
 	case TokenType::PRINTLN:
 		advance();
-		ret.get()->set_println(true);
 		break;
 
 		// Should never be reached, since output is only called when the current token's type is PRINT or PRINTLN
@@ -161,7 +158,7 @@ std::shared_ptr<PrintStmt> Parser::output()
 
 	// Both rules end with this
 	eat(TokenType::LPAREN, "expected left parenthesis '('");
-	ret->set_print_expr(expr());
+	ret->set_print_type(expr());
 	eat(TokenType::RPAREN, "expected right parenthesis ')'");
 	eat(TokenType::SEMICOLON, "expected semicolon ';'");
 
@@ -170,29 +167,25 @@ std::shared_ptr<PrintStmt> Parser::output()
 
 // Parser input definition
 // Grammar Rule:
-// 	<input> ::= READINT LPAREN <string> RPAREN | READSTR LPAREN <string> RPAREN
+// 	<input> ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
 std::shared_ptr<ReadExpr> Parser::input()
 {
 	// Create the return object
 	SP(ReadExpr, ret);
 
 	// What type of token is this?
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 		// We are reading an integer
 	case TokenType::READINT:
-		advance();
-
-		// Set whether we are reading a string or not
-		ret->set_read_str(false);
-		break;
+		// Set the type of read operation this is
+		ret->setReadType(TokenType::READINT);
 
 		// We are reading a string
 	case TokenType::READSTR:
 		advance();
 
-		// Set whether we are reading a string or not
-		ret->set_read_str(true);
+		// A ReadExpr defaults to a READSTR function, no need to set_read_type to READSTR
 		break;
 
 		// Should never be reached, since input is only called when the current token's type is READINT or READSTR
@@ -204,7 +197,7 @@ std::shared_ptr<ReadExpr> Parser::input()
 	eat(TokenType::LPAREN, "expected left parenthesis '('");
 
 	// Add the current string token to the ReadExpr
-	ret->set_msg(current_token);
+	ret->setMsg(cur_token);
 	eat(TokenType::STRING, "expected string");
 
 	eat(TokenType::RPAREN, "expected right parenthesis ')'");
@@ -222,19 +215,16 @@ std::shared_ptr<AssignStmt> Parser::assign()
 	SP(AssignStmt, ret);
 
 	// Set the ID for this assign statement
-	ret->set_lhs_id(current_token);
+	ret->set_lhs_id(cur_token);
 	eat(TokenType::ID, "expecting identifier for assignment statement");
 
 	// If the ID is for a list, we may be assigning to an index
-	std::shared_ptr<ListExpr> list = listindex();
+	std::shared_ptr<Expr> list = listindex();
 	if (list)
 	{
 		// We are assigning to an index
-		ret->set_list_index(true);
 		ret->set_index_expr(list);
 	}
-	// We are assigning to the variable directly
-	else ret->set_list_index(false);
 
 	// End the rule
 	eat(TokenType::ASSIGN, "expecting assignment operator '='");
@@ -247,17 +237,14 @@ std::shared_ptr<AssignStmt> Parser::assign()
 // Parser listindex definition
 // Grammar Rule:
 // 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
-std::shared_ptr<ListExpr> Parser::listindex()
+std::shared_ptr<Expr> Parser::listindex()
 {
 	// Check if this rule should be applied
-	if (current_token.get_type() != TokenType::LBRACKET) return nullptr;
+	if (cur_token.get_type() != TokenType::LBRACKET) return nullptr;
 	advance();
 
-	// Create the return object
-	SP(ListExpr, ret);
-
 	// Add the expression between the brackets
-	ret->add_expr(expr());
+	std::shared_ptr<Expr> ret = expr();
 
 	// Close the listindex
 	eat(TokenType::RBRACKET, "expected right bracket ']'");
@@ -290,10 +277,10 @@ std::shared_ptr<ComplexExpr> Parser::exprt(std::shared_ptr<Expr> ret)
 	{
 		// This is a mathematical equation
 		// Add the passed in first operand
-		math->set_first_operand(ret);
+		math->setFirstOp(ret);
 
 		// Set the rest of the equation
-		math->set_rest(expr());
+		math->setRest(expr());
 
 		// Return the ComplexExpr
 		return math;
@@ -309,22 +296,22 @@ std::shared_ptr<ComplexExpr> Parser::exprt(std::shared_ptr<Expr> ret)
 std::shared_ptr<Expr> Parser::value()
 {
 	// What type of value is this?
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 		// Variable's value
 	case TokenType::ID:
 	{
 		// Save token for later
-		Token tok = current_token;
+		Token tok = cur_token;
 
 		// Consume the ID token
 		advance();
 
 		// Is this variable a list?
-		std::shared_ptr<ListExpr> li = listindex();
+		std::shared_ptr<Expr> li = listindex();
 		if (li)
 		{
-			// It is a list
+			// It is an indexed variable
 			// Create an IndexExpr and add the saved token
 			SP(IndexExpr, ret);
 			ret->set_id(tok);
@@ -349,7 +336,7 @@ std::shared_ptr<Expr> Parser::value()
 	case TokenType::BOOL:
 	{
 		SP(SimpleExpr, ret);
-		ret->set_token(current_token);
+		ret->set_token(cur_token);
 		advance();
 		return ret;
 	}
@@ -397,7 +384,7 @@ void Parser::exprlist(std::shared_ptr<ListExpr> ret)
 {
 	// exprlist is only called by value when a list type value is encountered
 	// If this statement is true, then the list is empty
-	if (current_token.get_type() == TokenType::RBRACKET) return;
+	if (cur_token.get_type() == TokenType::RBRACKET) return;
 
 	// Add the first expression to the ListExpr
 	ret->add_expr(expr());
@@ -412,7 +399,7 @@ void Parser::exprlist(std::shared_ptr<ListExpr> ret)
 void Parser::exprtail(std::shared_ptr<ListExpr> ret)
 {
 	// If there isn't a comma, there are no more expressions
-	if (current_token.get_type() == TokenType::COMMA)
+	if (cur_token.get_type() == TokenType::COMMA)
 	{
 		advance();
 
@@ -430,7 +417,7 @@ void Parser::exprtail(std::shared_ptr<ListExpr> ret)
 std::shared_ptr<ComplexExpr> Parser::math_rel()
 {
 	//
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 	case TokenType::PLUS:
 	case TokenType::MINUS:
@@ -438,7 +425,7 @@ std::shared_ptr<ComplexExpr> Parser::math_rel()
 	case TokenType::MULTIPLY:
 	{
 		SP(ComplexExpr, ret);
-		ret->set_math_rel(current_token.get_type());
+		ret->setMathRel(cur_token.get_type());
 		advance();
 		return ret;
 	}
@@ -479,7 +466,7 @@ std::shared_ptr<IfStmt> Parser::cond()
 void Parser::condt(std::shared_ptr<IfStmt> ret)
 {
 
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 	case TokenType::ELIF:
 	{
@@ -536,7 +523,7 @@ std::shared_ptr<BoolExpr> notWrapper(std::shared_ptr<BoolExpr> in)
 {
 	// This is actually a NotBoolExpr, so create it, add the normal expression, and return the NotBoolExpr
 	SP(NotBoolExpr, nbexp);
-	nbexp->set_bool_expr(in);
+	nbexp->setBoolExpr(in);
 	return nbexp;
 }
 
@@ -547,7 +534,7 @@ std::shared_ptr<BoolExpr> Parser::bexpr()
 {
 	// Flag for if this is a NotBoolExpr or not
 	bool notExpr = false;
-	if (current_token.get_type() == TokenType::NOT)
+	if (cur_token.get_type() == TokenType::NOT)
 	{
 		// This is a NotBoolExpr
 		notExpr = true;
@@ -564,7 +551,7 @@ std::shared_ptr<BoolExpr> Parser::bexpr()
 	{
 		// This is a ComplexBoolExpr
 		// Set the first operand
-		tail->set_first_operand(ret);
+		tail->set_first_op(ret->get_expr_term());
 
 		// Return the object
 		return notExpr ? notWrapper(tail) : tail;
@@ -584,7 +571,7 @@ std::shared_ptr<ComplexBoolExpr> Parser::bexprt()
 	if (ret)
 	{
 		// It is, get the expression for it
-		ret->set_second_operand(expr());
+		ret->set_second_op(expr());
 
 		// If there is a boolean connector, bconnct will modify ret appropriately.
 		bconnct(ret);
@@ -598,12 +585,12 @@ std::shared_ptr<ComplexBoolExpr> Parser::bexprt()
 // 	<bconnct> ::= AND <bexpr> | OR <bexpr> | empty
 void Parser::bconnct(std::shared_ptr<ComplexBoolExpr> ret)
 {
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 	case TokenType::AND:
 	case TokenType::OR:
 		// Set the boolean connection type
-		ret->set_bool_connector_type(current_token.get_type());
+		ret->set_bool_con_type(cur_token.get_type());
 		advance();
 
 		// Set the rest of the complex boolean expression
@@ -618,7 +605,7 @@ void Parser::bconnct(std::shared_ptr<ComplexBoolExpr> ret)
 // 	<bool_rel> ::= EQUAL | LESS_THAN | GREATER_THAN | LESS_THAN_EQUAL | GREATER_THAN_EQUAL | NOT_EQUAL
 std::shared_ptr<ComplexBoolExpr> Parser::bool_rel()
 {
-	switch (current_token.get_type())
+	switch (cur_token.get_type())
 	{
 	case TokenType::EQUAL:
 	case TokenType::LESS_THAN:
@@ -628,7 +615,7 @@ std::shared_ptr<ComplexBoolExpr> Parser::bool_rel()
 	case TokenType::NOT_EQUAL:
 	{
 		SP(ComplexBoolExpr, ret);
-		ret->set_rel_type(current_token.get_type());
+		ret->set_rel_type(cur_token.get_type());
 		advance();
 		return ret;
 	}
