@@ -1,15 +1,29 @@
-OUT = bin/LexicalAnalyzer
+EXE = LexicalAnalyzer
 SRCS = $(wildcard ./src/*.cpp)
 INC_DIR = include
 CC = g++
-CFLAGS = -c -Wall -std=c++14
+CFLAGS = -c -Wall -Wextra -pedantic -std=c++0x
 
-OBJS = $(patsubst ./src/%,./obj/%,$(SRCS:.cpp=.o))
+EXEDIR = bin
+OUT = $(EXEDIR)/$(EXE)
+
+OBJDIR = obj
+OBJS = $(patsubst ./src/%,./$(OBJDIR)/%,$(SRCS:.cpp=.o))
 
 all: $(SRCS) $(OUT)
 
+$(OUT): | $(EXEDIR)
+
+$(EXEDIR):
+	mkdir $(EXEDIR)
+
 $(OUT): $(OBJS)
-	$(CC) $(OBJS) -o $@
+	$(CC) -o $@ $(OBJS)
+	
+$(OBJS): | $(OBJDIR)
+
+$(OBJDIR):
+	mkdir $(OBJDIR)
 
 $(OBJS): $(SRCS)
 	$(CC) $(CFLAGS) -I$(INC_DIR) $< -o $@
