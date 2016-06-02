@@ -2,7 +2,7 @@ EXE = LexicalAnalyzer
 SRCS = $(wildcard ./src/*.cpp)
 INC_DIR = include
 CC = g++
-CFLAGS = -c -Wall -Wextra -pedantic -std=c++0x
+CFLAGS = -c -Wall -Wextra -pedantic -std=c++14
 
 EXEDIR = bin
 OUT = $(EXEDIR)/$(EXE)
