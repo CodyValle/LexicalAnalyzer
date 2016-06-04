@@ -37,7 +37,7 @@ if true then
 end
 
 # Adding an else clause
-char foo = "nope";
+char foo;
 if bool then
   foo = bar;
 else

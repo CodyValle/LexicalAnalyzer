@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include "ast.h"
-//#include "AbstractVisitor.h"
 
 //----------------------------------------------------------------------
 // StmtList
@@ -55,12 +54,24 @@ PrintStmt::PrintStmt() :
 {}
 
 //----------------------------------------------------------------------
+// VarDecStmt
+//----------------------------------------------------------------------
+
+// VarDecStmt constructor
+VarDecStmt::VarDecStmt() :
+  id(Token()),
+  type(TokenType::UNKNOWN),
+  sub_type(TokenType::UNKNOWN),
+  assign_expr(nullptr)
+{}
+
+//----------------------------------------------------------------------
 // AssignStmt
 //----------------------------------------------------------------------
 
 // AssignStmt constructor
 AssignStmt::AssignStmt() :
-  type(TokenType::UNKNOWN),
+  //type(TokenType::UNKNOWN),
   id(Token()),
   index_expr(nullptr),
   assign_expr(nullptr)

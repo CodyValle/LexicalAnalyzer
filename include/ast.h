@@ -26,6 +26,7 @@ class BasicIf;
 class IfStmt;
 class WhileStmt;
 class PrintStmt;
+class VarDecStmt;
 class AssignStmt;
 class SimpleExpr;
 class IndexExpr;
@@ -248,6 +249,62 @@ private:
   TokenType print_type;
 };
 
+class VarDecStmt : public virtual Stmt
+{
+public:
+  // Constructor
+  VarDecStmt();
+
+  // For the Visitor Pattern
+  void accept(AbstractVisitor& visitor) override
+    { visitor.visit(*this); }
+
+  // Set the token that is being assigned to
+  void set_id(Token t)
+    { id = t; }
+
+  // Set the type of the identifier being declared
+  void set_type(TokenType t)
+    { type = t; }
+
+  // Set the sub type of the identifier being declared
+  void set_sub_type(TokenType t)
+    { sub_type = t; }
+
+  // Set the expression that we are assigning to the id being declared
+  void set_rhs_expr(std::shared_ptr<Expr> expr)
+    { assign_expr = expr; }
+
+  // Get the id to assign to
+  Token get_id()
+    { return id; }
+
+  // Gets the type of the identifier being declared
+  TokenType get_type()
+    { return type; }
+
+  // Gets the sub type of the identifier being declared
+  TokenType get_sub_type()
+    { return sub_type; }
+
+  // Get the expression to assign to the id
+  std::shared_ptr<Expr> get_assign()
+    { return assign_expr; }
+
+private:
+  // Reference to the token being declared
+  Token id;
+
+  // The type of the id being declared
+  TokenType type;
+
+  // The sub type of the id being declared
+  TokenType sub_type;
+
+  // Reference to the right hand side that will be assigned to the token
+  std::shared_ptr<Expr> assign_expr;
+};
+
 // An assignment statement to a variable or element of a list
 class AssignStmt : public virtual Stmt
 {
@@ -258,10 +315,6 @@ public:
   // For the Visitor Pattern
   void accept(AbstractVisitor& visitor) override
     { visitor.visit(*this); }
-
-  // Set the type of the identifier being assigned to
-  void set_type(TokenType t)
-    { type = t; }
 
   // Set the token that is being assigned to
   void set_lhs_id(Token t)
@@ -274,10 +327,6 @@ public:
   // Set the expression that we are assigning to the left hand side
   void set_rhs_expr(std::shared_ptr<Expr> expr)
     { assign_expr = expr; }
-
-  // Gets the type of the identifier being assigned to
-  TokenType get_type()
-    { return type; }
 
   // Get the id to assign to
   Token get_id()
@@ -292,9 +341,6 @@ public:
     { return assign_expr; }
 
 private:
-  // The type of the  id being assigned to
-  TokenType type;
-
   // Reference to the token to assign to
   Token id;
 

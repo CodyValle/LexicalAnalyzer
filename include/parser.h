@@ -9,12 +9,15 @@
 // Parses the token stream given by the Lexer
 // It utilizes this grammar
 // 	<stmts>     ::= <stmt> <stmts> | empty
-// 	<stmt>      ::= <output> | <assign> | <cond> | <loop>
+// 	<stmt>      ::= <output> | <vardec> | <assign> | <cond> | <loop>
 // 	<output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
 // 	<input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
-// 	<assign>    ::= <type> ID <listindex> ASSIGN <expr> SEMICOLON
+//  <vardec>    ::= <type> <subtype> ID <vardect>
+//  <vardect>   ::= ASSIGN <expr> SEMICOLON | SEMICOLON
+// 	<assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
 // 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
-//  <type>      ::= INTEGER | FLOAT | CHAR | BOOLEAN | empty
+//  <type>     ::= STRINGT | INTEGER | FLOAT | CHAR | BOOLEAN
+//  <subtype>   ::= LBRACKET RBRACKET | empty
 // 	<expr>      ::= <value> <exprt>
 // 	<exprt>     ::= <math_rel> <expr> | empty
 // 	<value>     ::= ID <listindex> | STRING | INT | BOOL | <input> | LBRACKET <exprlist> RBRACKET
@@ -81,7 +84,7 @@ private:
 	// Applies the stmt rule
 	// Expects a statement
 	// Grammar Rule:
-	// 	<stmt>::= <output> | <assign> | <cond> | <loop>
+	// 	<stmt>::= <output> | <vardec> | <assign> | <cond> | <loop>
 	std::shared_ptr<Stmt> stmt();
 
 	// Applies the output rule
@@ -96,6 +99,18 @@ private:
 	// 	<input> ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
 	std::shared_ptr<ReadExpr> input();
 
+	// Applies the vardec rule
+	// Expects a variable declaration
+	// Grammar Rule:
+  //  <vardec> ::= <type> <subtype> ID <vardect>
+  std::shared_ptr<VarDecStmt> vardec();
+
+  // Applies the vardect rule
+	// Expects an assignment or semicolon
+	// Grammar Rule:
+  //  <vardect> ::= ASSIGN <expr> SEMICOLON | SEMICOLON
+  void vardect(std::shared_ptr<VarDecStmt>);
+
 	// Applies the assign rule
 	// Expects some type of assignment
 	// Grammar Rule:
@@ -109,10 +124,16 @@ private:
 	std::shared_ptr<Expr> listindex();
 
 	// Applies the type rule
-	// Takes an AssignStmt pointer and adds the type declaration to it
+	// Takes a VarDecStmt and adds the main type to it
 	// Grammar Rule:
-  //  <type> ::= INTEGER | FLOAT | CHAR | BOOLEAN | empty
-  void type(std::shared_ptr<AssignStmt>);
+  //  <types> ::= STRINGT | INTEGER | FLOAT | CHAR | BOOLEAN
+  void type(std::shared_ptr<VarDecStmt>);
+
+  // Applies the subtype rule
+	// Takes a VarDecStmt and adds the sub type to it
+	// Grammar Rule:
+  //  <subtype> ::= LBRACKET RBRACKET | empty
+  void subtype(std::shared_ptr<VarDecStmt>);
 
 	// Applies the expr rule
 	// Expects some type of expression

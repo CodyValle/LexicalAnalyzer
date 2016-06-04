@@ -143,6 +143,38 @@ void PrintVisitor::visit(PrintStmt& node)
   prev_indent();
 }
 
+// Accepts a VarDecStmt reference
+void PrintVisitor::visit(VarDecStmt& node)
+{
+  // Print out what type of ASTNode this is
+  out << *indent << "VarDecStmt: " << std::endl;
+
+  // Increase the indent
+  next_indent();
+
+  // Print out what to assign to
+  out << *indent << "ID: " << node.get_id().get_lexeme() << std::endl
+      << *indent << "TYPE: " << node.get_type();
+  if (node.get_sub_type() != TokenType::UNKNOWN)
+    out << node.get_sub_type();
+  out << std::endl;
+
+  if (node.get_assign())
+  {
+    // Print out the value to be assigned
+    out << *indent << "VALUE:" << std::endl;
+    // Increase the indent
+    next_indent();
+    // Print the expression to be assigned
+    node.get_assign()->accept(*this);
+    // Increase the indent
+    prev_indent();
+  }
+
+  // Return to the previous indent
+  prev_indent();
+}
+
 // Accepts a AssignStmt reference
 void PrintVisitor::visit(AssignStmt& node)
 {

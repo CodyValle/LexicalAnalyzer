@@ -4,12 +4,15 @@ This project is an Independent Study to develop a compiler/interpreter/etc.
 The language followed by the current master is described by:
 
 <stmts>     ::= <stmt> <stmts> | empty
-<stmt>      ::= <output> | <assign> | <cond> | <loop>
+<stmt>      ::= <output> | <vardec> | <assign> | <cond> | <loop>
 <output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
 <input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
+<vardec>    ::= <type> <subtype> ID <vardect>
+<vardect>   ::= ASSIGN <expr> SEMICOLON | SEMICOLON
 <assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
 <listindex> ::= LBRACKET <expr> RBRACKET | empty
-<type>      ::= INTEGER | FLOAT | CHAR | BOOLEAN | empty
+<type>     ::= STRINGT | INTEGER | FLOAT | CHAR | BOOLEAN
+<subtype>   ::= LBRACKET RBRACKET | empty
 <expr>      ::= <value> <exprt>
 <exprt>     ::= <math_rel> <expr> | empty
 <value>     ::= ID <listindex> | STRING | INT | BOOL | <input> | LBRACKET <exprlist> RBRACKET

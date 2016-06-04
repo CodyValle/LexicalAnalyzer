@@ -26,7 +26,13 @@ boolean element = hat + t;
 string orange = element;
 boolean last = true;
 int outdex = 13;
+int[] index;
+boolean[] illegal_but_accepted;
+string[] uninitialized;
 
 int list = [1,2,3,5];
-int index[this - t] = outdex[t + hat] * some_value;
-boolean illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];
+index[this - t] = outdex[t + hat] * some_value;
+illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];
+
+
+int[] test[0] = [1,2,3];

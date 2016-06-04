@@ -21,6 +21,7 @@ public:
   void visit(IfStmt&) override;
   void visit(WhileStmt&) override;
   void visit(PrintStmt&) override;
+  void visit(VarDecStmt&) override;
   void visit(AssignStmt&) override;
   void visit(SimpleExpr&) override;
   void visit(IndexExpr&) override;
