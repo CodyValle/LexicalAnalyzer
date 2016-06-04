@@ -33,6 +33,3 @@ string[] uninitialized;
 int list = [1,2,3,5];
 index[this - t] = outdex[t + hat] * some_value;
 illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];
-
-
-int[] test[0] = [1,2,3];
