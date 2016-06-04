@@ -22,14 +22,14 @@
 	"lexer.h"
 	"exception.h"
 
-1463700915 e:\projects\c++\lexicalanalyzer\include\token.h
+1463890036 e:\projects\c++\lexicalanalyzer\include\token.h
 	<string>
 
-1463700915 e:\projects\c++\lexicalanalyzer\include\lexer.h
+1463890179 e:\projects\c++\lexicalanalyzer\include\lexer.h
 	<istream>
 	"token.h"
 
-1463700915 source:e:\projects\c++\lexicalanalyzer\src\lexer.cpp
+1463890311 source:e:\projects\c++\lexicalanalyzer\src\lexer.cpp
 	<iostream>
 	<istream>
 	<sstream>
@@ -40,7 +40,7 @@
 	"lexer.h"
 	"exception.h"
 
-1463700915 source:e:\projects\c++\lexicalanalyzer\src\token.cpp
+1463890036 source:e:\projects\c++\lexicalanalyzer\src\token.cpp
 	<iostream>
 	<string>
 	"token.h"
@@ -54,13 +54,13 @@
 	"parser.h"
 	"exception.h"
 
-1463820893 e:\projects\c++\lexicalanalyzer\include\parser.h
+1463890179 e:\projects\c++\lexicalanalyzer\include\parser.h
 	<memory>
 	"lexer.h"
 	"token.h"
 	"ast.h"
 
-1463820831 source:e:\projects\c++\lexicalanalyzer\src\parser.cpp
+1463890380 source:e:\projects\c++\lexicalanalyzer\src\parser.cpp
 	<iostream>
 	<sstream>
 	<string>
@@ -70,17 +70,12 @@
 	"lexer.h"
 	"exception.h"
 
-1463819012 source:e:\projects\c++\lexicalanalyzer\src\ast.cpp
-	<vector>
-	<string>
-	<ostream>
-	<memory>
+1463890070 source:e:\projects\c++\lexicalanalyzer\src\ast.cpp
 	<iostream>
 	"ast.h"
-	"token.h"
 
-1463821641 e:\projects\c++\lexicalanalyzer\include\ast.h
-	<vector>
+1463889055 e:\projects\c++\lexicalanalyzer\include\ast.h
+	<deque>
 	<string>
 	<ostream>
 	<memory>
@@ -156,4 +151,118 @@
 	<iostream>
 	<string>
 	"token.h"
+
+1464990363 source:v:\projects\c++\lexicalanalyzer\src\ast.cpp
+	<iostream>
+	"ast.h"
+
+1464998311 v:\projects\c++\lexicalanalyzer\include\ast.h
+	<deque>
+	<string>
+	<ostream>
+	<memory>
+	"token.h"
+	"AbstractVisitor.h"
+
+1464416165 v:\projects\c++\lexicalanalyzer\include\token.h
+	<string>
+
+1465003234 source:v:\projects\c++\lexicalanalyzer\src\exception.cpp
+	<sstream>
+	"exception.h"
+
+1465003223 v:\projects\c++\lexicalanalyzer\include\exception.h
+	<exception>
+	<string>
+
+1465005817 source:v:\projects\c++\lexicalanalyzer\src\lexer.cpp
+	<iostream>
+	<istream>
+	<sstream>
+	<string>
+	<cstdio>
+	<cctype>
+	"token.h"
+	"lexer.h"
+	"exception.h"
+
+1464417447 v:\projects\c++\lexicalanalyzer\include\lexer.h
+	<istream>
+	"token.h"
+
+1465004237 source:v:\projects\c++\lexicalanalyzer\src\main.cpp
+	<iostream>
+	<fstream>
+	<memory>
+	"token.h"
+	"lexer.h"
+	"parser.h"
+	"exception.h"
+	"PrintVisitor.h"
+	"VariableVisitor.h"
+
+1464417458 v:\projects\c++\lexicalanalyzer\include\parser.h
+	<memory>
+	"lexer.h"
+	"token.h"
+	"ast.h"
+
+1465005223 source:v:\projects\c++\lexicalanalyzer\src\parser.cpp
+	<iostream>
+	<sstream>
+	<string>
+	<memory>
+	"token.h"
+	"parser.h"
+	"lexer.h"
+	"exception.h"
+
+1465005517 source:v:\projects\c++\lexicalanalyzer\src\token.cpp
+	<iostream>
+	<string>
+	"token.h"
+
+1464375791 source:v:\projects\c++\lexicalanalyzer\src\codelexer.cpp
+	<iostream>
+	<istream>
+	<sstream>
+	<string>
+	<cstdio>
+	<cctype>
+	"codeToken.h"
+	"codeLexer.h"
+	"exception.h"
+
+1464416165 v:\projects\c++\lexicalanalyzer\include\codetoken.h
+	<string>
+
+1464375678 v:\projects\c++\lexicalanalyzer\include\codelexer.h
+	"lexer.h"
+	"codeToken.h"
+
+1464375818 source:v:\projects\c++\lexicalanalyzer\src\codetoken.cpp
+	<iostream>
+	<string>
+	"codeToken.h"
+
+1464906887 v:\projects\c++\lexicalanalyzer\include\abstractvisitor.h
+	"ast.h"
+
+1464999900 source:v:\projects\c++\lexicalanalyzer\src\printvisitor.cpp
+	<iostream>
+	"PrintVisitor.h"
+
+1464908470 v:\projects\c++\lexicalanalyzer\include\printvisitor.h
+	<deque>
+	"ast.h"
+
+1465004129 source:v:\projects\c++\lexicalanalyzer\src\variablevisitor.cpp
+	<iostream>
+	<sstream>
+	"VariableVisitor.h"
+	"exception.h"
+
+1465004085 v:\projects\c++\lexicalanalyzer\include\variablevisitor.h
+	<unordered_map>
+	"ast.h"
 

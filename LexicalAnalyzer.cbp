@@ -3,6 +3,7 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="LexicalAnalyzer" />
+		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -12,7 +13,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="test.txt" />
+				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt -o outTest.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -32,19 +33,35 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Weffc++" />
+			<Add option="-pedantic" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-std=c++14" />
 			<Add directory="include" />
 		</Compiler>
-		<Unit filename="bin/test.txt">
+		<Unit filename="bin/assign_test.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="bin/general_testing.txt">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="bin/if_test.txt" />
+		<Unit filename="bin/input_test.txt" />
+		<Unit filename="bin/loop_test.txt" />
+		<Unit filename="bin/output_test.txt" />
+		<Unit filename="include/AbstractVisitor.h" />
+		<Unit filename="include/PrintVisitor.h" />
+		<Unit filename="include/VariableVisitor.h" />
 		<Unit filename="include/ast.h" />
 		<Unit filename="include/exception.h" />
 		<Unit filename="include/lexer.h" />
 		<Unit filename="include/parser.h" />
 		<Unit filename="include/token.h" />
+		<Unit filename="makefile" />
+		<Unit filename="src/PrintVisitor.cpp" />
+		<Unit filename="src/VariableVisitor.cpp" />
 		<Unit filename="src/ast.cpp" />
 		<Unit filename="src/exception.cpp" />
 		<Unit filename="src/lexer.cpp" />
