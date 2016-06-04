@@ -1,53 +1,20 @@
-
-# more comment statements and other gibberish
-
-println("Hello World");
-print(yep);
-
 id = 6 + 5 ;
 
 bool = false;
 
-if 4 > 3 then
-	id2 = 4;
-elif 2< 5 then
-	id3 = 1;
-elif true then
-	print("ok");
-else
-	id2 = 5;
-end
+num = readint("message");
+char = readstr("number");
 
-while 4 < 5 or true do
-	num = readint("message");
-	char = readstr("number");
-end
-
-# list copy
 xs = [1,2,3,4,5];
 ys = [10,20,30,40,50];
 
 i = 0;
 
-# complicated nonsense
-while i < 5 do
-	xs[i] = ys[i];
-	i = i + 1;
-	if statement > sentence then
-		while false do
-			addition = multiplication - repetition;
-		end
-		statement = sentence + 4 - 3;
-	end
-end
-
-# lack of statements
-while yes == no or no == false do
-end
-
-if 2 == 2 then
-end
-
 success = false;
 
-index[this - t] = outdex[t + hat] * some_value;
+orange = "color";
+a = "b";
+element = 14;
+last = false;
+
+illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];

@@ -1,5 +1,16 @@
 # This file tests while loops and boolean expressions
 
+# Variable definitions
+offset = true;
+sentence = "This is a quality sentence.";
+some_constant = offset;
+a_number = 9;
+variable = offset + some_constant;
+integer = a_number + "a string";
+boolean = false;
+i = "the next statement is true.";
+statement = "i is false.";
+
 # Simple while loop with constant boolean expression
 while true do
   print("Infinite loop.");
@@ -17,6 +28,10 @@ end
 while some_constant == integer do
   variable = some_constant;
   integer = readint("Throw some numbers this way.");
+end
+
+# Negation
+while not boolean do
 end
 
 # Complex boolean expressions

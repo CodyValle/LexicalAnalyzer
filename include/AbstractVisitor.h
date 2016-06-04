@@ -1,21 +1,7 @@
 #ifndef ABSTRACTVISITOR_H_INCLUDED
 #define ABSTRACTVISITOR_H_INCLUDED
 
-// Forward declarations of AST classes
-class StmtList;
-class BasicIf;
-class IfStmt;
-class WhileStmt;
-class PrintStmt;
-class AssignStmt;
-class SimpleExpr;
-class IndexExpr;
-class ListExpr;
-class ReadExpr;
-class ComplexExpr;
-class SimpleBoolExpr;
-class ComplexBoolExpr;
-class NotBoolExpr;
+#include "ast.h"
 
 // Base class for all Visitor classes
 class AbstractVisitor

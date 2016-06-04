@@ -1,0 +1,824 @@
+AST of assign_test.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: number
+   VALUE:
+    SimpleExpr: INT (4)
+  AssignStmt: 
+   ID: large_number
+   VALUE:
+    SimpleExpr: INT (32565)
+  AssignStmt: 
+   ID: integer
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (number)
+     PLUS
+     SimpleExpr: ID (large_number)
+  AssignStmt: 
+   ID: float
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (number)
+     DIVIDE
+     ComplexExpr: 
+      SimpleExpr: ID (large_number)
+      MINUS
+      SimpleExpr: ID (integer)
+  AssignStmt: 
+   ID: complex
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (integer)
+     PLUS
+     ComplexExpr: 
+      SimpleExpr: ID (number)
+      DIVIDE
+      ComplexExpr: 
+       SimpleExpr: ID (float)
+       MULTIPLY
+       SimpleExpr: ID (large_number)
+  AssignStmt: 
+   ID: bool
+   VALUE:
+    SimpleExpr: BOOL (true)
+  AssignStmt: 
+   ID: boolean
+   VALUE:
+    SimpleExpr: BOOL (false)
+  AssignStmt: 
+   ID: message
+   VALUE:
+    SimpleExpr: STRING (This message will explode in 3...2...)
+  AssignStmt: 
+   ID: this
+   VALUE:
+    SimpleExpr: ID (number)
+  AssignStmt: 
+   ID: t
+   VALUE:
+    SimpleExpr: ID (large_number)
+  AssignStmt: 
+   ID: a
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (t)
+     MINUS
+     SimpleExpr: ID (large_number)
+  AssignStmt: 
+   ID: hat
+   VALUE:
+    SimpleExpr: ID (float)
+  AssignStmt: 
+   ID: some_value
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (complex)
+     MULTIPLY
+     SimpleExpr: ID (integer)
+  AssignStmt: 
+   ID: element
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (hat)
+     PLUS
+     SimpleExpr: ID (t)
+  AssignStmt: 
+   ID: orange
+   VALUE:
+    SimpleExpr: ID (element)
+  AssignStmt: 
+   ID: last
+   VALUE:
+    SimpleExpr: BOOL (true)
+  AssignStmt: 
+   ID: list
+   VALUE:
+    ListExpr: 
+     EXPR0:
+      SimpleExpr: INT (1)
+     EXPR1:
+      SimpleExpr: INT (2)
+     EXPR2:
+      SimpleExpr: INT (3)
+     EXPR3:
+      SimpleExpr: INT (5)
+  AssignStmt: 
+   INDEXED ID: index
+    ComplexExpr: 
+     SimpleExpr: ID (this)
+     MINUS
+     SimpleExpr: ID (t)
+   VALUE:
+    ComplexExpr: 
+     IndexExpr: 
+      INDEXED ID (outdex)
+       ComplexExpr: 
+        SimpleExpr: ID (t)
+        PLUS
+        SimpleExpr: ID (hat)
+     MULTIPLY
+     SimpleExpr: ID (some_value)
+  AssignStmt: 
+   INDEXED ID: illegal_but_accepted
+    SimpleExpr: ID (orange)
+   VALUE:
+    ComplexExpr: 
+     ListExpr: 
+      EXPR0:
+       SimpleExpr: ID (a)
+      EXPR1:
+       SimpleExpr: INT (12)
+      EXPR2:
+       SimpleExpr: STRING (four)
+      EXPR3:
+       SimpleExpr: BOOL (true)
+     MULTIPLY
+     ListExpr: 
+      EXPR0:
+       SimpleExpr: ID (element)
+      EXPR1:
+       SimpleExpr: ID (last)
+
+
+Variable knowledge of assign_test.txt:
+This is what the VariableVisitor class knows:
+Identifier:[illegal_but_accepted] Initialized:[true]
+Identifier:[list] Initialized:[true]
+Identifier:[last] Initialized:[true]
+Identifier:[orange] Initialized:[true]
+Identifier:[element] Initialized:[true]
+Identifier:[some_value] Initialized:[true]
+Identifier:[hat] Initialized:[true]
+Identifier:[a] Initialized:[true]
+Identifier:[large_number] Initialized:[true]
+Identifier:[float] Initialized:[true]
+Identifier:[number] Initialized:[true]
+Identifier:[outdex] Initialized:[true]
+Identifier:[complex] Initialized:[true]
+Identifier:[boolean] Initialized:[true]
+Identifier:[this] Initialized:[true]
+Identifier:[integer] Initialized:[true]
+Identifier:[bool] Initialized:[true]
+Identifier:[message] Initialized:[true]
+Identifier:[index] Initialized:[true]
+Identifier:[t] Initialized:[true]
+
+
+AST of general_testing.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: id
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: INT (6)
+     PLUS
+     SimpleExpr: INT (5)
+  AssignStmt: 
+   ID: bool
+   VALUE:
+    SimpleExpr: BOOL (false)
+  AssignStmt: 
+   ID: num
+   VALUE:
+    ReadExpr: READINT ('message')
+  AssignStmt: 
+   ID: char
+   VALUE:
+    ReadExpr: READSTR ('number')
+  AssignStmt: 
+   ID: xs
+   VALUE:
+    ListExpr: 
+     EXPR0:
+      SimpleExpr: INT (1)
+     EXPR1:
+      SimpleExpr: INT (2)
+     EXPR2:
+      SimpleExpr: INT (3)
+     EXPR3:
+      SimpleExpr: INT (4)
+     EXPR4:
+      SimpleExpr: INT (5)
+  AssignStmt: 
+   ID: ys
+   VALUE:
+    ListExpr: 
+     EXPR0:
+      SimpleExpr: INT (10)
+     EXPR1:
+      SimpleExpr: INT (20)
+     EXPR2:
+      SimpleExpr: INT (30)
+     EXPR3:
+      SimpleExpr: INT (40)
+     EXPR4:
+      SimpleExpr: INT (50)
+  AssignStmt: 
+   ID: i
+   VALUE:
+    SimpleExpr: INT (0)
+  AssignStmt: 
+   ID: success
+   VALUE:
+    SimpleExpr: BOOL (false)
+  AssignStmt: 
+   ID: orange
+   VALUE:
+    SimpleExpr: STRING (color)
+  AssignStmt: 
+   ID: a
+   VALUE:
+    SimpleExpr: STRING (b)
+  AssignStmt: 
+   ID: element
+   VALUE:
+    SimpleExpr: INT (14)
+  AssignStmt: 
+   ID: last
+   VALUE:
+    SimpleExpr: BOOL (false)
+  AssignStmt: 
+   INDEXED ID: illegal_but_accepted
+    SimpleExpr: ID (orange)
+   VALUE:
+    ComplexExpr: 
+     ListExpr: 
+      EXPR0:
+       SimpleExpr: ID (a)
+      EXPR1:
+       SimpleExpr: INT (12)
+      EXPR2:
+       SimpleExpr: STRING (four)
+      EXPR3:
+       SimpleExpr: BOOL (true)
+     MULTIPLY
+     ListExpr: 
+      EXPR0:
+       SimpleExpr: ID (element)
+      EXPR1:
+       SimpleExpr: ID (last)
+
+
+Variable knowledge of general_testing.txt:
+This is what the VariableVisitor class knows:
+Identifier:[illegal_but_accepted] Initialized:[true]
+Identifier:[last] Initialized:[true]
+Identifier:[element] Initialized:[true]
+Identifier:[success] Initialized:[true]
+Identifier:[char] Initialized:[true]
+Identifier:[bool] Initialized:[true]
+Identifier:[a] Initialized:[true]
+Identifier:[id] Initialized:[true]
+Identifier:[num] Initialized:[true]
+Identifier:[ys] Initialized:[true]
+Identifier:[xs] Initialized:[true]
+Identifier:[i] Initialized:[true]
+Identifier:[orange] Initialized:[true]
+
+
+AST of if_test.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: boolean
+   VALUE:
+    SimpleExpr: BOOL (false)
+  AssignStmt: 
+   ID: other_bool
+   VALUE:
+    SimpleExpr: BOOL (true)
+  AssignStmt: 
+   ID: bar
+   VALUE:
+    SimpleExpr: ID (boolean)
+  AssignStmt: 
+   ID: baz
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (bar)
+     PLUS
+     SimpleExpr: ID (boolean)
+  AssignStmt: 
+   ID: number
+   VALUE:
+    SimpleExpr: INT (1)
+  AssignStmt: 
+   ID: b
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (number)
+     PLUS
+     SimpleExpr: ID (number)
+  AssignStmt: 
+   ID: c
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (b)
+     MULTIPLY
+     SimpleExpr: ID (b)
+  AssignStmt: 
+   ID: i
+   VALUE:
+    SimpleExpr: INT (0)
+  AssignStmt: 
+   ID: ret
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (b)
+     MULTIPLY
+     ComplexExpr: 
+      SimpleExpr: ID (c)
+      MULTIPLY
+      SimpleExpr: ID (number)
+  AssignStmt: 
+   ID: max
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: INT (0)
+     MINUS
+     SimpleExpr: INT (3)
+  AssignStmt: 
+   ID: min
+   VALUE:
+    SimpleExpr: INT (0)
+  AssignStmt: 
+   ID: range
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (max)
+     MINUS
+     SimpleExpr: ID (min)
+  AssignStmt: 
+   ID: variable
+   VALUE:
+    SimpleExpr: INT (9001)
+  AssignStmt: 
+   ID: some_constant
+   VALUE:
+    SimpleExpr: ID (variable)
+  AssignStmt: 
+   ID: beta
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (ret)
+     DIVIDE
+     SimpleExpr: ID (range)
+  AssignStmt: 
+   ID: gamma
+   VALUE:
+    SimpleExpr: ID (some_constant)
+  AssignStmt: 
+   ID: delta
+   VALUE:
+    SimpleExpr: ID (gamma)
+  AssignStmt: 
+   ID: epsilon
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (gamma)
+     DIVIDE
+     SimpleExpr: ID (delta)
+  IfSmt: 
+   IF: 
+    SimpleBoolExpr:
+     SimpleExpr: BOOL (true)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: id
+      VALUE:
+       SimpleExpr: INT (1)
+  IfSmt: 
+   IF: 
+    SimpleBoolExpr:
+     SimpleExpr: BOOL (false)
+   THEN:
+    StmtList: empty
+  IfSmt: 
+   IF: 
+    SimpleBoolExpr:
+     SimpleExpr: BOOL (true)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: id
+      VALUE:
+       ComplexExpr: 
+        SimpleExpr: INT (1)
+        PLUS
+        SimpleExpr: INT (2)
+     AssignStmt: 
+      ID: id
+      VALUE:
+       ComplexExpr: 
+        SimpleExpr: INT (2)
+        MULTIPLY
+        SimpleExpr: INT (3)
+  IfSmt: 
+   IF: 
+    SimpleBoolExpr:
+     SimpleExpr: ID (boolean)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: foo
+      VALUE:
+       SimpleExpr: ID (bar)
+   ELSE: 
+    StmtList: 
+     AssignStmt: 
+      ID: foo
+      VALUE:
+       SimpleExpr: ID (baz)
+  IfSmt: 
+   IF: 
+    ComplexBoolExpr: 
+     SimpleExpr: ID (boolean)
+     EQUAL
+     SimpleExpr: BOOL (true)
+     AND
+     ComplexBoolExpr: 
+      SimpleExpr: ID (other_bool)
+      EQUAL
+      SimpleExpr: BOOL (true)
+      OR
+      ComplexBoolExpr: 
+       SimpleExpr: ID (number)
+       LESS_THAN
+       SimpleExpr: INT (0)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: a
+      VALUE:
+       SimpleExpr: ID (b)
+   ELSE IF: 
+    SimpleBoolExpr:
+     SimpleExpr: ID (boolean)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: a
+      VALUE:
+       SimpleExpr: ID (c)
+  IfSmt: 
+   IF: 
+    ComplexBoolExpr: 
+     SimpleExpr: INT (4)
+     GREATER_THAN
+     SimpleExpr: ID (i)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: id2
+      VALUE:
+       SimpleExpr: INT (4)
+   ELSE IF: 
+    ComplexBoolExpr: 
+     SimpleExpr: INT (2)
+     LESS_THAN
+     SimpleExpr: INT (5)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: id3
+      VALUE:
+       SimpleExpr: INT (1)
+   ELSE IF: 
+    SimpleBoolExpr:
+     SimpleExpr: BOOL (true)
+   THEN:
+    StmtList: 
+     PrintStmt: PRINT
+      SimpleExpr: STRING (ok)
+   ELSE: 
+    StmtList: 
+     AssignStmt: 
+      ID: id2
+      VALUE:
+       SimpleExpr: INT (5)
+  IfSmt: 
+   IF: 
+    ComplexBoolExpr: 
+     SimpleExpr: ID (ret)
+     LESS_THAN_EQUAL
+     SimpleExpr: ID (max)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: alpha
+      VALUE:
+       SimpleExpr: ID (beta)
+   ELSE IF: 
+    ComplexBoolExpr: 
+     SimpleExpr: ID (min)
+     GREATER_THAN_EQUAL
+     SimpleExpr: ID (range)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: alpha
+      VALUE:
+       SimpleExpr: ID (gamma)
+   ELSE IF: 
+    ComplexBoolExpr: 
+     SimpleExpr: ID (variable)
+     EQUAL
+     SimpleExpr: ID (some_constant)
+   THEN:
+    StmtList: 
+     AssignStmt: 
+      ID: alpha
+      VALUE:
+       SimpleExpr: ID (delta)
+   ELSE: 
+    StmtList: 
+     AssignStmt: 
+      ID: alpha
+      VALUE:
+       SimpleExpr: ID (epsilon)
+
+
+Variable knowledge of if_test.txt:
+This is what the VariableVisitor class knows:
+Identifier:[id3] Initialized:[true]
+Identifier:[some_constant] Initialized:[true]
+Identifier:[ret] Initialized:[true]
+Identifier:[range] Initialized:[true]
+Identifier:[foo] Initialized:[true]
+Identifier:[number] Initialized:[true]
+Identifier:[min] Initialized:[true]
+Identifier:[beta] Initialized:[true]
+Identifier:[max] Initialized:[true]
+Identifier:[boolean] Initialized:[true]
+Identifier:[c] Initialized:[true]
+Identifier:[other_bool] Initialized:[true]
+Identifier:[alpha] Initialized:[true]
+Identifier:[b] Initialized:[true]
+Identifier:[baz] Initialized:[true]
+Identifier:[bar] Initialized:[true]
+Identifier:[epsilon] Initialized:[true]
+Identifier:[variable] Initialized:[true]
+Identifier:[gamma] Initialized:[true]
+Identifier:[delta] Initialized:[true]
+Identifier:[i] Initialized:[true]
+Identifier:[id] Initialized:[true]
+Identifier:[a] Initialized:[true]
+Identifier:[id2] Initialized:[true]
+
+
+AST of loop_test.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: offset
+   VALUE:
+    SimpleExpr: BOOL (true)
+  AssignStmt: 
+   ID: sentence
+   VALUE:
+    SimpleExpr: STRING (This is a quality sentence.)
+  AssignStmt: 
+   ID: some_constant
+   VALUE:
+    SimpleExpr: ID (offset)
+  AssignStmt: 
+   ID: a_number
+   VALUE:
+    SimpleExpr: INT (9)
+  AssignStmt: 
+   ID: variable
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (offset)
+     PLUS
+     SimpleExpr: ID (some_constant)
+  AssignStmt: 
+   ID: integer
+   VALUE:
+    ComplexExpr: 
+     SimpleExpr: ID (a_number)
+     PLUS
+     SimpleExpr: STRING (a string)
+  AssignStmt: 
+   ID: boolean
+   VALUE:
+    SimpleExpr: BOOL (false)
+  AssignStmt: 
+   ID: i
+   VALUE:
+    SimpleExpr: STRING (the next statement is true.)
+  AssignStmt: 
+   ID: statement
+   VALUE:
+    SimpleExpr: STRING (i is false.)
+  WhileStmt: 
+   WHILE:
+    SimpleBoolExpr:
+     SimpleExpr: BOOL (true)
+   STMTS:
+    StmtList: 
+     PrintStmt: PRINT
+      SimpleExpr: STRING (Infinite loop.)
+  WhileStmt: 
+   WHILE:
+    SimpleBoolExpr:
+     SimpleExpr: BOOL (false)
+   STMTS:
+    StmtList: empty
+  WhileStmt: 
+   WHILE:
+    ComplexBoolExpr: 
+     SimpleExpr: ID (variable)
+     GREATER_THAN_EQUAL
+     SimpleExpr: INT (4)
+   STMTS:
+    StmtList: 
+     AssignStmt: 
+      ID: variable
+      VALUE:
+       ComplexExpr: 
+        SimpleExpr: ID (variable)
+        MINUS
+        SimpleExpr: INT (1)
+  WhileStmt: 
+   WHILE:
+    ComplexBoolExpr: 
+     SimpleExpr: ID (some_constant)
+     EQUAL
+     SimpleExpr: ID (integer)
+   STMTS:
+    StmtList: 
+     AssignStmt: 
+      ID: variable
+      VALUE:
+       SimpleExpr: ID (some_constant)
+     AssignStmt: 
+      ID: integer
+      VALUE:
+       ReadExpr: READINT ('Throw some numbers this way.')
+  WhileStmt: 
+   WHILE:
+    NotBoolExpr: 
+     SimpleBoolExpr:
+      SimpleExpr: ID (boolean)
+   STMTS:
+    StmtList: empty
+  WhileStmt: 
+   WHILE:
+    ComplexBoolExpr: 
+     SimpleExpr: ID (integer)
+     LESS_THAN
+     SimpleExpr: ID (variable)
+     OR
+     ComplexBoolExpr: 
+      SimpleExpr: ID (a_number)
+      LESS_THAN_EQUAL
+      SimpleExpr: ID (some_constant)
+   STMTS:
+    StmtList: 
+     PrintStmt: PRINT
+      SimpleExpr: STRING (The expression is true.)
+  WhileStmt: 
+   WHILE:
+    ComplexBoolExpr: 
+     SimpleExpr: INT (4)
+     LESS_THAN
+     SimpleExpr: INT (5)
+     OR
+     SimpleBoolExpr:
+      SimpleExpr: BOOL (true)
+   STMTS:
+    StmtList: 
+     AssignStmt: 
+      ID: num
+      VALUE:
+       ReadExpr: READINT ('message')
+     AssignStmt: 
+      ID: char
+      VALUE:
+       ReadExpr: READSTR ('number')
+  WhileStmt: 
+   WHILE:
+    ComplexBoolExpr: 
+     SimpleExpr: ID (i)
+     LESS_THAN
+     SimpleExpr: INT (5)
+   STMTS:
+    StmtList: 
+     AssignStmt: 
+      INDEXED ID: xs
+       SimpleExpr: ID (i)
+      VALUE:
+       IndexExpr: 
+        INDEXED ID (ys)
+         SimpleExpr: ID (i)
+     AssignStmt: 
+      ID: i
+      VALUE:
+       ComplexExpr: 
+        SimpleExpr: ID (i)
+        PLUS
+        SimpleExpr: INT (1)
+     WhileStmt: 
+      WHILE:
+       ComplexBoolExpr: 
+        SimpleExpr: ID (statement)
+        GREATER_THAN
+        SimpleExpr: ID (sentence)
+      STMTS:
+       StmtList: 
+        WhileStmt: 
+         WHILE:
+          NotBoolExpr: 
+           SimpleBoolExpr:
+            SimpleExpr: ID (boolean)
+         STMTS:
+          StmtList: 
+           AssignStmt: 
+            ID: boolean
+            VALUE:
+             SimpleExpr: BOOL (true)
+        AssignStmt: 
+         ID: statement
+         VALUE:
+          ComplexExpr: 
+           SimpleExpr: ID (sentence)
+           PLUS
+           SimpleExpr: ID (offset)
+
+
+Variable knowledge of loop_test.txt:
+This is what the VariableVisitor class knows:
+Identifier:[a_number] Initialized:[true]
+Identifier:[sentence] Initialized:[true]
+Identifier:[variable] Initialized:[true]
+Identifier:[char] Initialized:[true]
+Identifier:[integer] Initialized:[true]
+Identifier:[some_constant] Initialized:[true]
+Identifier:[offset] Initialized:[true]
+Identifier:[xs] Initialized:[true]
+Identifier:[i] Initialized:[true]
+Identifier:[boolean] Initialized:[true]
+Identifier:[statement] Initialized:[true]
+Identifier:[ys] Initialized:[true]
+Identifier:[num] Initialized:[true]
+
+
+AST of input_test.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: name
+   VALUE:
+    ReadExpr: READSTR ('Type a name.')
+  AssignStmt: 
+   ID: age
+   VALUE:
+    ReadExpr: READINT ('What is your age?')
+
+
+Variable knowledge of input_test.txt:
+This is what the VariableVisitor class knows:
+Identifier:[age] Initialized:[true]
+Identifier:[name] Initialized:[true]
+
+
+AST of output_test.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: identifier
+   VALUE:
+    SimpleExpr: INT (0)
+  AssignStmt: 
+   ID: identifier2
+   VALUE:
+    SimpleExpr: INT (1)
+  PrintStmt: PRINTLN
+   SimpleExpr: STRING (Hello World)
+  PrintStmt: PRINT
+   SimpleExpr: ID (identifier)
+  PrintStmt: PRINTLN
+   SimpleExpr: ID (identifier2)
+  PrintStmt: PRINT
+   SimpleExpr: STRING (string value)
+  PrintStmt: PRINTLN
+   SimpleExpr: INT (2)
+  PrintStmt: PRINT
+   ComplexExpr: 
+    SimpleExpr: INT (8)
+    MULTIPLY
+    ComplexExpr: 
+     SimpleExpr: INT (4)
+     PLUS
+     SimpleExpr: INT (13)
+  PrintStmt: PRINTLN
+   SimpleExpr: BOOL (true)
+  PrintStmt: PRINT
+   SimpleExpr: BOOL (false)
+
+
+Variable knowledge of output_test.txt:
+This is what the VariableVisitor class knows:
+Identifier:[identifier2] Initialized:[true]
+Identifier:[identifier] Initialized:[true]
+
+

@@ -6,24 +6,30 @@
 
 // Exception constructor definition
 Exception::Exception(std::string msg, int line, int column, ExceptionType type) :
-    msg(msg),
-    line(line),
-    column(column),
-    type(type)
+  errMsg("")
 {
-}
+  // The string creator
+  std::ostringstream ss;
 
-// Exception what() definition
-const char* Exception::what() const noexcept
-{
-    std::ostringstream ss;
+  // What type of error is this?
+  switch (type)
+  {
+  case ExceptionType::LEXER:
+    ss << "Lexical";
+    break;
 
-    if(type == ExceptionType::LEXER)
-        ss << "Lexical error at line ";
-    else if(type == ExceptionType::PARSER)
-        ss << "Syntax error at line ";
+  case ExceptionType::PARSER:
+    ss << "Syntax";
+    break;
 
-    ss << line << ", column " << column << ": " + msg;
+  case ExceptionType::VARVISIT:
+    ss << "Variable";
+    break;
+  }
 
-    return ss.str().c_str();
+  // The rest of the output data
+  ss << " error at line " << line << ", column " << column << ": " + msg;
+
+  // Save for output
+  errMsg = ss.str();
 }

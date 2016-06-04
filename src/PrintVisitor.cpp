@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "PrintVisitor.h"
-#include "ast.h"
 
 // Constructor
 PrintVisitor::PrintVisitor(std::ostream& os) :
@@ -37,7 +36,7 @@ void PrintVisitor::visit(StmtList& node)
 // Accepts a BasicIf reference
 void PrintVisitor::visit(BasicIf& node)
 {
-    // Print out the if statement's boolean expression
+  // Print out the if statement's boolean expression
   node.get_if()->accept(*this);
 
   // Return the previous indent
@@ -273,7 +272,7 @@ void PrintVisitor::visit(SimpleBoolExpr& node)
   // Increase the indent
   nextIndent();
 
-  // Print out he expression
+  // Print out the expression
   node.get_expr_term()->accept(*this);
 
   // Return to the previous indent
@@ -289,14 +288,14 @@ void PrintVisitor::visit(ComplexBoolExpr& node)
   // Increase the indent
   nextIndent();
 
-  // Print out eh first operand...
+  // Print out the first operand...
   node.get_first_op()->accept(*this);
   // ...the boolean relation...
   out << *indent << node.get_rel() << std::endl;
   // ...the second operand..
   node.get_second_op()->accept(*this);
 
-  // ...the boolean connector and the rest, if they are set
+  // ...the boolean connector, and the rest if they are set
   if (node.get_rest() && node.get_con_type() != TokenType::UNKNOWN)
   {
     out << *indent << node.get_con_type() << std::endl;

@@ -5,7 +5,7 @@
 
 #include <deque>
 
-#include "AbstractVisitor.h"
+#include "ast.h"
 
 // The PrintVisitor class prints out the AST in an understandable form
 class PrintVisitor : public AbstractVisitor

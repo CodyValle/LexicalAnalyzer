@@ -1,3 +1,7 @@
+# Variable definitions
+identifier = 0;
+identifier2 = 1;
+
 # Testing output variables
 println("Hello World");
 print(identifier);

@@ -11,7 +11,7 @@
 // LEXER: The lexer threw an exception.
 // PARSER: The parser threw an exception.
 enum class ExceptionType {
-LEXER, PARSER
+LEXER, PARSER, VARVISIT
 };
 
 // Extends the standard exception class for this lexer and parser.
@@ -32,20 +32,12 @@ public:
 	Exception(std::string msg, int line, int column, ExceptionType type);
 
 	// An explanation of what and where the error is.
-	virtual const char* what() const noexcept;
+	virtual const char* what() const noexcept
+    { return errMsg.c_str(); }
 
 private:
-	// The message that was passed in when this Exception was thrown.
-	std::string msg;
-
-	// The line that this Exception is referencing
-	int line;
-
-	// The column that this Exception is referencing
-	int column;
-
-	// The type of Exception this is
-	ExceptionType type;
+  // The full error message
+  std::string errMsg;
 };
 
 #endif // EXCEPTION_H

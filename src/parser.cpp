@@ -95,7 +95,7 @@ void Parser::stmts(std::shared_ptr<StmtList> ret)
 }
 
 // Parser stmt definition
-// Grammar Rule":
+// Grammar Rule:
 // 	<stmt> ::= <output> | <assign> | <cond> | <loop>
 std::shared_ptr<Stmt> Parser::stmt()
 {
@@ -158,7 +158,7 @@ std::shared_ptr<PrintStmt> Parser::output()
 
 	// Both rules end with this
 	eat(TokenType::LPAREN, "expected left parenthesis '('");
-	ret->set_print_type(expr());
+	ret->set_print_expr(expr());
 	eat(TokenType::RPAREN, "expected right parenthesis ')'");
 	eat(TokenType::SEMICOLON, "expected semicolon ';'");
 

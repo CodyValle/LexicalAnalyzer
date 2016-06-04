@@ -1,5 +1,25 @@
 # Testing if statements
 
+# Variable definitions
+boolean = false;
+other_bool = true;
+bar = boolean;
+baz = bar + boolean;
+number = 1;
+b = number + number;
+c = b * b;
+i = 0;
+ret = b * c * number;
+max = 0 - 3;
+min = 0;
+range = max - min;
+variable = 9001;
+some_constant = variable;
+beta = ret / range;
+gamma = some_constant;
+delta = gamma;
+epsilon = gamma / delta;
+
 # Basic if statements with constant boolean expression
 if true then
   id = 1;

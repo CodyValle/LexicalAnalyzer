@@ -48,8 +48,8 @@ std::ostream& operator<<(std::ostream& out, const TokenType value)
 	case TT::WHILE:     return out << "WHILE";
 	case TT::DO:        return out << "DO";
 	case TT::EOS:       return out << "EOS";
-	case TT::DEFAULT:   return out << "DEFAULT_TOKEN";
-	case TT::UNKNOWN:   return out << "UNKNOWN_TOKEN";
+	case TT::DEFAULT:   return out << "DEFAULT";
+	case TT::UNKNOWN:   return out << "UNKNOWN";
 	case TT::BOOL:      return out << "BOOL";
 	}
 
