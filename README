@@ -27,3 +27,6 @@ The language followed by the current master is described by:
 To build:
 1. Open the accompanying Code::Blocks project and build it there. (Recommended for Windows users)
 2. Utilize the accompanying makefile. (Recommended for Unix users, but using Code::Blocks is cool, too)
+
+Runtime errors:
+1. If the syntax of the input file is definitely correct, but there is still a syntax error being thrown, then it is likely to do with the line endings. The program expects Unix style-endings, but Windows-style may be present. Use d2u, dos2unix, or sed to modify the input file to Unix-style line endings.
