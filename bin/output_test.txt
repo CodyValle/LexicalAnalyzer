@@ -1,6 +1,6 @@
 # Variable definitions
-identifier = 0;
-identifier2 = 1;
+int identifier = 0;
+char identifier2 = 1;
 
 # Testing output variables
 println("Hello World");

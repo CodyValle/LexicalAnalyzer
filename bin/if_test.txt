@@ -15,6 +15,7 @@ int min = 0;
 string range = max - min;
 int variable = 9001;
 float some_constant = variable;
+string alpha = 18;
 boolean beta = ret / range;
 boolean gamma = some_constant;
 char delta = gamma;
@@ -22,7 +23,7 @@ int epsilon = gamma / delta;
 
 # Basic if statements with constant bool expression
 if true then
-  id = 1;
+  int id = 1;
 end
 
 # An empty if statement
@@ -36,6 +37,7 @@ if true then
 end
 
 # Adding an else clause
+char foo = "nope";
 if bool then
   foo = bar;
 else
@@ -43,6 +45,7 @@ else
 end
 
 # Adding an else if
+int a = "sure";
 if bool == true and other_bool == true or number < 0 then
   a = b;
 elif bool then
@@ -50,10 +53,11 @@ elif bool then
 end
 
 # Multiple else if clauses
+float id2 = 12345;
 if 4 > i then
 	id2 = 4;
 elif 2 < 5 then
-	id3 = 1;
+	id2 = 1;
 elif true then
 	print("ok");
 else

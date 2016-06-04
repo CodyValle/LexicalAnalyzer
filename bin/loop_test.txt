@@ -47,6 +47,7 @@ end
 
 # Nested loops
 while i < 5 do
+  string ys = "this" + "that";
 	xs[i] = ys[i];
 	i = i + 1;
 	while statement > sentence do

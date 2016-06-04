@@ -17,20 +17,32 @@ class Options
 public:
   // Constructor
   Options() :
-    parse(false)
+    parse(false),
+    print(true)
   {}
 
   // Sets the "parse only" flag (-p)
-  void setParseOnly(bool p)
+  void set_parse_only(bool p)
     { parse = p; }
 
   // Gets the "parse only" flag
-  bool parseOnly()
+  bool parse_only()
     { return parse; }
+
+  // Sets the "print" flag (-p)
+  void set_print(bool p)
+    { print = p; }
+
+  // Gets the "print" flag
+  bool get_print()
+    { return print; }
 
 private:
   // The "parse only" flag
   bool parse;
+
+  // THe print flag
+  bool print;
 };
 
 void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
@@ -54,7 +66,7 @@ void variableAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string f
 
   // What did the VariableVisitor find out?
   out << "Variable knowledge of " << filename << ":" << std::endl;
-  vtor.printKnowledge();
+  vtor.print_knowledge();
   out << std::endl << std::endl;
 }
 
@@ -84,18 +96,21 @@ void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
       std::shared_ptr<StmtList> ast = Parser(lexer).parse();
 
       // Stop here if parsing was all that was specified
-      if (opt.parseOnly())
+      if (opt.parse_only())
         continue;
 
       // Print out the filename and the AST
-      printAST(out, ast, filename);
+      if (opt.get_print())
+        printAST(out, ast, filename);
 
       // Catch variable errors
       variableAST(out, ast, filename);
     }
     catch(Exception e)
     {
-      std::cerr << e.what() << std::endl;
+
+      std::cerr << "In file " << filename << ":" << std::endl
+          << e.what() << std::endl;
     }
 
     // Close the stream
@@ -133,7 +148,12 @@ int main(int argc, char *argv[])
     else if (arg.compare("-p") == 0)
     {
       // Only parse the files, checking for syntactical correctness
-      opt.setParseOnly(true);
+      opt.set_parse_only(true);
+    }
+    else if (arg.compare("-no-print") == 0)
+    {
+      // Don't print out the ASTs
+      opt.set_print(false);
     }
     else
       // Add the file to the parse list

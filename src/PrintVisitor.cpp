@@ -23,14 +23,14 @@ void PrintVisitor::visit(StmtList& node)
   out << *indent << "StmtList: " << (node.get_stmts().size() == 0 ? "empty" : "") << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the statements
   for (std::shared_ptr<Stmt> s : node.get_stmts())
     s->accept(*this);
 
   // Return the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a BasicIf reference
@@ -40,13 +40,13 @@ void PrintVisitor::visit(BasicIf& node)
   node.get_if()->accept(*this);
 
   // Return the previous indent
-  prevIndent();
+  prev_indent();
 
   // Print out the then statements
   out << *indent + "THEN:" << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print the executable statements
   node.get_if_stmts()->accept(*this);
@@ -57,27 +57,27 @@ void PrintVisitor::visit(IfStmt& node)
 {
   // Print out what type of ASTNode this is
   out << *indent << "IfSmt: " << std::endl;
-  nextIndent();
+  next_indent();
 
   // Print out the first if clause
   out << *indent << "IF: " << std::endl;
   // Increase the indent
-  nextIndent();
+  next_indent();
   // Print the BasicIf
   node.get_if()->accept(*this);
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 
   // Print out all of the else if clauses
   for (std::shared_ptr<BasicIf> b : node.get_elseifs())
   {
     out << *indent << "ELSE IF: " << std::endl;
     // Increase the indent
-    nextIndent();
+    next_indent();
     // Print the executable statements
     b->accept(*this);
     // Return to the previous indent
-    prevIndent();
+    prev_indent();
   }
 
   // Print out the else clause
@@ -85,15 +85,15 @@ void PrintVisitor::visit(IfStmt& node)
   {
     out << *indent << "ELSE: " << std::endl;
     // Increase the indent
-    nextIndent();
+    next_indent();
     // Print the executable statements
     node.get_else()->accept(*this);
     // Return to the previous indent
-    prevIndent();
+    prev_indent();
   }
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a WhileStmt reference
@@ -103,28 +103,28 @@ void PrintVisitor::visit(WhileStmt& node)
   out << *indent << "WhileStmt: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the condition
   out << *indent << "WHILE:" << std::endl;
   // Increase the indent
-  nextIndent();
+  next_indent();
   // Print the boolean expression
   node.get_while()->accept(*this);
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 
   // Print out the statements
   out << *indent << "STMTS:" << std::endl;
   // Increase the indent
-  nextIndent();
+  next_indent();
   // Print the executable statements
   node.get_stmts()->accept(*this);
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a PrintStmt reference
@@ -134,13 +134,13 @@ void PrintVisitor::visit(PrintStmt& node)
   out << *indent << "PrintStmt: " << node.get_type() << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the expression to print
   node.get_expr()->accept(*this);
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a AssignStmt reference
@@ -150,31 +150,31 @@ void PrintVisitor::visit(AssignStmt& node)
   out << *indent << "AssignStmt: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out what to assign to
   out << *indent << (node.get_index() ? "INDEXED ID: " : "ID: ") << node.get_id().get_lexeme() << std::endl;
   if (node.get_index())
   {
     // Increase the indent
-    nextIndent();
+    next_indent();
     // Print out the index expression
     node.get_index()->accept(*this);
     // Increase the indent
-    prevIndent();
+    prev_indent();
   }
 
   // Print out the value to be assigned
   out << *indent << "VALUE:" << std::endl;
   // Increase the indent
-  nextIndent();
+  next_indent();
   // Print the expression to be assigned
   node.get_assign()->accept(*this);
   // Increase the indent
-  prevIndent();
+  prev_indent();
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a SimpleExpr reference
@@ -193,20 +193,20 @@ void PrintVisitor::visit(IndexExpr& node)
   out << *indent << "IndexExpr: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the id
   out << *indent << "INDEXED ID (" << node.get_id().get_lexeme() << ")" << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
   // Print out the expression that determines what element to access
   node.get_expr()->accept(*this);
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a ListExpr reference
@@ -216,22 +216,22 @@ void PrintVisitor::visit(ListExpr& node)
   out << *indent << "ListExpr: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the list of expressions
   for (unsigned i = 0; i < node.get_exprs().size(); i++)
   {
     out << *indent << "EXPR" << i << ":" << std::endl;
     // Increase the indent
-    nextIndent();
+    next_indent();
     // Print out the list expressions
     node.get_exprs()[i]->accept(*this);
     // Return to the previous indent
-    prevIndent();
+    prev_indent();
   }
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a ReadExpr reference
@@ -250,7 +250,7 @@ void PrintVisitor::visit(ComplexExpr& node)
   out << *indent << "ComplexExpr: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the first operand...
   node.get_first_op()->accept(*this);
@@ -260,7 +260,7 @@ void PrintVisitor::visit(ComplexExpr& node)
   node.get_rest()->accept(*this);
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a SimpleBoolExpr reference
@@ -270,13 +270,13 @@ void PrintVisitor::visit(SimpleBoolExpr& node)
   out << *indent << "SimpleBoolExpr:" << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the expression
   node.get_expr_term()->accept(*this);
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a ComplexBoolExpr reference
@@ -286,7 +286,7 @@ void PrintVisitor::visit(ComplexBoolExpr& node)
   out << *indent << "ComplexBoolExpr: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the first operand...
   node.get_first_op()->accept(*this);
@@ -303,7 +303,7 @@ void PrintVisitor::visit(ComplexBoolExpr& node)
   }
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }
 
 // Accepts a NotBoolExpr reference
@@ -313,11 +313,11 @@ void PrintVisitor::visit(NotBoolExpr& node)
   out << *indent << "NotBoolExpr: " << std::endl;
 
   // Increase the indent
-  nextIndent();
+  next_indent();
 
   // Print out the BoolExpr being negated
   node.get_expr()->accept(*this);
 
   // Return to the previous indent
-  prevIndent();
+  prev_indent();
 }

@@ -47,7 +47,7 @@ private:
 
   // Moves the pointer to the next largest indent
   // Dynamically increases the indent container appropriately
-  void nextIndent()
+  void next_indent()
     {
       // Check if a new one is needed
       if (std::next(indent) == indents.end())
@@ -57,7 +57,7 @@ private:
     }
 
   // Moves to a previous indent
-  void prevIndent()
+  void prev_indent()
     { --indent; }
 };
 

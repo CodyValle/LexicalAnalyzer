@@ -7,8 +7,9 @@
 #include "exception.h"
 
 // IDData constructor
-IDData::IDData(bool init) :
-  initialized(init)
+IDData::IDData(bool init, TokenType type) :
+  initialized(init),
+  data_type(type)
 {
 }
 
@@ -19,14 +20,16 @@ VariableVisitor::VariableVisitor(std::ostream& os) :
 {
 }
 
-// VariableVisitor printKnowledge definition
-void VariableVisitor::printKnowledge()
+// VariableVisitor print_knowledge definition
+void VariableVisitor::print_knowledge()
 {
   // Iterate and print keys and IDData stored in identifiers
   for (const auto& i : identifiers)
   {
-    out << "Identifier:[" << i.first << "] Initialized:["
-        << (i.second->isInitialized() == 0 ? "false" : "true") << "]\n";
+    out << "Identifier:[" << i.first << "]" << std::endl
+        << "  Initialized:[" << (i.second->is_initialized() == 0 ? "false" : "true") << "]" << std::endl
+        << "  Data Type:  [" << i.second->get_type() << "]"
+        << std::endl;
   }
 }
 
@@ -44,11 +47,42 @@ void VariableVisitor::error(const Token& t, const std::string& msg)
 									ExceptionType::VARVISIT);
 }
 
+void VariableVisitor::found_identifier(Token token, TokenType type)
+{
+  // We need to check that it exists in the table
+  if (identifiers.count(token.get_lexeme()))
+  { // The identifier is in the table
+    // Check if it used uninitialized
+    if (!identifiers[token.get_lexeme()]->is_initialized())
+      error(token, "Use of uninitialized identifier, ");
+  }
+  else
+  { // The identifier is not in the table
+    // Check that it has a type declaration
+    switch (type)
+    {
+    case TokenType::UNKNOWN:
+      // We have an error
+      error(token, "No type declaration for ");
+
+    case TokenType::DEFAULT:
+      // Using a token that is uninitialized
+      error(token, "Use of uninitialized identifier, ");
+
+    default: break;
+    }
+
+    // Safe to assume the type declaration is proper
+    // Add it to the table
+    identifiers[token.get_lexeme()] = new IDData(true, type);
+  }
+}
+
 // VariableVisitor StmtList visit definition
 void VariableVisitor::visit(StmtList& node)
 {
   // Check all the statements
-  for (auto& s : node.get_stmts())
+  for (auto& s: node.get_stmts())
     s->accept(*this);
 }
 
@@ -69,7 +103,7 @@ void VariableVisitor::visit(IfStmt& node)
   node.get_if()->accept(*this);
 
   // Check all of the else if clauses
-  for (std::shared_ptr<BasicIf> b : node.get_elseifs())
+  for (auto& b : node.get_elseifs())
     b->accept(*this);
 
   // Check the else statements
@@ -97,8 +131,8 @@ void VariableVisitor::visit(PrintStmt& node)
 // VariableVisitor AssignStmt visit definition
 void VariableVisitor::visit(AssignStmt& node)
 {
-  // Identifier is being assigned to
-  identifiers[node.get_id().get_lexeme()] = new IDData(true);
+  // Add the identifier to the table
+  found_identifier(node.get_id(), node.get_type());
 
   // Check the index expression
   if (node.get_index())
@@ -113,28 +147,16 @@ void VariableVisitor::visit(SimpleExpr& node)
 {
   // Only if this is a Token for an identifier
   if (node.get_term().get_type() == TokenType::ID)
-  {
-    // This identifier is being used
-    // We need to check that it exists in the table
-    if (!(identifiers.count(node.get_term().get_lexeme()) &&
-        // And that it is initialized
-        identifiers[node.get_term().get_lexeme()]->isInitialized()))
-    {
-      // The if statement is negated, so
-      // the identifier is not in the table, and is used uninitialized
-      error(node.get_term(), "Use of uninitialized identifier: ");
-
-      // Add it to the table
-      //identifiers[node.get_term().get_lexeme()] = new IDData(false);
-    }
+  { // This identifier is being used
+    found_identifier(node.get_term(), TokenType::DEFAULT);
   }
 }
 
 // VariableVisitor IndexExpr visit definition
 void VariableVisitor::visit(IndexExpr& node)
 {
-  // Identifier is being assigned to
-  identifiers[node.get_id().get_lexeme()] = new IDData(true);
+  // Add the identifier to the table
+  found_identifier(node.get_id(), TokenType::DEFAULT);
 
   // Check the expression that determines what element to access
   node.get_expr()->accept(*this);

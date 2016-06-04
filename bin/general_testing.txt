@@ -17,4 +17,4 @@ char a = "b";
 int element = 14;
 boolean last = false;
 
-illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];
+string illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];

@@ -12,15 +12,22 @@ class IDData
 {
 public:
   // Constructor
-  IDData(bool init);
+  IDData(bool, TokenType);
 
   // Returns the value of initialized
-  bool isInitialized()
+  bool is_initialized()
     { return initialized; }
+
+  // Get the type of this identifier
+  TokenType get_type()
+    { return data_type; }
 
 private:
   // Tells whether this variable has been initialized
   bool initialized;
+
+  // The type of this identifier
+  TokenType data_type;
 };
 
 // The PrintVisitor class prints out the AST in an understandable form
@@ -31,10 +38,13 @@ public:
   VariableVisitor(std::ostream&);
 
   // Prints out everything that this class knows about identifiers
-  void printKnowledge();
+  void print_knowledge();
 
   // Reports the error encountered
-	void error(const Token& t, const std::string& msg);
+	void error(const Token&, const std::string&);
+
+	// To check conditions whenever an identifier is found
+	void found_identifier(Token, TokenType);
 
   // The overridden functions from AbstractVisitor
   void visit(StmtList&) override;
