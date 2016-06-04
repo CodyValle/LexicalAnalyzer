@@ -2,5 +2,5 @@
 
 # Input functions take a string
 # and must be assigned to a variable.
-name = readstr("Type a name.");
-age = readint("What is your age?");
+string name = readstr("Type a name.");
+int age = readint("What is your age?");

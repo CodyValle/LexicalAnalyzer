@@ -1,20 +1,20 @@
-id = 6 + 5 ;
+int id = 6 + 5 ;
 
-bool = false;
+boolean bool = false;
 
-num = readint("message");
-char = readstr("number");
+int num = readint("message");
+char chr = readstr("number");
 
-xs = [1,2,3,4,5];
-ys = [10,20,30,40,50];
+int xs = [1,2,3,4,5];
+int ys = [10,20,30,40,50];
 
-i = 0;
+int i = 0;
 
-success = false;
+boolean success = false;
 
-orange = "color";
-a = "b";
-element = 14;
-last = false;
+string orange = "color";
+char a = "b";
+int element = 14;
+boolean last = false;
 
 illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];

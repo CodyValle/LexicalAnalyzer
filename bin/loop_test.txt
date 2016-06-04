@@ -1,15 +1,16 @@
 # This file tests while loops and boolean expressions
 
 # Variable definitions
-offset = true;
-sentence = "This is a quality sentence.";
-some_constant = offset;
-a_number = 9;
-variable = offset + some_constant;
-integer = a_number + "a string";
-boolean = false;
-i = "the next statement is true.";
-statement = "i is false.";
+int offset = true;
+boolean sentence = "This is a quality sentence.";
+char some_constant = offset;
+float a_number = 9;
+char variable = offset + some_constant;
+int integer = a_number + "a string";
+boolean b = false;
+char i = "the next statement is true.";
+string statement = "i is false.";
+int xs = "yes";
 
 # Simple while loop with constant boolean expression
 while true do
@@ -31,7 +32,7 @@ while some_constant == integer do
 end
 
 # Negation
-while not boolean do
+while not b do
 end
 
 # Complex boolean expressions
@@ -40,8 +41,8 @@ while integer < variable or a_number <= some_constant do
 end
 
 while 4 < 5 or true do
-	num = readint("message");
-	char = readstr("number");
+	 int num = readint("message");
+	char c = readstr("number");
 end
 
 # Nested loops
@@ -49,8 +50,8 @@ while i < 5 do
 	xs[i] = ys[i];
 	i = i + 1;
 	while statement > sentence do
-		while not boolean do
-			boolean = true;
+		while not b do
+			b = true;
 		end
 		statement = sentence + offset;
 	end

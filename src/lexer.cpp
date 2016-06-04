@@ -198,6 +198,16 @@ Token Lexer::next_token()
 			t = TT::BOOL;
 		else if (word.compare("false") == 0)
 			t = TT::BOOL;
+		else if (word.compare("string") == 0)
+			t = TT::STRINGT;
+		else if (word.compare("int") == 0)
+			t = TT::INTEGER;
+		else if (word.compare("float") == 0)
+			t = TT::FLOAT;
+		else if (word.compare("char") == 0)
+			t = TT::CHAR;
+		else if (word.compare("boolean") == 0)
+			t = TT::BOOLEAN;
 		else // It's not a keyword, so it must be a variable
 			t = TT::ID;
 

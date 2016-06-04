@@ -1,31 +1,31 @@
 # Testing assignment statements and all sorts of right hand side expressions
 
-number = 4;
-large_number = 32565;
+int number = 4;
+int large_number = 32565;
 
 # Mathematical equations
-integer = number + large_number;
-float = number / large_number - integer;
-complex = integer + number / float * large_number;
+int integer = number + large_number;
+float num = number / large_number - integer;
+int complex = integer + number / num * large_number;
 
 # Constant boolean expressions
-bool = true;
-boolean = false;
+boolean bool = true;
+boolean bool2 = false;
 
 # String assignments
-message = "This message will explode in 3...2...";
+string message = "This message will explode in 3...2...";
 
 # List assignment
 # But first, some variable definitions
-this = number;
-t = large_number;
-a = t - large_number;
-hat = float;
-some_value = complex * integer;
-element = hat + t;
-orange = element;
-last = true;
+int this = number;
+int t = large_number;
+int a = t - large_number;
+float hat = num;
+string some_value = complex * integer;
+boolean element = hat + t;
+string orange = element;
+boolean last = true;
 
-list = [1,2,3,5];
+int list = [1,2,3,5];
 index[this - t] = outdex[t + hat] * some_value;
 illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];

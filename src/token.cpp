@@ -24,7 +24,12 @@ std::ostream& operator<<(std::ostream& out, const TokenType value)
 	case TT::LBRACKET:  return out << "LBRACKET";
 	case TT::RBRACKET:  return out << "RBRACKET";
 	case TT::STRING:    return out << "STRING";
+	case TT::STRINGT:   return out << "STRINGT";
 	case TT::INT:       return out << "INT";
+	case TT::INTEGER:   return out << "INTEGER";
+	case TT::FLOAT:     return out << "FLOAT";
+	case TT::CHAR:      return out << "CHAR";
+	case TT::BOOLEAN:   return out << "BOOLEAN";
 	case TT::COMMA:     return out << "COMMA";
 	case TT::ASSIGN:    return out << "ASSIGN";
 	case TT::PLUS:      return out << "PLUS";

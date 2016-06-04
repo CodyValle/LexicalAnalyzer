@@ -142,7 +142,6 @@ AST of assign_test.txt:
 
 
 Variable knowledge of assign_test.txt:
-This is what the VariableVisitor class knows:
 Identifier:[illegal_but_accepted] Initialized:[true]
 Identifier:[list] Initialized:[true]
 Identifier:[last] Initialized:[true]
@@ -261,7 +260,6 @@ AST of general_testing.txt:
 
 
 Variable knowledge of general_testing.txt:
-This is what the VariableVisitor class knows:
 Identifier:[illegal_but_accepted] Initialized:[true]
 Identifier:[last] Initialized:[true]
 Identifier:[element] Initialized:[true]
@@ -540,7 +538,6 @@ AST of if_test.txt:
 
 
 Variable knowledge of if_test.txt:
-This is what the VariableVisitor class knows:
 Identifier:[id3] Initialized:[true]
 Identifier:[some_constant] Initialized:[true]
 Identifier:[ret] Initialized:[true]
@@ -565,6 +562,23 @@ Identifier:[i] Initialized:[true]
 Identifier:[id] Initialized:[true]
 Identifier:[a] Initialized:[true]
 Identifier:[id2] Initialized:[true]
+
+
+AST of input_test.txt:
+ StmtList: 
+  AssignStmt: 
+   ID: name
+   VALUE:
+    ReadExpr: READSTR ('Type a name.')
+  AssignStmt: 
+   ID: age
+   VALUE:
+    ReadExpr: READINT ('What is your age?')
+
+
+Variable knowledge of input_test.txt:
+Identifier:[age] Initialized:[true]
+Identifier:[name] Initialized:[true]
 
 
 AST of loop_test.txt:
@@ -748,7 +762,6 @@ AST of loop_test.txt:
 
 
 Variable knowledge of loop_test.txt:
-This is what the VariableVisitor class knows:
 Identifier:[a_number] Initialized:[true]
 Identifier:[sentence] Initialized:[true]
 Identifier:[variable] Initialized:[true]
@@ -762,24 +775,6 @@ Identifier:[boolean] Initialized:[true]
 Identifier:[statement] Initialized:[true]
 Identifier:[ys] Initialized:[true]
 Identifier:[num] Initialized:[true]
-
-
-AST of input_test.txt:
- StmtList: 
-  AssignStmt: 
-   ID: name
-   VALUE:
-    ReadExpr: READSTR ('Type a name.')
-  AssignStmt: 
-   ID: age
-   VALUE:
-    ReadExpr: READINT ('What is your age?')
-
-
-Variable knowledge of input_test.txt:
-This is what the VariableVisitor class knows:
-Identifier:[age] Initialized:[true]
-Identifier:[name] Initialized:[true]
 
 
 AST of output_test.txt:
@@ -817,7 +812,6 @@ AST of output_test.txt:
 
 
 Variable knowledge of output_test.txt:
-This is what the VariableVisitor class knows:
 Identifier:[identifier2] Initialized:[true]
 Identifier:[identifier] Initialized:[true]
 

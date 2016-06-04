@@ -259,6 +259,10 @@ public:
   void accept(AbstractVisitor& visitor) override
     { visitor.visit(*this); }
 
+  // Set the type of the identifier being assigned to
+  void set_type(TokenType t)
+    { type = t; }
+
   // Set the token that is being assigned to
   void set_lhs_id(Token t)
     { id = t; }
@@ -270,6 +274,10 @@ public:
   // Set the expression that we are assigning to the left hand side
   void set_rhs_expr(std::shared_ptr<Expr> expr)
     { assign_expr = expr; }
+
+  // Gets the type of the identifier being assigned to
+  TokenType get_type()
+    { return type; }
 
   // Get the id to assign to
   Token get_id()
@@ -284,6 +292,9 @@ public:
     { return assign_expr; }
 
 private:
+  // The type of the  id being assigned to
+  TokenType type;
+
   // Reference to the token to assign to
   Token id;
 

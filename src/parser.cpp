@@ -108,7 +108,12 @@ std::shared_ptr<Stmt> Parser::stmt()
 		return output();
 
 		// An assignment statement
-	case TokenType::ID:
+  case TokenType::ID:
+  case TokenType::STRINGT:
+  case TokenType::INTEGER:
+  case TokenType::FLOAT:
+  case TokenType::CHAR:
+  case TokenType::BOOLEAN:
 		return assign();
 
 		// An if statement
@@ -214,6 +219,9 @@ std::shared_ptr<AssignStmt> Parser::assign()
 	// Create return object
 	SP(AssignStmt, ret);
 
+	// Get the type declaration
+	type(ret);
+
 	// Set the ID for this assign statement
 	ret->set_lhs_id(cur_token);
 	eat(TokenType::ID, "expecting identifier for assignment statement");
@@ -250,6 +258,29 @@ std::shared_ptr<Expr> Parser::listindex()
 	eat(TokenType::RBRACKET, "expected right bracket ']'");
 
 	return ret;
+}
+
+// Parser type definition
+// Grammar Rule:
+//  <type> ::= INTEGER | FLOAT | CHAR | BOOLEAN | empty
+void Parser::type(std::shared_ptr<AssignStmt> ret)
+{
+  // Check the type is declared
+  switch (cur_token.get_type())
+  {
+  case TokenType::STRINGT:
+  case TokenType::INTEGER:
+  case TokenType::FLOAT:
+  case TokenType::CHAR:
+  case TokenType::BOOLEAN:
+    // Set the current token type and move on
+    ret->set_type(cur_token.get_type());
+    advance();
+    break;
+
+  default: // Type is undeclared
+    break;
+  }
 }
 
 // Parser expr definition

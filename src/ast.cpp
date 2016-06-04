@@ -60,6 +60,7 @@ PrintStmt::PrintStmt() :
 
 // AssignStmt constructor
 AssignStmt::AssignStmt() :
+  type(TokenType::UNKNOWN),
   id(Token()),
   index_expr(nullptr),
   assign_expr(nullptr)

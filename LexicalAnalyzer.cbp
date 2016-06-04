@@ -13,7 +13,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt -o outTest.txt" />
+				<Option parameters="-p assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -24,6 +24,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -41,6 +42,7 @@
 			<Add option="-std=c++14" />
 			<Add directory="include" />
 		</Compiler>
+		<Unit filename="README" />
 		<Unit filename="bin/assign_test.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

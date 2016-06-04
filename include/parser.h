@@ -12,8 +12,9 @@
 // 	<stmt>      ::= <output> | <assign> | <cond> | <loop>
 // 	<output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
 // 	<input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
-// 	<assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
+// 	<assign>    ::= <type> ID <listindex> ASSIGN <expr> SEMICOLON
 // 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
+//  <type>      ::= INTEGER | FLOAT | CHAR | BOOLEAN | empty
 // 	<expr>      ::= <value> <exprt>
 // 	<exprt>     ::= <math_rel> <expr> | empty
 // 	<value>     ::= ID <listindex> | STRING | INT | BOOL | <input> | LBRACKET <exprlist> RBRACKET
@@ -106,6 +107,12 @@ private:
 	// Grammar Rule:
 	// 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
 	std::shared_ptr<Expr> listindex();
+
+	// Applies the type rule
+	// Takes an AssignStmt pointer and adds the type declaration to it
+	// Grammar Rule:
+  //  <type> ::= INTEGER | FLOAT | CHAR | BOOLEAN | empty
+  void type(std::shared_ptr<AssignStmt>);
 
 	// Applies the expr rule
 	// Expects some type of expression
