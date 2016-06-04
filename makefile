@@ -22,21 +22,13 @@ TARGET   = LexicalAnalyzer
 
 CC       = g++
 # compiling flags here
-<<<<<<< HEAD
 CFLAGS   = -O2 -std=c++14 -Wall -Wextra -Weffc++ -pedantic -fexceptions -Iinclude
-=======
-CFLAGS   = -std=c++14 -Wall -Wextra -pedantic -Iinclude
->>>>>>> 318a10b78571fe3d66ed4bec56c5aafa25d41e82
 
 LINKER   = g++
 # linking flags here
 LFLAGS   =
 
-<<<<<<< HEAD
 # change these to set the proper directories where each files should be
-=======
-# change these to set the proper directories where each files shoould be
->>>>>>> 318a10b78571fe3d66ed4bec56c5aafa25d41e82
 SRCDIR   = src
 OBJDIR   = obj
 BINDIR   = bin
