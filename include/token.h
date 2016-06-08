@@ -11,13 +11,13 @@ enum class TokenType
 {
   PRINT, PRINTLN, READINT, READSTR, LPAREN, RPAREN, SEMICOLON,
   ID, LBRACKET, RBRACKET, STRING, STRINGT, INT, INTEGER, FLOAT, CHAR, BOOLEAN,
-  ARRAY, COMMA, ASSIGN, PLUS, MINUS, DIVIDE, MULTIPLY, IF, THEN,
+  ARRAY, VAR, COMMA, ASSIGN, PLUS, MINUS, DIVIDE, MULTIPLY, IF, THEN,
   ELIF, ELSE, END, NOT, AND, OR, EQUAL,LESS_THAN, GREATER_THAN,
   LESS_THAN_EQUAL, GREATER_THAN_EQUAL, NOT_EQUAL, WHILE, DO,
   EOS, DEFAULT, BOOL, UNKNOWN
 };
 
-// Print operator for a CodeTokenType object
+// Print operator for a TokenType object
 std::ostream& operator<<(std::ostream&, const TokenType);
 
 // A token that was found by the lexer.

@@ -112,11 +112,14 @@ std::shared_ptr<Stmt> Parser::stmt()
 		return assign();
 
 		// A variable declaration
+  /*
   case TokenType::STRINGT:
   case TokenType::INTEGER:
   case TokenType::FLOAT:
   case TokenType::CHAR:
   case TokenType::BOOLEAN:
+  */
+  case TokenType::VAR:
 		return vardec();
 
 		// An if statement
@@ -313,17 +316,20 @@ std::shared_ptr<Expr> Parser::listindex()
 
 // Parser type definition
 // Grammar Rule:
-//  <type> ::= STRINGT | INTEGER | FLOAT | CHAR | BOOLEAN
+//  <type> ::= VAR
 void Parser::type(std::shared_ptr<VarDecStmt> ret)
 {
   // Check the type declared
   switch (cur_token.get_type())
   {
+  /*
   case TokenType::STRINGT:
   case TokenType::INTEGER:
   case TokenType::FLOAT:
   case TokenType::CHAR:
   case TokenType::BOOLEAN:
+  */
+  case TokenType::VAR:
     // Set the current token type and move on
     ret->set_type(cur_token.get_type());
     advance();

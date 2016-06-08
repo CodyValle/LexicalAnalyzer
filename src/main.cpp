@@ -9,7 +9,7 @@
 #include "parser.h"
 #include "exception.h"
 #include "PrintVisitor.h"
-#include "VariableVisitor.h"
+#include "TypeVisitor.h"
 
 // Class that holds all the options for how the program is run
 class Options
@@ -56,6 +56,7 @@ void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string file
   out << std::endl << std::endl;
 }
 
+/*
 void variableAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
 {
   // Create the VariableVisitor
@@ -66,6 +67,21 @@ void variableAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string f
 
   // What did the VariableVisitor find out?
   out << "Variable knowledge of " << filename << ":" << std::endl;
+  vtor.print_knowledge();
+  out << std::endl << std::endl;
+}
+*/
+
+void typeAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
+{
+  // Create the TypeVisitor
+  TypeVisitor vtor = TypeVisitor(out);
+
+  // Pass the visitor to the AST
+  ast->accept(vtor);
+
+  // What did the TypeVisitor find out?
+  out << "Type knowledge of " << filename << ":" << std::endl;
   vtor.print_knowledge();
   out << std::endl << std::endl;
 }
@@ -104,7 +120,7 @@ void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
         printAST(out, ast, filename);
 
       // Catch variable errors
-      variableAST(out, ast, filename);
+      typeAST(out, ast, filename);
     }
     catch(Exception e)
     {

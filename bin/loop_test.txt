@@ -1,16 +1,16 @@
 # This file tests while loops and boolean expressions
 
 # Variable definitions
-int offset = true;
-boolean sentence = "This is a quality sentence.";
-char some_constant = offset;
-float a_number = 9;
-char variable = offset + some_constant;
-int integer = a_number + "a string";
-boolean b = false;
-char i = "the next statement is true.";
-string statement = "i is false.";
-int xs = "yes";
+var offset = true;
+var sentence = "This is a quality sentence.";
+var some_constant = offset;
+var a_number = 9;
+var variable = offset + some_constant;
+var integer = a_number + "a string";
+var b = false;
+var i = "the next statement is true.";
+var statement = "i is false.";
+var xs = "yes";
 
 # Simple while loop with constant boolean expression
 while true do
@@ -41,13 +41,13 @@ while integer < variable or a_number <= some_constant do
 end
 
 while 4 < 5 or true do
-	 int num = readint("message");
-	char c = readstr("number");
+  var num = readint("message");
+  var c = readstr("number");
 end
 
 # Nested loops
 while i < 5 do
-  string ys = "this" + "that";
+  var ys = "this" + "that";
 	xs[i] = ys[i];
 	i = i + 1;
 	while statement > sentence do

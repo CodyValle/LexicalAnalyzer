@@ -1,29 +1,29 @@
 # Testing if statements
 
 # Variable definitions
-boolean bool = false;
-boolean other_bool = true;
-boolean bar = bool;
-int baz = bar + bool;
-float number = 1;
-int b = number + number;
-float c = b * b;
-string i = 0;
-char ret = b * c * number;
-char max = 0 - 3;
-int min = 0;
-string range = max - min;
-int variable = 9001;
-float some_constant = variable;
-string alpha = 18;
-boolean beta = ret / range;
-boolean gamma = some_constant;
-char delta = gamma;
-int epsilon = gamma / delta;
+var bool = false;
+var other_bool = true;
+var bar = bool;
+var baz = bar + bool;
+var number = 1;
+var b = number + number;
+var c = b * b;
+var i = 0;
+var ret = b * c * number;
+var max = 0 - 3;
+var min = 0;
+var range = max - min;
+var variable = 9001;
+var some_constant = variable;
+var alpha = 18;
+var beta = ret / range;
+var gamma = some_constant;
+var delta = gamma;
+var epsilon = gamma / delta;
 
 # Basic if statements with constant bool expression
 if true then
-  int id = 1;
+  var id = 1;
 end
 
 # An empty if statement
@@ -37,7 +37,7 @@ if true then
 end
 
 # Adding an else clause
-char foo;
+var foo;
 if bool then
   foo = bar;
 else
@@ -45,7 +45,7 @@ else
 end
 
 # Adding an else if
-int a = "sure";
+var a = "sure";
 if bool == true and other_bool == true or number < 0 then
   a = b;
 elif bool then
@@ -53,7 +53,7 @@ elif bool then
 end
 
 # Multiple else if clauses
-float id2 = 12345;
+var id2 = 12345;
 if 4 > i then
 	id2 = 4;
 elif 2 < 5 then

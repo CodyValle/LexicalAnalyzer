@@ -16,7 +16,7 @@
 //  <vardect>   ::= ASSIGN <expr> SEMICOLON | SEMICOLON
 // 	<assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
 // 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
-//  <type>     ::= STRINGT | INTEGER | FLOAT | CHAR | BOOLEAN
+//  <type>      ::= VAR
 //  <subtype>   ::= LBRACKET RBRACKET | empty
 // 	<expr>      ::= <value> <exprt>
 // 	<exprt>     ::= <math_rel> <expr> | empty
@@ -126,7 +126,7 @@ private:
 	// Applies the type rule
 	// Takes a VarDecStmt and adds the main type to it
 	// Grammar Rule:
-  //  <types> ::= STRINGT | INTEGER | FLOAT | CHAR | BOOLEAN
+  //  <types> ::= VAR
   void type(std::shared_ptr<VarDecStmt>);
 
   // Applies the subtype rule

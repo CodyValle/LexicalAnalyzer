@@ -6,14 +6,6 @@
 #include "VariableVisitor.h"
 #include "exception.h"
 
-// IDData constructor
-IDData::IDData(bool init, TokenType type, TokenType sub) :
-  initialized(init),
-  data_type(type),
-  sub_type(sub)
-{
-}
-
 // VariableVisitor constructor
 VariableVisitor::VariableVisitor(std::ostream& os) :
   out(os),

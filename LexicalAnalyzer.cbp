@@ -13,7 +13,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters=" -no-print assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt" />
+				<Option parameters=" -no-print general_testing.txt " />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -55,6 +55,7 @@
 		<Unit filename="bin/output_test.txt" />
 		<Unit filename="include/AbstractVisitor.h" />
 		<Unit filename="include/PrintVisitor.h" />
+		<Unit filename="include/TypeVisitor.h" />
 		<Unit filename="include/VariableVisitor.h" />
 		<Unit filename="include/ast.h" />
 		<Unit filename="include/exception.h" />
@@ -63,6 +64,7 @@
 		<Unit filename="include/token.h" />
 		<Unit filename="makefile" />
 		<Unit filename="src/PrintVisitor.cpp" />
+		<Unit filename="src/TypeVisitor.cpp" />
 		<Unit filename="src/VariableVisitor.cpp" />
 		<Unit filename="src/ast.cpp" />
 		<Unit filename="src/exception.cpp" />
