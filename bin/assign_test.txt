@@ -21,6 +21,7 @@ str2 = "foo" * num; # "foofoofoofoofoo"
 
 bool = false;
 bool_list = [true, false];
+bool_list[10] = true; # This is currently allowed, but will cause an error during execution.
 
 
 ## Bad assignments
@@ -30,6 +31,5 @@ bool_list = [true, false];
 #bool = str; # cannot assign a string to a boolean
 #str = true; # cannot assign a boolean to a string
 #str = num; # cannot assign an int to a string
-#bool_list[num2] = true; # bool_list does not have a num2-th element
 #bool = not bool; # Boolean expressions are
 #bool = num > num2; #   not currently allowed in assignments.
