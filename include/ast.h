@@ -485,15 +485,15 @@ public:
     { visitor.visit(*this); }
 
   // Set the first term of this mathematical equation
-  void setFirstOp(std::shared_ptr<Expr> op)
+  void set_first_op(std::shared_ptr<Expr> op)
     { first_op = op; }
 
   // Set the mathematical operation linking the first and second terms
-  void setMathRel(TokenType rel)
+  void set_math_rel(TokenType rel)
     { math_rel = rel; }
 
   // Set the right hand side of the previous mathematical operation
-  void setRest(std::shared_ptr<Expr> r)
+  void set_rest(std::shared_ptr<Expr> r)
     { rest = r; }
 
   // Get the first operand of the expression

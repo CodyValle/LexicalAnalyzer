@@ -41,7 +41,7 @@ private:
   // The "parse only" flag
   bool parse;
 
-  // THe print flag
+  // The print flag
   bool print;
 };
 
@@ -55,22 +55,6 @@ void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string file
   ast->accept(vtor);
   out << std::endl << std::endl;
 }
-
-/*
-void variableAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
-{
-  // Create the VariableVisitor
-  VariableVisitor vtor = VariableVisitor(out);
-
-  // Pass the visitor to the AST
-  ast->accept(vtor);
-
-  // What did the VariableVisitor find out?
-  out << "Variable knowledge of " << filename << ":" << std::endl;
-  vtor.print_knowledge();
-  out << std::endl << std::endl;
-}
-*/
 
 void typeAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
 {

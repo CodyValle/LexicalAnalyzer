@@ -3,73 +3,58 @@
 # Variable definitions
 var bool = false;
 var other_bool = true;
-var bar = bool;
-var baz = bar + bool;
-var number = 1;
-var b = number + number;
-var c = b * b;
-var i = 0;
-var ret = b * c * number;
-var max = 0 - 3;
-var min = 0;
-var range = max - min;
-var variable = 9001;
-var some_constant = variable;
 var alpha = 18;
-var beta = ret / range;
-var gamma = some_constant;
-var delta = gamma;
+int beta = alpha / 2;
+var gamma = beta - 5;
+var delta = gamma * 3;
 var epsilon = gamma / delta;
 
 # Basic if statements with constant bool expression
 if true then
-  var id = 1;
+  alpha = 1;
 end
 
 # An empty if statement
-if false then
+if bool then
 end
 
 # With multiple statements
 if true then
-  id = 1 + 2;
-  id = 2 * 3;
+  alpha = beta + 2;
+  beta = 2 * alpha;
 end
 
 # Adding an else clause
-var foo;
-if bool then
-  foo = bar;
+if gamma < 0 then
+  other_bool = true;
 else
-  foo = baz;
+  other_bool = false;
 end
 
 # Adding an else if
-var a = "sure";
-if bool == true and other_bool == true or number < 0 then
-  a = b;
+var a = "question";
+if bool == true and other_bool == true or beta > 0 then
+  a = "true!";
 elif bool then
-  a = c;
+  a = "false...";
 end
 
 # Multiple else if clauses
-var id2 = 12345;
-if 4 > i then
-	id2 = 4;
-elif 2 < 5 then
-	id2 = 1;
-elif true then
-	print("ok");
-else
-	id2 = 5;
+var id = 12345;
+if 4 > delta then
+	id = 4;
+elif 2 <= alpha then
+	id = 1;
+elif bool then
+	bool = false;
 end
 
 # Multiple else if clauses and a then clause
-if ret <= max then
+if epsilon + gamma <= beta then
   alpha = beta;
-elif min >= range then
+elif id >= gamma then
   alpha = gamma;
-elif variable == some_constant then
+elif bool then
   alpha = delta;
 else
   alpha = epsilon;

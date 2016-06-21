@@ -15,7 +15,7 @@ IDData::IDData(bool init, TokenType type, TokenType sub) :
 // Print operator for a IDData object
 std::ostream& operator<<(std::ostream& out, const IDData value)
 {
-  out << "  Initialized: [" << (value.is_initialized() ? "false" : "true") << "]" << std::endl
+  out << "  Initialized: [" << (value.is_initialized() ? "true" : "false") << "]" << std::endl
       << "  Data Type:   [" << value.get_type();
   if (value.get_sub_type() != TokenType::UNKNOWN)
     out << " " << value.get_sub_type();

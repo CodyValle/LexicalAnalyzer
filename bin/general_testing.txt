@@ -1,17 +1,24 @@
-var num = 8;
-var bool = false;
-var str = "message";
+# Read expressions
+var int_read = readint("number");
+var string_read = readstr("string");
 
-var id = readint("number");
-var chr = readstr("string");
+# List expressions
+var list_int = [1,2,3,4,5];
+var list_string = ["foo","bar","baz"];
+var list_bool = [true, true, false, false, true];
 
-var xs = [1,2,3,4,5];
-var ys = ["foo","bar","baz"];
+# Mathematical expressions
+var number = 4;
+var number2 = 32565;
+var number3 = number + number2;
+var number4 = number / number2 - number3;
+var complex = number3 + 16 / number4 * number2;
 
-var x = 1;
-while x > 0 do
-   var y = 6;
-   println(y);
-   x = x - 1;
-end
-#println(y); # Will cause undeclared use error
+# Boolean expressions
+var bool = true;
+var bool2 = false;
+var bool3 = true + bool;
+
+# String expressions
+var str = "foo";
+var str2 = "bar";

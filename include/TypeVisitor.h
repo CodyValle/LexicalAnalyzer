@@ -7,8 +7,9 @@
 
 #include "ast.h"
 #include "environment.h"
+//#include "ExprTypeVisitor.h"
 
-// The PrintVisitor class prints out the AST in an understandable form
+// The TypeVisitor class prints out the AST in an understandable form
 class TypeVisitor : public AbstractVisitor
 {
 public:
@@ -22,7 +23,9 @@ public:
   void error(const Token&, const std::string&);
 
   // Checks for proper usage of an identifier when encountered
-  void found_identifier(Token, bool = true);
+  // Returns a pointer to the data on that identifier if found
+  // Either returns a valid pointer or throws an Exception
+  std::unique_ptr<IDData>* found_identifier(Token, bool = true);
 
   // The overridden functions from AbstractVisitor
   void visit(StmtList&) override;
@@ -35,7 +38,7 @@ public:
   void visit(SimpleExpr&) override;
   void visit(IndexExpr&) override;
   void visit(ListExpr&) override;
-  void visit(ReadExpr&) override {}; // TypeVisitor does not care about ReadExpr
+  void visit(ReadExpr&) override;
   void visit(ComplexExpr&) override;
   void visit(SimpleBoolExpr&) override;
   void visit(ComplexBoolExpr&) override;
@@ -44,6 +47,12 @@ public:
 private:
   // Reference to the output stream
   std::ostream& out;
+
+  // The return type for this object
+  TokenType expr_type;
+
+  // The return sub type for this object
+  TokenType expr_sub_type;
 
   // Stores references to the environments in a LIFO order
   std::forward_list<std::unique_ptr<Environment>> environments;

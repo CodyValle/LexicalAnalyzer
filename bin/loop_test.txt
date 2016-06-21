@@ -1,15 +1,13 @@
 # This file tests while loops and boolean expressions
 
 # Variable definitions
-var offset = true;
-var sentence = "This is a quality sentence.";
-var some_constant = offset;
-var a_number = 9;
-var variable = offset + some_constant;
-var integer = a_number + "a string";
-var b = false;
-var i = "the next statement is true.";
-var statement = "i is false.";
+var variable = 6;
+int integer = variable + 9;
+string str = "yes";
+boolean b = true;
+
+var u = "the next statement is true.";
+var statement = "u is false.";
 var xs = "yes";
 
 # Simple while loop with constant boolean expression
@@ -26,8 +24,8 @@ while variable >= 4 do
   variable = variable - 1;
 end
 
-while some_constant == integer do
-  variable = some_constant;
+while 13 == integer do
+  variable = integer;
   integer = readint("Throw some numbers this way.");
 end
 
@@ -36,24 +34,26 @@ while not b do
 end
 
 # Complex boolean expressions
-while integer < variable or a_number <= some_constant do
+while integer < variable or "foo" <= str do
   print("The expression is true.");
 end
 
-while 4 < 5 or true do
-  var num = readint("message");
-  var c = readstr("number");
+var num = 0;
+while num < integer and str != "bar" do
+  num = readint("message");
+  str = readstr("number");
 end
 
 # Nested loops
+int i = 0;
 while i < 5 do
-  var ys = "this" + "that";
-	xs[i] = ys[i];
+ var ys = ["this", "that"];
+	var xs = ys[i];
 	i = i + 1;
-	while statement > sentence do
+	while variable > i do
 		while not b do
 			b = true;
 		end
-		statement = sentence + offset;
+		str = str + "s";
 	end
 end

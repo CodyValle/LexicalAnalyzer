@@ -9,6 +9,8 @@
 // TypeVisitor constructor
 TypeVisitor::TypeVisitor(std::ostream& os) :
   out(os),
+  expr_type(TokenType::UNKNOWN),
+  expr_sub_type(TokenType::UNKNOWN),
   environments(0)
 {
   environments.push_front(std::make_unique<Environment>());
@@ -19,7 +21,7 @@ void TypeVisitor::print_knowledge()
 {
   // Iterate and print environments
   for (const auto& e: environments)
-    std::cout << (*e.get());
+    std::cout << *e.get();
 }
 
 // TypeVisitor error definition
@@ -37,7 +39,7 @@ void TypeVisitor::error(const Token& t, const std::string& msg)
 }
 
 // TypeVisitor found_identifier definition
-void TypeVisitor::found_identifier(Token t, bool reading)
+std::unique_ptr<IDData>* TypeVisitor::found_identifier(Token t, bool reading)
 {
   // We need to loop through from the beginning to the end (local to global)
   for (const auto& e: environments)
@@ -53,12 +55,13 @@ void TypeVisitor::found_identifier(Token t, bool reading)
         (*data)->initialize();
 
       // No need to search anymore
-      return;
+      return data;
     }
   }
 
   // The identifier wasn't found
   error(t, "Use of undeclared identifier, ");
+  return nullptr;
 }
 
 // TypeVisitor StmtList visit definition
@@ -134,19 +137,35 @@ void TypeVisitor::visit(PrintStmt& node)
 // TypeVisitor VarDecStmt visit definition
 void TypeVisitor::visit(VarDecStmt& node)
 {
-  // init will be true if the variable is initialized
-  bool init = false;
+  // Pointer to the IDData
+  IDData* data = nullptr;
 
-  // Check the index expression
+  // Check the assignment
   if (node.get_assign())
   {
+    // Get the type of the assign statement
     node.get_assign()->accept(*this);
-    init = true;
+    if (node.get_type() != TokenType::VAR)
+    { // The type was explicitly declared
+      // Check that the right hand side matches
+      if (expr_type != node.get_type() || expr_sub_type != node.get_sub_type())
+        error(Token(), "mismatched explicit type and implicit type");
+    }
+
+    // Make the IDData
+    data = new IDData(true, expr_type, expr_sub_type);
+
+    expr_sub_type = TokenType::UNKNOWN;
+  }
+  else
+  { // This is an explicit type declaration with no assignment
+    data = new IDData(false, node.get_type(),node.get_sub_type());
   }
 
   // Add this variable to the local environment
-  IDData data(init, TokenType::UNKNOWN, TokenType::UNKNOWN);
-  environments.front()->add_identifier(node.get_id().get_lexeme(), data);
+  if (!environments.front()->add_identifier(node.get_id().get_lexeme(), (*data)))
+    // There is already a variable declared in this scope with the same lexeme
+    error(Token(), "redefinition of variable");
 }
 
 // TypeVisitor AssignStmt visit definition
@@ -157,19 +176,51 @@ void TypeVisitor::visit(AssignStmt& node)
 
   // Check the index expression
   if (node.get_index())
+  {
     node.get_index()->accept(*this);
+
+    // Make sure the index expression returned an integer
+    if (expr_type != TokenType::INT)
+      error(node.get_id(), "expected integer value as index");
+  }
 
   // Check the expression to be assigned
   node.get_assign()->accept(*this);
+
+  // Check that the expression has the same type as what it is being assigned to
+  for (const auto& e: environments)
+  {
+    // Check if this environment has this identifier defined
+    std::unique_ptr<IDData>* data = e->get_identifier(node.get_id().get_lexeme());
+    if (data != nullptr)
+    {
+      if (expr_type != (*data)->get_type())
+        error(node.get_id(), "cannot assign rhs type to lhs identifier");
+    }
+  }
+  // The identifier will be found since the earlier call to found_identifier succeeded
 }
 
 // TypeVisitor SimpleExpr visit definition
 void TypeVisitor::visit(SimpleExpr& node)
 {
-  // Only if this is a Token for an identifier
-  if (node.get_term().get_type() == TokenType::ID)
-  { // This identifier is being used
-    found_identifier(node.get_term());
+  switch (node.get_term().get_type())
+  {
+  case TokenType::BOOL:
+  case TokenType::INT:
+  case TokenType::STRING:
+    expr_type = node.get_term().get_type();
+    break;
+
+  case TokenType::ID:
+  {
+    std::unique_ptr<IDData>* data = found_identifier(node.get_term());
+    expr_type = (*data)->get_type();
+    expr_sub_type = (*data)->get_sub_type();
+    break;
+  }
+
+  default: break;
   }
 }
 
@@ -186,42 +237,146 @@ void TypeVisitor::visit(IndexExpr& node)
 // TypeVisitor ListExpr visit definition
 void TypeVisitor::visit(ListExpr& node)
 {
-  // Check the list of expressions
-  for (unsigned i = 0; i < node.get_exprs().size(); i++)
-    node.get_exprs()[i]->accept(*this);
+  // Get the expressions
+  std::deque<std::shared_ptr<Expr>> exprs = node.get_exprs();
+
+  // exprs should not be empty, but is allowed by the current grammar
+  if (exprs.empty())
+    error(Token(), "undeterminable type");
+
+  // Start the iterator
+  std::deque<std::shared_ptr<Expr>>::iterator it = exprs.begin();
+
+  // Get the type of the first expression
+  (*it)->accept(*this);
+  ++it;
+
+  // Save for later
+  TokenType type = expr_type;
+
+  // Iterate through and make sure they are all the same type
+  for (; it != exprs.end(); ++it)
+  {
+    (*it)->accept(*this);
+    if (type != expr_type)
+      error(Token(), "mismatched types in list initializer");
+  }
+
+  // Set the sub type
+  expr_sub_type = TokenType::ARRAY;
+}
+
+// TypeVisitor ReadExpr visit definition
+void TypeVisitor::visit(ReadExpr& node)
+{
+  // What type of read operation is this?
+  switch (node.get_type())
+  {
+    // Gets an integer
+  case TokenType::READINT:
+    expr_type = TokenType::INT;
+    break;
+
+    // Gets a string
+  case TokenType::READSTR:
+    expr_type = TokenType::STRING;
+    break;
+
+  default: break;
+  }
 }
 
 // TypeVisitor ComplexExpr visit definition
 void TypeVisitor::visit(ComplexExpr& node)
 {
-  // Check the first operand...
+  // Get the type of the first operand
   node.get_first_op()->accept(*this);
-  // ...and the rest
+  TokenType type = expr_type;
+
+  // Check that the rest of the expression is the same type
   node.get_rest()->accept(*this);
+
+  // Check for type consistency
+  if (expr_type != type)
+  {
+    // Check for mixed-mode expressions
+    switch (type)
+    {
+    case TokenType::STRING:
+      if (expr_type == TokenType::INT)
+      { // String and int can be mixed
+        // But only by addition and multiplication
+        if (node.get_rel() == TokenType::PLUS
+            || node.get_rel() == TokenType::MULTIPLY)
+        {
+          // These are of type string
+          expr_type = TokenType::STRING;
+          return;
+        }
+      }
+      break;
+
+    default: break;
+    }
+
+    // Cannot mix these types
+    error(Token(), "mismatched types in complex expression");
+  }
+
+  // Check that proper expressions types are being operated on
+  switch (expr_type)
+  {
+    // Strings can only be added
+  case TokenType::STRING:
+    if (node.get_rel() != TokenType::PLUS)
+      error(Token(), "illegal operation. Strings can only be added");
+    break;
+
+    // Booleans can only be added or subtracted
+  case TokenType::BOOL:
+    if (node.get_rel() != TokenType::PLUS && node.get_rel() != TokenType::MINUS)
+      error(Token(), "illegal operation. Booleans can only be added or subtracted");
+    break;
+
+  default: break;
+  }
 }
 
 // TypeVisitor SimpleBoolExpr visit definition
 void TypeVisitor::visit(SimpleBoolExpr& node)
 {
-  // Print out the expression
+  // Get the type of this expression
   node.get_expr_term()->accept(*this);
+
+  // It ought to be a boolean
+  if (expr_type != TokenType::BOOL)
+    error(Token(), "non-boolean expression in simple boolean expression");
 }
 
 // TypeVisitor ComplexBoolExpr visit definition
 void TypeVisitor::visit(ComplexBoolExpr& node)
 {
-  // Check the first operand...
+  // Get the type of the first operand
   node.get_first_op()->accept(*this);
-  // ...the second operand..
+  TokenType type = expr_type;
+
+  // Check that the second operand is the same type
   node.get_second_op()->accept(*this);
-  // ...the boolean connector, and the rest if they are set
-  if (node.get_rest() && node.get_con_type() != TokenType::UNKNOWN)
+  if (expr_type != type)
+    error(Token(), "mismatched types in complex boolean expression");
+
+  // Check that the rest of the expression is the same type
+  if (node.get_rest())
     node.get_rest()->accept(*this);
 }
 
 // TypeVisitor NotBoolExpr visit definition
 void TypeVisitor::visit(NotBoolExpr& node)
 {
-  // Check the BoolExpr being negated
+  // Check the expression being negated
   node.get_expr()->accept(*this);
+
+  // Make sure it'a boolean expression
+  if (expr_type != TokenType::BOOL)
+    error(Token(), "non-boolean expression in negation");
 }

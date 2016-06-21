@@ -1,6 +1,6 @@
 # Variable definitions
 var identifier = 0;
-var identifier2 = 1;
+var identifier2 = "some string";
 
 # Testing output variables
 println("Hello World");

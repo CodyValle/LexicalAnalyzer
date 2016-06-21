@@ -1,35 +1,35 @@
-# Testing assignment statements and all sorts of right hand side expressions
+# Testing assignment statements and various right hand side expressions
+# Successful reading of this file outputs all variable data
 
-var number = 4;
-var large_number = 32565;
-
-# Mathematical equations
-var integer = number + large_number;
-var num = number / large_number - integer;
-var complex = integer + number / num * large_number;
-
-# Constant boolean expressions
+## Various initializations
+var num = 1;
+int num2;
+int[] num_list = [1,2];
 var bool = true;
-var bool2 = false;
+boolean[] bool_list;
+var str = "string";
+string str2;
 
-# String assignments
-var message = "This message will explode in 3...2...";
+## Assignment statements
+num = 3;
+num2 = num * num; # num2 is now initialized
+num_list[1] = num; # the index 1 is the second element (num_list = [1,3])
+num_list[num - 3] = num_list[1]; # the index 0 is now 3 (num_list = [3,3])
 
-# List assignment
-# But first, some variable definitions
-var this = number;
-var t = large_number;
-var a = t - large_number;
-var hat = num;
-var some_value = complex * integer;
-var element = hat + t;
-var orange = element;
-var last = true;
-var outdex = 13;
-var[] index;
-var[] illegal_but_accepted;
-var[] uninitialized;
+str = str + "foo" + str; # "stringfoostring"
+str2 = "foo" * num; # "foofoofoofoofoo"
 
-var list = [1,2,3,5];
-index[this - t] = outdex[t + hat] * some_value;
-illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];
+bool = false;
+bool_list = [true, false];
+
+
+## Bad assignments
+#num = "bar"; # cannot assign a string to an int
+#num = bool; # cannot assign a boolean to an int
+#bool = num; # cannot assign an int to a boolean
+#bool = str; # cannot assign a string to a boolean
+#str = true; # cannot assign a boolean to a string
+#str = num; # cannot assign an int to a string
+#bool_list[num2] = true; # bool_list does not have a num2-th element
+#bool = not bool; # Boolean expressions are
+#bool = num > num2; #   not currently allowed in assignments.

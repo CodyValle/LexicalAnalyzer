@@ -4,14 +4,15 @@ This project is an Independent Study to develop a compiler/interpreter/etc.
 The language followed by the current master is described by:
 
 <stmts>     ::= <stmt> <stmts> | empty
-<stmt>      ::= <output> | <vardec> | <assign> | <cond> | <loop>
+<stmt>      ::= <output> | <impdec> | <expdec> | <assign> | <cond> | <loop>
 <output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
 <input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
-<vardec>    ::= <type> <subtype> ID <vardect>
-<vardect>   ::= ASSIGN <expr> SEMICOLON | SEMICOLON
+<impdec>    ::= VAR ID ASSIGN <expr> SEMICOLON
+<expdec>    ::= <type> <subtype> ID
+<expdect>   ::= SEMICOLON | ASSIGN <expr> SEMICOLON
 <assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
 <listindex> ::= LBRACKET <expr> RBRACKET | empty
-<type>      ::= VAR
+<type>      ::= INT | STRING | BOOL
 <subtype>   ::= LBRACKET RBRACKET | empty
 <expr>      ::= <value> <exprt>
 <exprt>     ::= <math_rel> <expr> | empty
@@ -26,7 +27,6 @@ The language followed by the current master is described by:
 <bexprt>    ::= <bool_rel> <expr> <bconnct> | empty
 <bconnct>   ::= AND <bexpr> | OR <bexpr> | empty
 <bool_rel>  ::= EQUAL | LESS_THAN | GREATER_THAN | LESS_THAN_EQUAL | GREATER_THAN_EQUAL | NOT_EQUAL
-<loop>      ::= WHILE <bexpr> DO <stmts> END
 
 
 To build:
@@ -59,8 +59,6 @@ x:int = 6, y:int = 3
   (x * y):int = 18
   (y / x):int = 0
   (x / y):int = 2
-  (y % x):int = 0
-  (x % y):int = 0
 
 x:string = "bar", y:string = "foo"
   (y + x):string = "foobar"
@@ -71,8 +69,6 @@ x:string = "bar", y:string = "foo"
   (x * y):undefined
   (y / x):undefined
   (x / y):undefined
-  (y % x):undefined
-  (x % y):undefined
 
 x:boolean = true, y:boolean = false
   (x + x):boolean = true
@@ -87,8 +83,6 @@ x:boolean = true, y:boolean = false
   (x * y):undefined
   (y / x):undefined
   (x / y):undefined
-  (y % x):undefined
-  (x % y):undefined
 
 x:int = 5, y:boolean = false
   (y + x):undefined
@@ -99,8 +93,6 @@ x:int = 5, y:boolean = false
   (x * y):undefined
   (y / x):undefined
   (x / y):undefined
-  (y % x):undefined
-  (x % y):undefined
 
 x:int = 5, y:string = "foo"
   (y + x):string = "foo5"
@@ -111,8 +103,6 @@ x:int = 5, y:string = "foo"
   (x * y):undefined
   (y / x):undefined
   (x / y):undefined
-  (y % x):undefined
-  (x % y):undefined
 
 x:boolean = true, y:string = "foo"
   (y + x):undefined
@@ -123,6 +113,56 @@ x:boolean = true, y:string = "foo"
   (x * y):undefined
   (y / x):undefined
   (x / y):undefined
-  (y % x):undefined
-  (x % y):undefined
 
+
+Boolean Evaluations:
+-Integers are evaluated as expected.
+-Strings are evaluated in alphabetical order, "foo" > "bar" is true, "foo" == "foo" is true, and "foo" == "fo" is false.
+
+x:int = 6, y:int = 3
+  (y > x):boolean
+  (x >= y):boolean
+  (y < x):boolean
+  (x <= y):boolean
+  (y == x):boolean
+  (x != y):boolean
+
+x:string = "bar", y:string = "foo"
+  (y > x):boolean
+  (x >= y):boolean
+  (y < x):boolean
+  (x <= y):boolean
+  (y == x):boolean
+  (x != y):boolean
+
+x:boolean = true, y:boolean = false
+  (y > x):undefined
+  (x >= y):undefined
+  (y < x):undefined
+  (x <= y):undefined
+  (y == x):undefined
+  (x != y):undefined
+
+x:int = 5, y:boolean = false
+  (y > x):undefined
+  (x >= y):undefined
+  (y < x):undefined
+  (x <= y):undefined
+  (y == x):undefined
+  (x != y):undefined
+
+x:int = 5, y:string = "foo"
+  (y > x):undefined
+  (x >= y):undefined
+  (y < x):undefined
+  (x <= y):undefined
+  (y == x):undefined
+  (x != y):undefined
+
+x:booean = true, y:string = "foo"
+  (y > x):undefined
+  (x >= y):undefined
+  (y < x):undefined
+  (x <= y):undefined
+  (y == x):undefined
+  (x != y):undefined
