@@ -96,7 +96,7 @@ void Parser::stmts(std::shared_ptr<StmtList> ret)
 
 // Parser stmt definition
 // Grammar Rule:
-// 	<stmt> ::= <output> | <assign> | <cond> | <loop>
+// 	<stmt> ::= <output> | <impdec> | <expdec> | <assign> | <cond> | <loop>
 std::shared_ptr<Stmt> Parser::stmt()
 {
 	// What kind of statement is this?
@@ -108,8 +108,20 @@ std::shared_ptr<Stmt> Parser::stmt()
 		return output();
 
 		// An assignment statement
-	case TokenType::ID:
+  case TokenType::ID:
 		return assign();
+
+		// An explicit variable declaration
+  case TokenType::INT:
+  case TokenType::STRING:
+  case TokenType::BOOL:
+  //case TokenType::FLOAT:
+  //case TokenType::CHAR:
+    return expdec();
+
+    // An implicit variable declaration
+  case TokenType::VAR:
+		return impdec();
 
 		// An if statement
 	case TokenType::IF:
@@ -206,6 +218,91 @@ std::shared_ptr<ReadExpr> Parser::input()
 	return ret;
 }
 
+// Applies the impdec rule
+// Grammar Rule:
+//  <impdec> ::= VAR ID ASSIGN <expr> SEMICOLON
+std::shared_ptr<VarDecStmt> Parser::impdec()
+{
+  // Create the return object
+  SP(VarDecStmt, ret);
+
+  // Get the type and subtype
+  eat(TokenType::VAR, "expected implicit type declaration");
+
+  // Set the type
+  ret->set_type(TokenType::VAR);
+  ret->set_sub_type(TokenType::UNKNOWN);
+
+  // Set the ID for this declaration
+	ret->set_id(cur_token);
+	eat(TokenType::ID, "expecting identifier for variable declaration statement");
+
+	// Check for specific error
+	if (cur_token.get_type() == TokenType::LBRACKET)
+    error("cannot access a specific element of an array in the declaration. Expected '='");
+
+	// Get the assignment
+  eat(TokenType::ASSIGN, "expected semicolon '='");
+
+	// Set the expression to be assigned
+  ret->set_rhs_expr(expr());
+
+  eat(TokenType::SEMICOLON, "expected semicolon ';'");
+
+	return ret;
+}
+
+// Parser expdec definition
+// Grammar Rule:
+//  <expdec> ::= <type> <subtype> ID
+std::shared_ptr<VarDecStmt> Parser::expdec()
+{
+  // Create the return object
+  SP(VarDecStmt, ret);
+
+  // Get the type and subtype
+  type(ret);
+  subtype(ret);
+
+  // Set the ID for this declaration
+	ret->set_id(cur_token);
+	eat(TokenType::ID, "expecting identifier for variable declaration statement");
+
+	// Check for specific error
+	if (cur_token.get_type() == TokenType::LBRACKET)
+    error("cannot access a specific element of an array in the declaration. Expected '=' or ';'");
+
+	// Finish the variable declaration
+	expdect(ret);
+
+	return ret;
+}
+
+// Parser expdect rule
+// Grammar Rule:
+//  <expdect> ::= ASSIGN <expr> SEMICOLON | SEMICOLON
+void Parser::expdect(std::shared_ptr<VarDecStmt> ret)
+{
+  // What type of declaration is this?
+  switch (cur_token.get_type())
+  {
+    // Assignment
+  case TokenType::ASSIGN:
+    advance();
+    // Set the expression to be assigned
+    ret->set_rhs_expr(expr());
+    eat(TokenType::SEMICOLON, "expecting semicolon ';'");
+    return;
+
+    // Just a declaration, uninitialized
+  case TokenType::SEMICOLON:
+    advance();
+    return;
+
+  default: break;
+  }
+}
+
 // Parser assign definition
 // Grammar Rule:
 // 	<assign> ::= ID <listindex> ASSIGN <expr> SEMICOLON
@@ -252,6 +349,50 @@ std::shared_ptr<Expr> Parser::listindex()
 	return ret;
 }
 
+// Parser type definition
+// Grammar Rule:
+//  <type> ::= INT | STRING | BOOL
+void Parser::type(std::shared_ptr<VarDecStmt> ret)
+{
+  // Check the type declared
+  switch (cur_token.get_type())
+  {
+  case TokenType::INT:
+  case TokenType::STRING:
+  case TokenType::BOOL:
+  //case TokenType::FLOAT:
+  //case TokenType::CHAR:
+    // Set the current token type and move on
+    ret->set_type(cur_token.get_type());
+    advance();
+    break;
+
+  default: // Bad TokenType
+		error("expected explicit type declaration");
+  }
+}
+
+// Parser subtype definition
+// Grammar Rule:
+//  <subtype> ::= LBRACKET RBRACKET | empty
+void Parser::subtype(std::shared_ptr<VarDecStmt> ret)
+{
+  // Check the type is declared
+  switch (cur_token.get_type())
+  {
+    // This is an array subtype
+  case TokenType::LBRACKET:
+    advance();
+    eat(TokenType::RBRACKET, "expected right bracket for array declaration ']'");
+
+    // Set the sub type and move on
+    ret->set_sub_type(TokenType::ARRAY);
+    break;
+
+  default: break;
+  }
+}
+
 // Parser expr definition
 // Grammar Rule:
 // 	<expr> ::= <value> <exprt>
@@ -277,10 +418,10 @@ std::shared_ptr<ComplexExpr> Parser::exprt(std::shared_ptr<Expr> ret)
 	{
 		// This is a mathematical equation
 		// Add the passed in first operand
-		math->setFirstOp(ret);
+		math->set_first_op(ret);
 
 		// Set the rest of the equation
-		math->setRest(expr());
+		math->set_rest(expr());
 
 		// Return the ComplexExpr
 		return math;
@@ -425,7 +566,7 @@ std::shared_ptr<ComplexExpr> Parser::math_rel()
 	case TokenType::MULTIPLY:
 	{
 		SP(ComplexExpr, ret);
-		ret->setMathRel(cur_token.get_type());
+		ret->set_math_rel(cur_token.get_type());
 		advance();
 		return ret;
 	}

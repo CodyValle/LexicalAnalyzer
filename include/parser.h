@@ -9,11 +9,16 @@
 // Parses the token stream given by the Lexer
 // It utilizes this grammar
 // 	<stmts>     ::= <stmt> <stmts> | empty
-// 	<stmt>      ::= <output> | <assign> | <cond> | <loop>
+// 	<stmt>      ::= <output> | <impdec> | <expdec> | <assign> | <cond> | <loop>
 // 	<output>    ::= PRINT LPAREN <expr> RPAREN SEMICOLON | PRINTLN LPAREN <expr> RPAREN SEMICOLON
 // 	<input>     ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
+//  <impdec>    ::= VAR ID ASSIGN <expr> SEMICOLON
+//  <expdec>    ::= <type> <subtype> ID
+//  <expdect>   ::= SEMICOLON | ASSIGN <expr> SEMICOLON
 // 	<assign>    ::= ID <listindex> ASSIGN <expr> SEMICOLON
 // 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
+//  <type>      ::= INT | STRING | BOOL
+//  <subtype>   ::= LBRACKET RBRACKET | empty
 // 	<expr>      ::= <value> <exprt>
 // 	<exprt>     ::= <math_rel> <expr> | empty
 // 	<value>     ::= ID <listindex> | STRING | INT | BOOL | <input> | LBRACKET <exprlist> RBRACKET
@@ -80,7 +85,7 @@ private:
 	// Applies the stmt rule
 	// Expects a statement
 	// Grammar Rule:
-	// 	<stmt>::= <output> | <assign> | <cond> | <loop>
+	// 	<stmt>::= <output> | <impdec> | <expdec> | <assign> | <cond> | <loop>
 	std::shared_ptr<Stmt> stmt();
 
 	// Applies the output rule
@@ -95,6 +100,24 @@ private:
 	// 	<input> ::= READINT LPAREN STRING RPAREN | READSTR LPAREN STRING RPAREN
 	std::shared_ptr<ReadExpr> input();
 
+	// Applies the impdec rule
+	// Expects an implicit variable declaration
+	// Grammar Rule:
+  //  <impdec> ::= VAR ID ASSIGN <expr> SEMICOLON
+  std::shared_ptr<VarDecStmt> impdec();
+
+	// Applies the expdec rule
+	// Expects an explicit variable declaration
+	// Grammar Rule:
+  //  <expdec> ::= <type> <subtype> ID
+  std::shared_ptr<VarDecStmt> expdec();
+
+  // Applies the expdect rule
+	// Expects an assignment or semicolon
+	// Grammar Rule:
+  //  <expdect> ::= ASSIGN <expr> SEMICOLON | SEMICOLON
+  void expdect(std::shared_ptr<VarDecStmt>);
+
 	// Applies the assign rule
 	// Expects some type of assignment
 	// Grammar Rule:
@@ -106,6 +129,18 @@ private:
 	// Grammar Rule:
 	// 	<listindex> ::= LBRACKET <expr> RBRACKET | empty
 	std::shared_ptr<Expr> listindex();
+
+	// Applies the type rule
+	// Takes a VarDecStmt and adds the main type to it
+	// Grammar Rule:
+  //  <types> ::= INT | STRING | BOOL
+  void type(std::shared_ptr<VarDecStmt>);
+
+  // Applies the subtype rule
+	// Takes a VarDecStmt and adds the sub type to it
+	// Grammar Rule:
+  //  <subtype> ::= LBRACKET RBRACKET | empty
+  void subtype(std::shared_ptr<VarDecStmt>);
 
 	// Applies the expr rule
 	// Expects some type of expression

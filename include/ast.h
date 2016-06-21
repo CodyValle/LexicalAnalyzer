@@ -26,6 +26,7 @@ class BasicIf;
 class IfStmt;
 class WhileStmt;
 class PrintStmt;
+class VarDecStmt;
 class AssignStmt;
 class SimpleExpr;
 class IndexExpr;
@@ -248,6 +249,62 @@ private:
   TokenType print_type;
 };
 
+class VarDecStmt : public virtual Stmt
+{
+public:
+  // Constructor
+  VarDecStmt();
+
+  // For the Visitor Pattern
+  void accept(AbstractVisitor& visitor) override
+    { visitor.visit(*this); }
+
+  // Set the token that is being assigned to
+  void set_id(Token t)
+    { id = t; }
+
+  // Set the type of the identifier being declared
+  void set_type(TokenType t)
+    { type = t; }
+
+  // Set the sub type of the identifier being declared
+  void set_sub_type(TokenType t)
+    { sub_type = t; }
+
+  // Set the expression that we are assigning to the id being declared
+  void set_rhs_expr(std::shared_ptr<Expr> expr)
+    { assign_expr = expr; }
+
+  // Get the id to assign to
+  Token get_id()
+    { return id; }
+
+  // Gets the type of the identifier being declared
+  TokenType get_type()
+    { return type; }
+
+  // Gets the sub type of the identifier being declared
+  TokenType get_sub_type()
+    { return sub_type; }
+
+  // Get the expression to assign to the id
+  std::shared_ptr<Expr> get_assign()
+    { return assign_expr; }
+
+private:
+  // Reference to the token being declared
+  Token id;
+
+  // The type of the id being declared
+  TokenType type;
+
+  // The sub type of the id being declared
+  TokenType sub_type;
+
+  // Reference to the right hand side that will be assigned to the token
+  std::shared_ptr<Expr> assign_expr;
+};
+
 // An assignment statement to a variable or element of a list
 class AssignStmt : public virtual Stmt
 {
@@ -428,15 +485,15 @@ public:
     { visitor.visit(*this); }
 
   // Set the first term of this mathematical equation
-  void setFirstOp(std::shared_ptr<Expr> op)
+  void set_first_op(std::shared_ptr<Expr> op)
     { first_op = op; }
 
   // Set the mathematical operation linking the first and second terms
-  void setMathRel(TokenType rel)
+  void set_math_rel(TokenType rel)
     { math_rel = rel; }
 
   // Set the right hand side of the previous mathematical operation
-  void setRest(std::shared_ptr<Expr> r)
+  void set_rest(std::shared_ptr<Expr> r)
     { rest = r; }
 
   // Get the first operand of the expression

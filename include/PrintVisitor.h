@@ -21,6 +21,7 @@ public:
   void visit(IfStmt&) override;
   void visit(WhileStmt&) override;
   void visit(PrintStmt&) override;
+  void visit(VarDecStmt&) override;
   void visit(AssignStmt&) override;
   void visit(SimpleExpr&) override;
   void visit(IndexExpr&) override;
@@ -47,7 +48,7 @@ private:
 
   // Moves the pointer to the next largest indent
   // Dynamically increases the indent container appropriately
-  void nextIndent()
+  void next_indent()
     {
       // Check if a new one is needed
       if (std::next(indent) == indents.end())
@@ -57,7 +58,7 @@ private:
     }
 
   // Moves to a previous indent
-  void prevIndent()
+  void prev_indent()
     { --indent; }
 };
 

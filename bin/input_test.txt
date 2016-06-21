@@ -2,5 +2,5 @@
 
 # Input functions take a string
 # and must be assigned to a variable.
-name = readstr("Type a name.");
-age = readint("What is your age?");
+var name = readstr("Type a name.");
+var age = readint("What is your age?");

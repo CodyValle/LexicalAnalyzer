@@ -16,6 +16,7 @@ public:
   virtual void visit(IfStmt&) = 0;
   virtual void visit(WhileStmt&) = 0;
   virtual void visit(PrintStmt&) = 0;
+  virtual void visit(VarDecStmt&) = 0;
   virtual void visit(AssignStmt&) = 0;
   virtual void visit(SimpleExpr&) = 0;
   virtual void visit(IndexExpr&) = 0;

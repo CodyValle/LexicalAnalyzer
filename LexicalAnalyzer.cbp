@@ -13,7 +13,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt -o outTest.txt" />
+				<Option parameters=" -no-print assign_test.txt general_testing.txt output_test.txt input_test.txt if_test.txt  loop_test.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -24,6 +24,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -41,6 +42,7 @@
 			<Add option="-std=c++14" />
 			<Add directory="include" />
 		</Compiler>
+		<Unit filename="README" />
 		<Unit filename="bin/assign_test.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -51,18 +53,21 @@
 		<Unit filename="bin/input_test.txt" />
 		<Unit filename="bin/loop_test.txt" />
 		<Unit filename="bin/output_test.txt" />
+		<Unit filename="bin/type_test.txt" />
 		<Unit filename="include/AbstractVisitor.h" />
 		<Unit filename="include/PrintVisitor.h" />
-		<Unit filename="include/VariableVisitor.h" />
+		<Unit filename="include/TypeVisitor.h" />
 		<Unit filename="include/ast.h" />
+		<Unit filename="include/environment.h" />
 		<Unit filename="include/exception.h" />
 		<Unit filename="include/lexer.h" />
 		<Unit filename="include/parser.h" />
 		<Unit filename="include/token.h" />
 		<Unit filename="makefile" />
 		<Unit filename="src/PrintVisitor.cpp" />
-		<Unit filename="src/VariableVisitor.cpp" />
+		<Unit filename="src/TypeVisitor.cpp" />
 		<Unit filename="src/ast.cpp" />
+		<Unit filename="src/environment.cpp" />
 		<Unit filename="src/exception.cpp" />
 		<Unit filename="src/lexer.cpp" />
 		<Unit filename="src/main.cpp" />

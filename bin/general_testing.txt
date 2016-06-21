@@ -1,20 +1,24 @@
-id = 6 + 5 ;
+# Read expressions
+var int_read = readint("number");
+var string_read = readstr("string");
 
-bool = false;
+# List expressions
+var list_int = [1,2,3,4,5];
+var list_string = ["foo","bar","baz"];
+var list_bool = [true, true, false, false, true];
 
-num = readint("message");
-char = readstr("number");
+# Mathematical expressions
+var number = 4;
+var number2 = 32565;
+var number3 = number + number2;
+var number4 = number / number2 - number3;
+var complex = number3 + 16 / number4 * number2;
 
-xs = [1,2,3,4,5];
-ys = [10,20,30,40,50];
+# Boolean expressions
+var bool = true;
+var bool2 = false;
+var bool3 = true + bool;
 
-i = 0;
-
-success = false;
-
-orange = "color";
-a = "b";
-element = 14;
-last = false;
-
-illegal_but_accepted[orange] = [a, 12, "four", true] * [element, last];
+# String expressions
+var str = "foo";
+var str2 = "bar";

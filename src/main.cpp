@@ -9,7 +9,41 @@
 #include "parser.h"
 #include "exception.h"
 #include "PrintVisitor.h"
-#include "VariableVisitor.h"
+#include "TypeVisitor.h"
+
+// Class that holds all the options for how the program is run
+class Options
+{
+public:
+  // Constructor
+  Options() :
+    parse(false),
+    print(true)
+  {}
+
+  // Sets the "parse only" flag (-p)
+  void set_parse_only(bool p)
+    { parse = p; }
+
+  // Gets the "parse only" flag
+  bool parse_only()
+    { return parse; }
+
+  // Sets the "print" flag (-p)
+  void set_print(bool p)
+    { print = p; }
+
+  // Gets the "print" flag
+  bool get_print()
+    { return print; }
+
+private:
+  // The "parse only" flag
+  bool parse;
+
+  // The print flag
+  bool print;
+};
 
 void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
 {
@@ -22,23 +56,23 @@ void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string file
   out << std::endl << std::endl;
 }
 
-void variableAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
+void typeAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
 {
-  // Create the VariableVisitor
-  VariableVisitor vtor = VariableVisitor(out);
+  // Create the TypeVisitor
+  TypeVisitor vtor = TypeVisitor(out);
 
   // Pass the visitor to the AST
   ast->accept(vtor);
 
-  // What did the VariableVisitor find out?
-  out << "Variable knowledge of " << filename << ":" << std::endl;
-  vtor.printKnowledge();
+  // What did the TypeVisitor find out?
+  out << "Type knowledge of " << filename << ":" << std::endl;
+  vtor.print_knowledge();
   out << std::endl << std::endl;
 }
 
 // Runs the meat and potatoes of the program
 // Parses every file passed in in the files parameter
-void run(std::ostream& out, std::deque<std::string>& files)
+void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
 {
   // Loop through all passed in files
 	for (std::string filename: files)
@@ -61,15 +95,22 @@ void run(std::ostream& out, std::deque<std::string>& files)
       // parse the file
       std::shared_ptr<StmtList> ast = Parser(lexer).parse();
 
+      // Stop here if parsing was all that was specified
+      if (opt.parse_only())
+        continue;
+
       // Print out the filename and the AST
-      printAST(out, ast, filename);
+      if (opt.get_print())
+        printAST(out, ast, filename);
 
       // Catch variable errors
-      variableAST(out, ast, filename);
+      typeAST(out, ast, filename);
     }
     catch(Exception e)
     {
-      std::cerr << e.what() << std::endl;
+
+      std::cerr << "In file " << filename << ":" << std::endl
+          << e.what() << std::endl;
     }
 
     // Close the stream
@@ -81,6 +122,9 @@ void run(std::ostream& out, std::deque<std::string>& files)
 // Checks for proper arguments, exits if they are incorrect.
 int main(int argc, char *argv[])
 {
+  // The options that determine how the program runs
+  Options opt = Options();
+
   // The files to parse
 	std::deque<std::string> files;
 
@@ -100,6 +144,16 @@ int main(int argc, char *argv[])
         // Error. -o was the last argument, there is no specified file
         std::cerr << "Argument error. No filename specified after the -o flag. "
                   << "Defaulting to std::cout." << std::endl;
+    }
+    else if (arg.compare("-p") == 0)
+    {
+      // Only parse the files, checking for syntactical correctness
+      opt.set_parse_only(true);
+    }
+    else if (arg.compare("-no-print") == 0)
+    {
+      // Don't print out the ASTs
+      opt.set_print(false);
     }
     else
       // Add the file to the parse list
@@ -124,7 +178,7 @@ int main(int argc, char *argv[])
 	}
 
   // Run the program
-  run(outFile, files);
+  run(opt, outFile, files);
 
 	return 0;
 }

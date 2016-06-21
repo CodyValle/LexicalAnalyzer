@@ -1,71 +1,60 @@
 # Testing if statements
 
 # Variable definitions
-boolean = false;
-other_bool = true;
-bar = boolean;
-baz = bar + boolean;
-number = 1;
-b = number + number;
-c = b * b;
-i = 0;
-ret = b * c * number;
-max = 0 - 3;
-min = 0;
-range = max - min;
-variable = 9001;
-some_constant = variable;
-beta = ret / range;
-gamma = some_constant;
-delta = gamma;
-epsilon = gamma / delta;
+var bool = false;
+var other_bool = true;
+var alpha = 18;
+int beta = alpha / 2;
+var gamma = beta - 5;
+var delta = gamma * 3;
+var epsilon = gamma / delta;
 
-# Basic if statements with constant boolean expression
+# Basic if statements with constant bool expression
 if true then
-  id = 1;
+  alpha = 1;
 end
 
 # An empty if statement
-if false then
+if bool then
 end
 
 # With multiple statements
 if true then
-  id = 1 + 2;
-  id = 2 * 3;
+  alpha = beta + 2;
+  beta = 2 * alpha;
 end
 
 # Adding an else clause
-if boolean then
-  foo = bar;
+if gamma < 0 then
+  other_bool = true;
 else
-  foo = baz;
+  other_bool = false;
 end
 
 # Adding an else if
-if boolean == true and other_bool == true or number < 0 then
-  a = b;
-elif boolean then
-  a = c;
+var a = "question";
+if bool == true and other_bool == true or beta > 0 then
+  a = "true!";
+elif bool then
+  a = "false...";
 end
 
 # Multiple else if clauses
-if 4 > i then
-	id2 = 4;
-elif 2 < 5 then
-	id3 = 1;
-elif true then
-	print("ok");
-else
-	id2 = 5;
+var id = 12345;
+if 4 > delta then
+	id = 4;
+elif 2 <= alpha then
+	id = 1;
+elif bool then
+	bool = false;
 end
 
 # Multiple else if clauses and a then clause
-if ret <= max then
+if epsilon + gamma <= beta then
   alpha = beta;
-elif min >= range then
+elif id >= gamma then
   alpha = gamma;
-elif variable == some_constant then
+elif bool then
   alpha = delta;
 else
   alpha = epsilon;

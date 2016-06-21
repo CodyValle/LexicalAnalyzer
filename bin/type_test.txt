@@ -1,0 +1,84 @@
+# Testing type declaration, both explicit and implicit, including list types
+# Also testing various expressions, including mixed-mode
+# Examples of incorrect declaration are at the bottom
+
+## Explicit typing
+int     num = 6;
+boolean flag = true;
+string  name = "bear";
+
+# Explicit type declarations do not need to be initialized immediately
+int     num2;
+boolean flag2;
+string  name2;
+
+# List declarations
+int[]     exp_int_list = [1,2,3,5 + 7];
+string[]  exp_str_list;
+boolean[] exp_bool_list = [false];
+
+# Read expressions
+int    int_read = readint("number");
+string string_read = readstr("string");
+
+
+## Implicit typing
+# Must be initialized immediately
+
+# Read expressions
+var int_read2 = readint("number");
+var string_read2 = readstr("string");
+
+# List expressions
+var list_int = [1, 2, 3, 4 * 5 - num];
+var list_string = ["foo", "bar" + "baz"];
+var list_bool = [true, true - flag, false];
+
+# Mathematical expressions
+var number = 4;
+var number2 = 32565;
+var number3 = number + number2;
+var number4 = number / number2 - number3;
+var complex = number3 + 16 / number4 * number2;
+
+# Boolean expressions
+var bool = true;
+var bool2 = false;
+var bool3 = true + bool;
+
+# String expressions
+var str = "foo";
+var str2 = "bar";
+var str3 = str + str2;
+
+# String and Integer expressions
+var str_add_int = "str" + 2; # "str2"
+var str_add_int2 = str + number;
+var str_mul_int = "str" * 2; # "strstr"
+
+
+## Incorrect declarations
+
+# Mismatched explicit type and implicit type
+#int     bad_types = true;
+#string[] bad_types2 = "element";
+
+# Strings can only be added
+#var bad_str = "baz" - str;
+#var bad_str2 = "baz" * str;
+
+# Booleans can only be added or subtracted
+#var bad_bool = true * bool;
+#var bad_bool2 = bool / false;
+
+# Integers and Booleans cannot be in the same expression
+#var bad_int_bool = 4 + true;
+#var bad_bool_int = false - 12;
+
+# Integers and Strings can only be added or multiplied, string first
+#var bad_int_add_str = 2 + "str";
+#var bad_int_mul_str = 2 * "str";
+
+# Strings and Booleans cannot be in the same expression
+#var bad_bool_str = true + "str";
+#var bad_bool_str2 = str / false;
