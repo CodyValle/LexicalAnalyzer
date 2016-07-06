@@ -45,124 +45,74 @@ How to use:
 Runtime errors:
 1. If the syntax of the input file is definitely correct, but there is still a syntax error being thrown, then it is likely to do with the line endings. The program expects Unix style-endings, but Windows-style may be present. Use d2u, dos2unix, or sed to modify the input file to Unix-style line endings.
 
-
 Type Evaluations:
--The float type does not currently exist. So the floor of the real result is taken as an int.
--Boolean values are treated somewhat logically. Two true values are true, two false are false. Adding to true is true, subtracting from true is false. The opposites are true. They cannot be combined with any other types.
+-All type relations that are not defined here will result in error.
 
-x:int = 6, y:int = 3
-  (y + x):int = 9
-  (x + y):int = 9
-  (y - x):int = -3
-  (x - y):int = 3
-  (y * x):int = 18
-  (x * y):int = 18
-  (y / x):int = 0
-  (x / y):int = 2
+x::int, y::int =>
+  (x + y) :: int
+  (x - y) :: int
+  (x * y) :: int
+  (x / y) :: int
+  (y > x) :: boolean
+  (x >= y) :: boolean
+  (y < x) :: boolean
+  (x <= y) :: boolean
+  (y == x) :: boolean
+  (x != y) :: boolean
 
-x:string = "bar", y:string = "foo"
-  (y + x):string = "foobar"
-  (x + y):string = "barfoo"
-  (y - x):undefined
-  (x - y):undefined
-  (y * x):undefined
-  (x * y):undefined
-  (y / x):undefined
-  (x / y):undefined
+x::string, y::string =>
+  (x + y) :: string
+  (x - y) :: error
+  (x * y) :: error
+  (x / y) :: error
+  (y > x) :: boolean
+  (x >= y) :: boolean
+  (y < x) :: boolean
+  (x <= y) :: boolean
+  (y == x) :: boolean
+  (x != y) :: boolean
 
-x:boolean = true, y:boolean = false
-  (x + x):boolean = true
-  (y + y):boolean = false
-  (y + x):boolean = true
-  (x + y):boolean = true
-  (x - x):boolean = false
-  (y - y):boolean = true
-  (y - x):boolean = false
-  (x - y):boolean = false
-  (y * x):undefined
-  (x * y):undefined
-  (y / x):undefined
-  (x / y):undefined
+x::boolean, y::boolean =>
+  (x + y) :: boolean
+  (x - y) :: boolean
+  (x * y) :: error
+  (x / y) :: error
 
-x:int = 5, y:boolean = false
-  (y + x):undefined
-  (x + y):undefined
-  (y - x):undefined
-  (x - y):undefined
-  (y * x):undefined
-  (x * y):undefined
-  (y / x):undefined
-  (x / y):undefined
+x::int, y::string =>
+  (x + y) :: boolean
+  (x - y) :: boolean
+  (x * y) :: error
+  (x / y) :: error
 
-x:int = 5, y:string = "foo"
-  (y + x):string = "foo5"
-  (x + y):undefined
-  (y - x):undefined
-  (x - y):undefined
-  (y * x):string = "foofoofoofoofoo"
-  (x * y):undefined
-  (y / x):undefined
-  (x / y):undefined
+x::int, y::boolean =>
+  (x + y) :: boolean
+  (x - y) :: boolean
+  (x * y) :: error
+  (x / y) :: error
 
-x:boolean = true, y:string = "foo"
-  (y + x):undefined
-  (x + y):undefined
-  (y - x):undefined
-  (x - y):undefined
-  (y * x):undefined
-  (x * y):undefined
-  (y / x):undefined
-  (x / y):undefined
+x::string, y::boolean =>
+  (x + y) :: boolean
+  (x - y) :: boolean
+  (x * y) :: error
+  (x / y) :: error
 
+x::[int], i::int =>
+  x[i] :: int
+  (x + i) :: error
+  (x - i) :: error
+  (x * i) :: error
+  (x / i) :: error
 
-Boolean Evaluations:
--Integers are evaluated as expected.
--Strings are evaluated in alphabetical order, "foo" > "bar" is true, "foo" == "foo" is true, and "foo" == "fo" is false.
+x::[string], i::int =>
+  x[i] :: string
+  (x + i) :: error
+  (x - i) :: error
+  (x * i) :: error
+  (x / i) :: error
 
-x:int = 6, y:int = 3
-  (y > x):boolean
-  (x >= y):boolean
-  (y < x):boolean
-  (x <= y):boolean
-  (y == x):boolean
-  (x != y):boolean
-
-x:string = "bar", y:string = "foo"
-  (y > x):boolean
-  (x >= y):boolean
-  (y < x):boolean
-  (x <= y):boolean
-  (y == x):boolean
-  (x != y):boolean
-
-x:boolean = true, y:boolean = false
-  (y > x):undefined
-  (x >= y):undefined
-  (y < x):undefined
-  (x <= y):undefined
-  (y == x):undefined
-  (x != y):undefined
-
-x:int = 5, y:boolean = false
-  (y > x):undefined
-  (x >= y):undefined
-  (y < x):undefined
-  (x <= y):undefined
-  (y == x):undefined
-  (x != y):undefined
-
-x:int = 5, y:string = "foo"
-  (y > x):undefined
-  (x >= y):undefined
-  (y < x):undefined
-  (x <= y):undefined
-  (y == x):undefined
-  (x != y):undefined
-
-x:booean = true, y:string = "foo"
-  (y > x):undefined
-  (x >= y):undefined
-  (y < x):undefined
-  (x <= y):undefined
-  (y == x):undefined
-  (x != y):undefined
+x::[boolean], i::int =>
+  x[i] :: boolean
+  (x + i) :: error
+  (x - i) :: error
+  (x * i) :: error
+  (x / i) :: error
