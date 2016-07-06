@@ -2,13 +2,13 @@
 1446671344 source:e:\projects\c++\lexicalanalyzer\main.cpp
 	<iostream>
 
-1462418779 
+1465342727 
 
 1465009422 source:e:\projects\c++\lexicalanalyzer\src\exception.cpp
 	<sstream>
 	"exception.h"
 
-1462412871 .h"
+1466180504 .h"
 
 1465009422 e:\projects\c++\lexicalanalyzer\include\exception.h
 	<exception>
@@ -82,6 +82,8 @@
 	"token.h"
 	"AbstractVisitor.h"
 
+1465435219 isitor.h"
+
 1465366803 source:e:\projects\c++\lexicalanalyzer\src\main.cpp
 	<iostream>
 	<fstream>
@@ -92,6 +94,8 @@
 	"exception.h"
 	"PrintVisitor.h"
 	"TypeVisitor.h"
+
+1465366803 or.h"
 
 1462416178 source:/media/KODIAK64/Projects/C++/LexicalAnalyzer/src/ast.cpp
 	<vector>
@@ -255,6 +259,8 @@
 	<iostream>
 	"PrintVisitor.h"
 
+1465078967 tor.h"
+
 1465078809 v:\projects\c++\lexicalanalyzer\include\printvisitor.h
 	<deque>
 	"ast.h"
@@ -269,6 +275,8 @@
 	<unordered_map>
 	"ast.h"
 	"environment.h"
+
+1465425240 nt.h"
 
 1465425240 v:\projects\c++\lexicalanalyzer\include\typevisitor.h
 	<forward_list>
@@ -328,5 +336,106 @@
 	<iostream>
 	<sstream>
 	"TypeVisitor.h"
+	"exception.h"
+
+1467780201 source:/home/codyv/Desktop/LexicalAnalyzer/src/ast.cpp
+	<iostream>
+	"ast.h"
+
+1467780791 /home/codyv/Desktop/LexicalAnalyzer/include/ast.h
+	<deque>
+	<string>
+	<ostream>
+	<memory>
+	"token.h"
+	"AbstractVisitor.h"
+
+1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/token.h
+	<string>
+
+1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/AbstractVisitor.h
+	"ast.h"
+
+1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/environment.cpp
+	<iostream>
+	"environment.h"
+
+1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/environment.h
+	<memory>
+	<unordered_map>
+	"token.h"
+
+1465009422 source:/home/codyv/Desktop/LexicalAnalyzer/src/exception.cpp
+	<sstream>
+	"exception.h"
+
+1465009422 /home/codyv/Desktop/LexicalAnalyzer/include/exception.h
+	<exception>
+	<string>
+
+1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/lexer.cpp
+	<iostream>
+	<istream>
+	<sstream>
+	<string>
+	<cstdio>
+	<cctype>
+	"token.h"
+	"lexer.h"
+	"exception.h"
+
+1464417447 /home/codyv/Desktop/LexicalAnalyzer/include/lexer.h
+	<istream>
+	"token.h"
+
+1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/main.cpp
+	<iostream>
+	<fstream>
+	<memory>
+	"token.h"
+	"lexer.h"
+	"parser.h"
+	"exception.h"
+	"PrintVisitor.h"
+	"TypeVisitor.h"
+
+1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/parser.h
+	<memory>
+	"lexer.h"
+	"token.h"
+	"ast.h"
+
+1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/PrintVisitor.h
+	<deque>
+	"ast.h"
+
+1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/TypeVisitor.h
+	<forward_list>
+	"ast.h"
+	"environment.h"
+
+1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/PrintVisitor.cpp
+	<iostream>
+	"PrintVisitor.h"
+
+1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/token.cpp
+	<iostream>
+	<string>
+	"token.h"
+
+1467780518 source:/home/codyv/Desktop/LexicalAnalyzer/src/TypeVisitor.cpp
+	<iostream>
+	<sstream>
+	"TypeVisitor.h"
+	"exception.h"
+
+1467780331 source:/home/codyv/Desktop/LexicalAnalyzer/src/parser.cpp
+	<iostream>
+	<sstream>
+	<string>
+	<memory>
+	"token.h"
+	"parser.h"
+	"lexer.h"
 	"exception.h"
 

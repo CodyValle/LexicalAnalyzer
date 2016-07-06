@@ -5,15 +5,15 @@
 		<Option title="LexicalAnalyzer" />
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option compiler="gnu_gcc_6_compiler" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/LexicalAnalyzer" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="bin" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
-				<Option parameters=" -no-print assign_test.txt general_testing.txt output_test.txt input_test.txt if_test.txt  loop_test.txt type_test.txt" />
+				<Option compiler="gnu_gcc_6_compiler" />
+				<Option parameters=" -no-print general_testing.txt " />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -23,7 +23,7 @@
 				<Option working_dir="bin" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="gnu_gcc_6_compiler" />
 				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt" />
 				<Compiler>
 					<Add option="-O2" />
@@ -38,22 +38,34 @@
 			<Add option="-pedantic" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-fexceptions" />
 			<Add option="-std=c++14" />
+			<Add option="-fexceptions" />
 			<Add directory="include" />
 		</Compiler>
-		<Unit filename="README" />
+		<Unit filename="README">
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="bin/assign_test.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="bin/general_testing.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="bin/if_test.txt" />
-		<Unit filename="bin/input_test.txt" />
-		<Unit filename="bin/loop_test.txt" />
-		<Unit filename="bin/output_test.txt" />
-		<Unit filename="bin/type_test.txt" />
+		<Unit filename="bin/if_test.txt">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="bin/input_test.txt">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="bin/loop_test.txt">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="bin/output_test.txt">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="bin/type_test.txt">
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="include/AbstractVisitor.h" />
 		<Unit filename="include/PrintVisitor.h" />
 		<Unit filename="include/TypeVisitor.h" />
@@ -63,7 +75,9 @@
 		<Unit filename="include/lexer.h" />
 		<Unit filename="include/parser.h" />
 		<Unit filename="include/token.h" />
-		<Unit filename="makefile" />
+		<Unit filename="makefile">
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="src/PrintVisitor.cpp" />
 		<Unit filename="src/TypeVisitor.cpp" />
 		<Unit filename="src/ast.cpp" />
