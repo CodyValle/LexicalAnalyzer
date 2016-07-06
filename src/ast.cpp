@@ -4,6 +4,15 @@
 #include "ast.h"
 
 //----------------------------------------------------------------------
+// BoolExpr
+//----------------------------------------------------------------------
+
+// StmtList constructor
+BoolExpr::BoolExpr() :
+  token(Token())
+{}
+
+//----------------------------------------------------------------------
 // StmtList
 //----------------------------------------------------------------------
 
@@ -102,7 +111,8 @@ IndexExpr::IndexExpr() :
 
 // ListExpr constructor
 ListExpr::ListExpr() :
-  expr_list(0)
+  expr_list(0),
+  lbracket(Token())
 {}
 
 //----------------------------------------------------------------------
@@ -122,7 +132,7 @@ ReadExpr::ReadExpr() :
 // ComplexExpr constructor
 ComplexExpr::ComplexExpr() :
   first_op(nullptr),
-  math_rel(TokenType::UNKNOWN),
+  math_rel(Token()),
   rest(nullptr)
 {}
 

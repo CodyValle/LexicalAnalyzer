@@ -143,6 +143,8 @@ void TypeVisitor::visit(VarDecStmt& node)
   // Check the assignment
   if (node.get_assign())
   {
+    expr_type = node.get_type(); // Sets the current type to what was declared
+
     // Get the type of the assign statement
     node.get_assign()->accept(*this);
     if (node.get_type() != TokenType::VAR)
@@ -237,12 +239,20 @@ void TypeVisitor::visit(IndexExpr& node)
 // TypeVisitor ListExpr visit definition
 void TypeVisitor::visit(ListExpr& node)
 {
+  // Set the sub type
+  expr_sub_type = TokenType::ARRAY;
+
   // Get the expressions
   std::deque<std::shared_ptr<Expr>> exprs = node.get_exprs();
 
-  // exprs should not be empty, but is allowed by the current grammar
+  // exprs could be empty
   if (exprs.empty())
-    error(Token(), "undeterminable type");
+  {
+    // If it is, then the type should be explicit
+    if (expr_type == TokenType::VAR)
+      error(node.get_lbracket(), "undeterminable type. Cannot infer the type of this list ");
+    else return;
+  }
 
   // Start the iterator
   std::deque<std::shared_ptr<Expr>>::iterator it = exprs.begin();
@@ -259,11 +269,8 @@ void TypeVisitor::visit(ListExpr& node)
   {
     (*it)->accept(*this);
     if (type != expr_type)
-      error(Token(), "mismatched types in list initializer");
+      error(node.get_lbracket(), "mismatched types in list initializer");
   }
-
-  // Set the sub type
-  expr_sub_type = TokenType::ARRAY;
 }
 
 // TypeVisitor ReadExpr visit definition
@@ -306,8 +313,8 @@ void TypeVisitor::visit(ComplexExpr& node)
       if (expr_type == TokenType::INT)
       { // String and int can be mixed
         // But only by addition and multiplication
-        if (node.get_rel() == TokenType::PLUS
-            || node.get_rel() == TokenType::MULTIPLY)
+        if (node.get_rel().get_type() == TokenType::PLUS
+            || node.get_rel().get_type() == TokenType::MULTIPLY)
         {
           // These are of type string
           expr_type = TokenType::STRING;
@@ -320,7 +327,7 @@ void TypeVisitor::visit(ComplexExpr& node)
     }
 
     // Cannot mix these types
-    error(Token(), "mismatched types in complex expression");
+    error(node.get_rel(), "mismatched types in complex expression ");
   }
 
   // Check that proper expressions types are being operated on
@@ -328,14 +335,14 @@ void TypeVisitor::visit(ComplexExpr& node)
   {
     // Strings can only be added
   case TokenType::STRING:
-    if (node.get_rel() != TokenType::PLUS)
-      error(Token(), "illegal operation. Strings can only be added");
+    if (node.get_rel().get_type() != TokenType::PLUS)
+      error(node.get_rel(), "illegal operation. Strings can only be added ");
     break;
 
     // Booleans can only be added or subtracted
   case TokenType::BOOL:
-    if (node.get_rel() != TokenType::PLUS && node.get_rel() != TokenType::MINUS)
-      error(Token(), "illegal operation. Booleans can only be added or subtracted");
+    if (node.get_rel().get_type() != TokenType::PLUS && node.get_rel().get_type() != TokenType::MINUS)
+      error(node.get_rel(), "illegal operation. Booleans can only be added or subtracted ");
     break;
 
   default: break;
@@ -350,7 +357,7 @@ void TypeVisitor::visit(SimpleBoolExpr& node)
 
   // It ought to be a boolean
   if (expr_type != TokenType::BOOL)
-    error(Token(), "non-boolean expression in simple boolean expression");
+    error(node.get_token(), "non-boolean expression in simple boolean expression");
 }
 
 // TypeVisitor ComplexBoolExpr visit definition
@@ -363,7 +370,7 @@ void TypeVisitor::visit(ComplexBoolExpr& node)
   // Check that the second operand is the same type
   node.get_second_op()->accept(*this);
   if (expr_type != type)
-    error(Token(), "mismatched types in complex boolean expression");
+    error(node.get_token(), "mismatched types in complex boolean expression");
 
   // Check that the rest of the expression is the same type
   if (node.get_rest())
@@ -378,5 +385,5 @@ void TypeVisitor::visit(NotBoolExpr& node)
 
   // Make sure it'a boolean expression
   if (expr_type != TokenType::BOOL)
-    error(Token(), "non-boolean expression in negation");
+    error(node.get_token(), "non-boolean expression in negation");
 }

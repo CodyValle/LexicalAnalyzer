@@ -68,6 +68,21 @@ class Expr : public virtual ASTNode
 // Every expression that returns a boolean is derived from BoolExpr
 class BoolExpr : public virtual ASTNode
 {
+public:
+  // Constructor
+  BoolExpr();
+
+  // Set the token for this expression
+  void set_token(Token tok)
+    { token = tok; }
+
+  // Get the token for this expression
+  Token get_token()
+    { return token; }
+
+private:
+  // Token to determine where an error is
+  Token token;
 };
 
 // A collection of Stmt objects
@@ -429,13 +444,26 @@ public:
   void add_expr(std::shared_ptr<Expr> expr)
     { expr_list.push_back(expr); }
 
+
+  // Set the left bracket of the list
+  void set_lbracket(Token t)
+    { lbracket = t; }
+
   // Get the list of expressions
   std::deque<std::shared_ptr<Expr>> get_exprs()
     { return expr_list; }
 
+
+  // Get the left bracket token of this list
+  Token get_lbracket()
+    { return lbracket; }
+
 private:
   // A container of the terms in the list
   std::deque<std::shared_ptr<Expr>> expr_list;
+
+  // Token of the left bracket that starts the list
+  Token lbracket;
 };
 
 // An input expression, such as readint or readstr
@@ -489,7 +517,7 @@ public:
     { first_op = op; }
 
   // Set the mathematical operation linking the first and second terms
-  void set_math_rel(TokenType rel)
+  void set_math_rel(Token rel)
     { math_rel = rel; }
 
   // Set the right hand side of the previous mathematical operation
@@ -501,7 +529,7 @@ public:
     { return first_op; }
 
   // Get the type of the relational operator
-  TokenType get_rel()
+  Token get_rel()
     { return math_rel; }
 
   // Get the rest of the expression
@@ -513,7 +541,7 @@ private:
   std::shared_ptr<Expr> first_op;
 
   // The type of mathematical operation this is signifying
-  TokenType math_rel;
+  Token math_rel;
 
   // The right hand side of the mathematical operation
   std::shared_ptr<Expr> rest;

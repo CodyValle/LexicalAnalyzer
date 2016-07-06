@@ -78,7 +78,7 @@ void Parser::stmts(std::shared_ptr<StmtList> ret)
 	case TokenType::EOS: // Done reading file
 	case TokenType::END: // Done reading an if/elif/else/while statement
 	case TokenType::ELIF: // Done reading an if/elif statement
-  case TokenType::ELSE: // Done reading an if/elif statement
+    case TokenType::ELSE: // Done reading an if/elif statement
 		return;
 
 	default: break;
@@ -299,7 +299,9 @@ void Parser::expdect(std::shared_ptr<VarDecStmt> ret)
     advance();
     return;
 
-  default: break;
+  default:
+		error("unexpected token. Expected assignment '=' or semicolon ';'");
+		break;
   }
 }
 
@@ -485,10 +487,14 @@ std::shared_ptr<Expr> Parser::value()
 		// List type value
 	case TokenType::LBRACKET:
 	{
-		advance();
-
 		// Create the ListExpr object
 		SP(ListExpr, ret);
+
+		// Save the LBRACKET token
+		ret->set_lbracket(cur_token);
+
+		advance();
+
 
 		// Fill it with expressions
 		exprlist(ret);
@@ -566,7 +572,7 @@ std::shared_ptr<ComplexExpr> Parser::math_rel()
 	case TokenType::MULTIPLY:
 	{
 		SP(ComplexExpr, ret);
-		ret->set_math_rel(cur_token.get_type());
+		ret->set_math_rel(cur_token);
 		advance();
 		return ret;
 	}
@@ -665,6 +671,7 @@ std::shared_ptr<BoolExpr> notWrapper(std::shared_ptr<BoolExpr> in)
 	// This is actually a NotBoolExpr, so create it, add the normal expression, and return the NotBoolExpr
 	SP(NotBoolExpr, nbexp);
 	nbexp->setBoolExpr(in);
+	nbexp->set_token(in->get_token());
 	return nbexp;
 }
 
@@ -684,6 +691,7 @@ std::shared_ptr<BoolExpr> Parser::bexpr()
 
 	// Get the expression
 	SP(SimpleBoolExpr, ret);
+	ret->set_token(cur_token);
 	ret->set_expr_term(expr());
 
 	// Check if this is a ComplexBoolExpr
@@ -757,6 +765,7 @@ std::shared_ptr<ComplexBoolExpr> Parser::bool_rel()
 	{
 		SP(ComplexBoolExpr, ret);
 		ret->set_rel_type(cur_token.get_type());
+		ret->set_token(cur_token);
 		advance();
 		return ret;
 	}
