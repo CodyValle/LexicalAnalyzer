@@ -1,0 +1,8 @@
+# Forcing the error 'mismatched explicit type and implicit type'.
+
+int num = "hello"; # num is explicity of type int, the right hand side is a string.
+
+# Similarly,
+int num;
+string str = "hello";
+num = str; # Error is here.

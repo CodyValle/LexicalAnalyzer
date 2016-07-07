@@ -79,22 +79,34 @@ x::boolean, y::boolean =>
   (x / y) :: error
 
 x::int, y::string =>
-  (x + y) :: boolean
-  (x - y) :: boolean
+  (x + y) :: error
+  (y + x) :: string
+  (x - y) :: error
+  (y - x) :: error
   (x * y) :: error
+  (y * x) :: string
   (x / y) :: error
+  (y / x) :: error
 
 x::int, y::boolean =>
-  (x + y) :: boolean
-  (x - y) :: boolean
+  (x + y) :: error
+  (y + x) :: error
+  (x - y) :: error
+  (y - x) :: error
   (x * y) :: error
+  (y * x) :: error
   (x / y) :: error
+  (y / x) :: error
 
 x::string, y::boolean =>
-  (x + y) :: boolean
-  (x - y) :: boolean
+  (x + y) :: error
+  (y + x) :: string
+  (x - y) :: error
+  (y - x) :: error
   (x * y) :: error
+  (y * x) :: string
   (x / y) :: error
+  (y / x) :: error
 
 x::[int], i::int =>
   x[i] :: int

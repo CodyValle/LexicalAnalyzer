@@ -1,0 +1,3 @@
+# Forcing the error 'undeterminable type. Cannot infer the type of this list'.
+
+var num = []; # num has no explicit type, and no obvious implicit type.

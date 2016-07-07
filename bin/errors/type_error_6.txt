@@ -1,0 +1,4 @@
+# Forcing the error 'cannot assign rhs type to lhs identifier'.
+
+int[] num = [0,1];
+num[0] = true; # Error is here.

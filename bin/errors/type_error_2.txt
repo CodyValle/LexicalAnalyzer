@@ -1,0 +1,4 @@
+# Forcing the error 'use of uninitialized identifier'.
+
+int value; # value is declared, but uninitialized. Okay.
+int num = value; # value is used uninitialized.

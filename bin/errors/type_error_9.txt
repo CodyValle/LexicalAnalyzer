@@ -1,0 +1,3 @@
+# Forcing the error 'mismatched types in complex expression'.
+
+var num = 4 * "hello"; # Error is here. See README for allowable mixed-mode expressions.

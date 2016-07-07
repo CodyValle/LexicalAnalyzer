@@ -1,0 +1,4 @@
+# Forcing the error 'expected integer value as index'.
+
+var num = [1,2,3];
+num["hello"] = 4; # Error is here.

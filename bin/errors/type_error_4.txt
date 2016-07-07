@@ -1,0 +1,8 @@
+# Forcing the error 'redefinition of variable'.
+
+# Declare a variable
+int num;
+
+# Declare it again
+int num = 4; # Error is here. 'num = 4;' would be okay.
+

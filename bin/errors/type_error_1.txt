@@ -1,0 +1,3 @@
+# Forcing the error 'use of undeclared identifier'.
+
+int num = value; # value is undeclared.
