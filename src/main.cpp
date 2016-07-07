@@ -10,6 +10,7 @@
 #include "exception.h"
 #include "PrintVisitor.h"
 #include "TypeVisitor.h"
+#include "Interpreter.h"
 
 // Class that holds all the options for how the program is run
 class Options
@@ -56,7 +57,7 @@ void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string file
   out << std::endl << std::endl;
 }
 
-void typeAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
+void typeAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename, bool print)
 {
   // Create the TypeVisitor
   TypeVisitor vtor = TypeVisitor(out);
@@ -64,10 +65,21 @@ void typeAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filen
   // Pass the visitor to the AST
   ast->accept(vtor);
 
+  if (!print) return; // Print only if we want to
+
   // What did the TypeVisitor find out?
   out << "Type knowledge of " << filename << ":" << std::endl;
   vtor.print_knowledge();
   out << std::endl << std::endl;
+}
+
+void interpret(std::ostream& out, std::shared_ptr<StmtList> ast)
+{
+  // Create the Interpreter
+  Interpreter vtor = Interpreter(out);
+
+  // Pass the visitor to the AST
+  ast->accept(vtor);
 }
 
 // Runs the meat and potatoes of the program
@@ -104,11 +116,13 @@ void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
         printAST(out, ast, filename);
 
       // Catch variable errors
-      typeAST(out, ast, filename);
+      typeAST(out, ast, filename, opt.get_print());
+
+      // Interpret the file
+      interpret(out, ast);
     }
     catch(Exception e)
     {
-
       std::cerr << "In file " << filename << ":" << std::endl
           << e.what() << std::endl;
     }

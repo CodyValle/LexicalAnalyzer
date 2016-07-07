@@ -13,7 +13,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gnu_gcc_6_compiler" />
-				<Option parameters=" -no-print general_testing.txt " />
+				<Option parameters=" general_testing.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -48,6 +48,17 @@
 		<Unit filename="bin/assign_test.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="bin/errors/type_error_1.txt" />
+		<Unit filename="bin/errors/type_error_10.txt" />
+		<Unit filename="bin/errors/type_error_11.txt" />
+		<Unit filename="bin/errors/type_error_2.txt" />
+		<Unit filename="bin/errors/type_error_3.txt" />
+		<Unit filename="bin/errors/type_error_4.txt" />
+		<Unit filename="bin/errors/type_error_5.txt" />
+		<Unit filename="bin/errors/type_error_6.txt" />
+		<Unit filename="bin/errors/type_error_7.txt" />
+		<Unit filename="bin/errors/type_error_8.txt" />
+		<Unit filename="bin/errors/type_error_9.txt" />
 		<Unit filename="bin/general_testing.txt">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -67,22 +78,25 @@
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="include/AbstractVisitor.h" />
+		<Unit filename="include/Interpreter.h" />
 		<Unit filename="include/PrintVisitor.h" />
 		<Unit filename="include/TypeVisitor.h" />
 		<Unit filename="include/ast.h" />
 		<Unit filename="include/environment.h" />
 		<Unit filename="include/exception.h" />
+		<Unit filename="include/iddata.h" />
 		<Unit filename="include/lexer.h" />
 		<Unit filename="include/parser.h" />
 		<Unit filename="include/token.h" />
 		<Unit filename="makefile">
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="src/Interpreter.cpp" />
 		<Unit filename="src/PrintVisitor.cpp" />
 		<Unit filename="src/TypeVisitor.cpp" />
 		<Unit filename="src/ast.cpp" />
-		<Unit filename="src/environment.cpp" />
 		<Unit filename="src/exception.cpp" />
+		<Unit filename="src/iddata.cpp" />
 		<Unit filename="src/lexer.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/parser.cpp" />

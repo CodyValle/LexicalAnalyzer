@@ -338,11 +338,11 @@
 	"TypeVisitor.h"
 	"exception.h"
 
-1467780201 source:/home/codyv/Desktop/LexicalAnalyzer/src/ast.cpp
+1467780900 source:/home/codyv/Desktop/LexicalAnalyzer/src/ast.cpp
 	<iostream>
 	"ast.h"
 
-1467780791 /home/codyv/Desktop/LexicalAnalyzer/include/ast.h
+1467780879 /home/codyv/Desktop/LexicalAnalyzer/include/ast.h
 	<deque>
 	<string>
 	<ostream>
@@ -356,11 +356,11 @@
 1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/AbstractVisitor.h
 	"ast.h"
 
-1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/environment.cpp
+1467875270 source:/home/codyv/Desktop/LexicalAnalyzer/src/environment.cpp
 	<iostream>
 	"environment.h"
 
-1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/environment.h
+1467875865 /home/codyv/Desktop/LexicalAnalyzer/include/environment.h
 	<memory>
 	<unordered_map>
 	"token.h"
@@ -388,7 +388,7 @@
 	<istream>
 	"token.h"
 
-1466541332 source:/home/codyv/Desktop/LexicalAnalyzer/src/main.cpp
+1467871325 source:/home/codyv/Desktop/LexicalAnalyzer/src/main.cpp
 	<iostream>
 	<fstream>
 	<memory>
@@ -398,6 +398,7 @@
 	"exception.h"
 	"PrintVisitor.h"
 	"TypeVisitor.h"
+	"Interpreter.h"
 
 1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/parser.h
 	<memory>
@@ -409,7 +410,7 @@
 	<deque>
 	"ast.h"
 
-1466541332 /home/codyv/Desktop/LexicalAnalyzer/include/TypeVisitor.h
+1467874550 /home/codyv/Desktop/LexicalAnalyzer/include/TypeVisitor.h
 	<forward_list>
 	"ast.h"
 	"environment.h"
@@ -423,13 +424,13 @@
 	<string>
 	"token.h"
 
-1467780518 source:/home/codyv/Desktop/LexicalAnalyzer/src/TypeVisitor.cpp
+1467873358 source:/home/codyv/Desktop/LexicalAnalyzer/src/TypeVisitor.cpp
 	<iostream>
 	<sstream>
 	"TypeVisitor.h"
 	"exception.h"
 
-1467780331 source:/home/codyv/Desktop/LexicalAnalyzer/src/parser.cpp
+1467780831 source:/home/codyv/Desktop/LexicalAnalyzer/src/parser.cpp
 	<iostream>
 	<sstream>
 	<string>
@@ -438,4 +439,13 @@
 	"parser.h"
 	"lexer.h"
 	"exception.h"
+
+1467875112 source:/home/codyv/Desktop/LexicalAnalyzer/src/Interpreter.cpp
+	<iostream>
+	"Interpreter.h"
+
+1467874550 /home/codyv/Desktop/LexicalAnalyzer/include/Interpreter.h
+	<forward_list>
+	"ast.h"
+	"environment.h"
 

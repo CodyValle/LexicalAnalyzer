@@ -3,9 +3,11 @@
 
 // Declares the Interpreter class
 
-#include <deque>
+#include <forward_list>
 
 #include "ast.h"
+#include "environment.h"
+#include "iddata.h"
 
 // The Interpreter class interprets and executes the AST.
 class Interpreter : public AbstractVisitor
@@ -35,6 +37,9 @@ public:
 private:
   // Reference to the output stream
   std::ostream& out;
+
+  // Stores references to the environments in a LIFO order
+  std::forward_list<std::unique_ptr<Environment<IDData>>> environments;
 };
 
 #endif // INTERPRETER_H_INCLUDED

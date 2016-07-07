@@ -11,9 +11,10 @@ TypeVisitor::TypeVisitor(std::ostream& os) :
   out(os),
   expr_type(TokenType::UNKNOWN),
   expr_sub_type(TokenType::UNKNOWN),
+  list_len(0),
   environments(0)
 {
-  environments.push_front(std::make_unique<Environment>());
+  environments.push_front(std::make_unique<Environment<IDData>>());
 }
 
 // TypeVisitor print_knowledge definition
@@ -79,7 +80,7 @@ void TypeVisitor::visit(BasicIf& node)
   node.get_if()->accept(*this);
 
   // The statements in the if clause are part of a new environment
-  environments.push_front(std::make_unique<Environment>());
+  environments.push_front(std::make_unique<Environment<IDData>>());
 
   // Check the executable statements
   node.get_if_stmts()->accept(*this);
@@ -102,7 +103,7 @@ void TypeVisitor::visit(IfStmt& node)
   if (node.get_else())
   {
     // The statements in the else clause are part of a new environment
-    environments.push_front(std::make_unique<Environment>());
+    environments.push_front(std::make_unique<Environment<IDData>>());
 
     node.get_else()->accept(*this);
 
@@ -118,7 +119,7 @@ void TypeVisitor::visit(WhileStmt& node)
   node.get_while()->accept(*this);
 
   // The statements in the while loop are part of a new environment
-  environments.push_front(std::make_unique<Environment>());
+  environments.push_front(std::make_unique<Environment<IDData>>());
 
   // Check the executable statements
   node.get_stmts()->accept(*this);
@@ -151,12 +152,13 @@ void TypeVisitor::visit(VarDecStmt& node)
     { // The type was explicitly declared
       // Check that the right hand side matches
       if (expr_type != node.get_type() || expr_sub_type != node.get_sub_type())
-        error(Token(), "mismatched explicit type and implicit type");
+        error(node.get_id(), "mismatched explicit type and implicit type");
     }
 
     // Make the IDData
-    data = new IDData(true, expr_type, expr_sub_type);
+    data = new IDData(true, expr_type, expr_sub_type, list_len);
 
+    list_len = 0;
     expr_sub_type = TokenType::UNKNOWN;
   }
   else
@@ -167,7 +169,7 @@ void TypeVisitor::visit(VarDecStmt& node)
   // Add this variable to the local environment
   if (!environments.front()->add_identifier(node.get_id().get_lexeme(), (*data)))
     // There is already a variable declared in this scope with the same lexeme
-    error(Token(), "redefinition of variable");
+    error(node.get_id(), "redefinition of variable");
 }
 
 // TypeVisitor AssignStmt visit definition
@@ -183,7 +185,7 @@ void TypeVisitor::visit(AssignStmt& node)
 
     // Make sure the index expression returned an integer
     if (expr_type != TokenType::INT)
-      error(node.get_id(), "expected integer value as index");
+      error(node.get_id(), "expected integer value as index ");
   }
 
   // Check the expression to be assigned
@@ -197,7 +199,7 @@ void TypeVisitor::visit(AssignStmt& node)
     if (data != nullptr)
     {
       if (expr_type != (*data)->get_type())
-        error(node.get_id(), "cannot assign rhs type to lhs identifier");
+        error(node.get_id(), "cannot assign rhs type to lhs identifier ");
     }
   }
   // The identifier will be found since the earlier call to found_identifier succeeded
@@ -254,6 +256,9 @@ void TypeVisitor::visit(ListExpr& node)
     else return;
   }
 
+  // Set the length of the list
+  list_len = exprs.size();
+
   // Start the iterator
   std::deque<std::shared_ptr<Expr>>::iterator it = exprs.begin();
 
@@ -269,7 +274,7 @@ void TypeVisitor::visit(ListExpr& node)
   {
     (*it)->accept(*this);
     if (type != expr_type)
-      error(node.get_lbracket(), "mismatched types in list initializer");
+      error(node.get_lbracket(), "mismatched types in list initializer ");
   }
 }
 
