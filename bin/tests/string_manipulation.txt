@@ -1,0 +1,15 @@
+# Performs string manipulation
+
+# Variable declaration
+string[] strs = ["", "", ""]; # Stores the strings and the manipulations
+
+# Get the first string
+strs[0] = readstr("What's your name? ");
+
+# Calculations
+strs[1] = strs[0] * 2; # Concatenates the string with itself
+strs[2] = strs[0] * 0 - 1; # Evaluates to string * -1, which reverses the string
+
+# Results
+println("Your name repeated: " + strs[1] + ".");
+println("Your name reversed: " + strs[2] + ".");

@@ -154,6 +154,11 @@ void TypeVisitor::visit(VarDecStmt& node)
       if (expr_type != node.get_type() || expr_sub_type != node.get_sub_type())
         error(node.get_id(), "mismatched explicit type and implicit type");
     }
+    else // Set the type for the interpreter
+    {
+      node.set_type(expr_type);
+      node.set_sub_type(expr_sub_type);
+    }
 
     // Make the IDData
     data = new IDData(true, expr_type, expr_sub_type, list_len);
@@ -232,10 +237,16 @@ void TypeVisitor::visit(SimpleExpr& node)
 void TypeVisitor::visit(IndexExpr& node)
 {
   // Report that this variable is being assigned to
-  found_identifier(node.get_id());
+  std::unique_ptr<IDData>* data = found_identifier(node.get_id());
 
-  // Check the expression that determines what element to access
+  // Get the type of the expression that determines what element to access
   node.get_expr()->accept(*this);
+
+  if (expr_type != TokenType::INT)
+    error(node.get_id(), "index value is not an integer ");
+
+  expr_type = (*data)->get_type();
+  expr_sub_type = (*data)->get_sub_type();
 }
 
 // TypeVisitor ListExpr visit definition

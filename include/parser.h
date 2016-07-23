@@ -4,6 +4,9 @@
 /**
  * TODO
  * - Add parentheses around expressions
+ * - Allow boolean expression in variable declaration assignments
+ * - Disallow lists as values
+ * - Allow lone boolean identifiers before a boolean connector e.g. 'if bool or num > 0 then'
 **/
 
 // Parses the token stream given by the Lexer

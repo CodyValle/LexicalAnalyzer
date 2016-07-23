@@ -1,0 +1,16 @@
+# Sums the numbers from 1 to n
+
+# Variable declaration
+var n = readint("What number should we add to? ");
+var sum = 0;
+var i = 0;
+
+# Calculations
+while i <= n do
+	sum = sum + i;
+	i = i + 1;
+end
+
+# Results
+print("The sum is " + sum);
+println(".");

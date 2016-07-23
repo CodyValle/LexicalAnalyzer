@@ -1,4 +1,4 @@
-// Defines everything in environment.h
+// Defines everything in iddata.h
 
 #include <iostream>
 

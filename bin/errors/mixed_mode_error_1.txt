@@ -1,0 +1,3 @@
+# The issue here is that expressions are interpreted right to left, so the integer 'num' is mismatched with the "." string via the addition operator.
+int num = 3;
+print("More than " + num + ".");
