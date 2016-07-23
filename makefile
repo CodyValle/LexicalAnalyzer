@@ -22,7 +22,7 @@ TARGET   = LexicalAnalyzer
 
 CC       = g++
 # compiling flags here
-CFLAGS   = -O2 -std=c++14 -Wall -Wextra -pedantic -fexceptions -Iinclude
+CFLAGS   = -O2 -std=c++14 -Wall -Wextra -pedantic -fexceptions -Iinclude -I/usr/include/boost
 # -Weffc++ does not play well with the boost library.
 
 LINKER   = g++
