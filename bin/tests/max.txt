@@ -1,0 +1,16 @@
+# Determines the greater of two numbers
+
+# Variable declaration
+println("Enter two numbers:");
+var num1 = readint("First number: ");
+var num2 = readint("Second number: ");
+
+# Calculation and first part of results
+if num1 > num2 then
+	print(num1);
+else
+	print(num2);
+end
+
+# End of result
+println(" is the greater number.");

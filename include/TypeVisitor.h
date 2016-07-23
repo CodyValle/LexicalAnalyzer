@@ -7,7 +7,7 @@
 
 #include "ast.h"
 #include "environment.h"
-//#include "ExprTypeVisitor.h"
+#include "iddata.h"
 
 // The TypeVisitor class prints out the AST in an understandable form
 class TypeVisitor : public AbstractVisitor
@@ -54,8 +54,11 @@ private:
   // The return sub type for this object
   TokenType expr_sub_type;
 
+  // The length of the list, if one is encountered
+  unsigned list_len;
+
   // Stores references to the environments in a LIFO order
-  std::forward_list<std::unique_ptr<Environment>> environments;
+  std::forward_list<std::unique_ptr<Environment<IDData>>> environments;
 };
 
 #endif // TYPEVISITOR_H_INCLUDED

@@ -255,6 +255,7 @@ std::string Lexer::get_string()
 {
 	std::ostringstream ss;
 	char c = input_stream.get();
+	if (c == '"') return ss.str(); // For empty strings
 
 	while (true)
 	{

@@ -3,70 +3,97 @@
 
 // Declares the Environment class which keeps track of variable types and values.
 
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 
 #include "token.h"
 
-/// Stores all known data on the identifier it is linked to
-class IDData
-{
-public:
-  // Constructor
-  IDData(bool, TokenType, TokenType = TokenType::UNKNOWN);
+// Forward declaration for friend function operator<<
+template<typename T>
+class Environment;
 
-  // Returns the value of initialized
-  bool is_initialized() const
-    { return initialized; }
+// Print operator for a Environment object
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Environment<T>& value);
 
-  // Sets the variable as initialized
-  void initialize()
-    { initialized = true; }
-
-  // Get the type of this identifier
-  TokenType get_type() const
-    { return data_type; }
-
-  // Get the sub type of this identifier
-  TokenType get_sub_type() const
-    { return sub_type; }
-
-private:
-  // Tells whether this variable has been initialized
-  bool initialized;
-
-  // The type of this identifier
-  TokenType data_type;
-
-  // The sub type of this identifier
-  TokenType sub_type;
-};
-
-// Print operator for a IDData object
-std::ostream& operator<<(std::ostream&, const IDData);
-
-/// Stores variable data in the current scope
+/// Stores references to variable data in the current scope
+template<typename T>
 class Environment
 {
 public:
   // Constructor
   Environment();
+  // Destructor
+  ~Environment();
 
 	// Adds an identifier to the environment
-	bool add_identifier(std::string, IDData&);
+	bool add_identifier(std::string, T&);
 
 	// To check conditions whenever an identifier is found
-	std::unique_ptr<IDData>* get_identifier(std::string);
+	std::unique_ptr<T>* get_identifier(std::string);
 
 private:
   // Stores the identifier data in this environment
-  std::unordered_map<std::string, std::unique_ptr<IDData>> identifiers;
+  std::unordered_map<std::string, std::unique_ptr<T>> identifiers;
 
   // To access private members without accessors
-  friend std::ostream& operator<<(std::ostream&, const Environment&);
+  friend std::ostream& operator<< <>(std::ostream&, const Environment<T>&);
 };
 
+/// //////////////////////////////////
+/// Environment definitions
+/// //////////////////////////////////
+
+// Environment Constructor
+template<typename T>
+Environment<T>::Environment() :
+  identifiers(0)
+{
+}
+
+// Environment Destructor
+template<typename T>
+Environment<T>::~Environment()
+{
+}
+
+// Environment add_identifier definition
+template<typename T>
+bool Environment<T>::add_identifier(std::string key, T& data)
+{
+  // Check that the lexeme is not already here, otherwise redefinition error
+  if (identifiers.count(key))
+    return false;
+
+  // Add to environment
+  identifiers[key] = std::make_unique<T>(data);
+
+  return true;
+}
+
+// Environment found_identifier definition
+template<typename T>
+std::unique_ptr<T>* Environment<T>::get_identifier(std::string key)
+{
+  // We need to check that it exists in the table
+  if (identifiers.count(key))
+    // The identifier is in the table
+    return &identifiers.at(key);
+
+  return nullptr;
+}
+
 // Print operator for a Environment object
-std::ostream& operator<<(std::ostream&, const Environment&);
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Environment<T>& value)
+{
+  // Print out every T object
+  for (const auto& i: value.identifiers)
+    out << "Identifier: [" << i.first << "]" << std::endl
+        << (*i.second);
+
+  return out;
+}
 
 #endif // ENVIRONMENT_H_INCLUDED

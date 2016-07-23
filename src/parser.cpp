@@ -191,7 +191,7 @@ std::shared_ptr<ReadExpr> Parser::input()
 		// We are reading an integer
 	case TokenType::READINT:
 		// Set the type of read operation this is
-		ret->setReadType(TokenType::READINT);
+		ret->set_read_type(TokenType::READINT);
 
 		// We are reading a string
 	case TokenType::READSTR:
@@ -209,7 +209,7 @@ std::shared_ptr<ReadExpr> Parser::input()
 	eat(TokenType::LPAREN, "expected left parenthesis '('");
 
 	// Add the current string token to the ReadExpr
-	ret->setMsg(cur_token);
+	ret->set_msg(cur_token);
 	eat(TokenType::STRING, "expected string");
 
 	eat(TokenType::RPAREN, "expected right parenthesis ')'");

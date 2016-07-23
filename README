@@ -30,7 +30,7 @@ The language followed by the current master is described by:
 
 
 To build:
-1. Open the accompanying Code::Blocks project and build it there. (Recommended for Windows users)
+1. Open the accompanying Code::Blocks project and build it there. (Recommended for Windows users)You may have to modify the search directories path for the boost library.
 2. Utilize the accompanying makefile. (Recommended for Unix users, but using Code::Blocks is cool, too)
 
 
@@ -47,6 +47,7 @@ Runtime errors:
 
 Type Evaluations:
 -All type relations that are not defined here will result in error.
+-Lists of lists are not currently supported.
 
 x::int, y::int =>
   (x + y) :: int
@@ -81,6 +82,7 @@ x::boolean, y::boolean =>
 x::int, y::string =>
   (x + y) :: error
   (y + x) :: string
+  (x - y) :: error
   (x - y) :: error
   (y - x) :: error
   (x * y) :: error

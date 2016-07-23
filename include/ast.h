@@ -148,7 +148,7 @@ private:
 /// Objects that inherit from Stmt
 /// ////////////////////////////////////
 
-// An entire if, then, (elseif, then)*, else?, end statement
+// An entire if, then, (elseif then)*, else, end statement
 class IfStmt : public virtual Stmt
 {
 public:
@@ -478,11 +478,11 @@ public:
     { visitor.visit(*this); }
 
   // Set the token for the value to be displayed when getting input
-  void setMsg(Token m)
+  void set_msg(Token m)
     { msg = m; }
 
   // Set the type of input this is
-  void setReadType(TokenType type)
+  void set_read_type(TokenType type)
     { read_type = type; }
 
   // Get the message to display for this read operation
