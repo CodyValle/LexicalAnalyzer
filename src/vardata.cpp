@@ -29,5 +29,5 @@ VarData::VarData(const VarData& other) :
 // VarData destructor
 VarData::~VarData()
 {
-  delete value;
+  delete[] value;
 }

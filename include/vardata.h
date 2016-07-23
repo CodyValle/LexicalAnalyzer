@@ -38,7 +38,7 @@ public:
   void set_length(unsigned l)
     {
       len = l;
-      delete value;
+      delete[] value;
       value = new all_type[len];
     }
 
