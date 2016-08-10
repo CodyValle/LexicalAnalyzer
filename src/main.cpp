@@ -11,6 +11,7 @@
 #include "PrintVisitor.h"
 #include "TypeVisitor.h"
 #include "Interpreter.h"
+#include "AssemblyVisitor.h"
 
 // Class that holds all the options for how the program is run
 class Options
@@ -19,7 +20,8 @@ public:
   // Constructor
   Options() :
     parse(false),
-    print(true)
+    print(true),
+    assemble(false)
   {}
 
   // Sets the "parse only" flag (-p)
@@ -38,12 +40,23 @@ public:
   bool get_print()
     { return print; }
 
+  // Sets the "assemble" flag (-a)
+  void set_assemble(bool a)
+    { assemble = a; }
+
+  // Gets the "assemble" flag
+  bool get_assemble()
+    { return assemble; }
+
 private:
   // The "parse only" flag
   bool parse;
 
   // The print flag
   bool print;
+
+  // Assemble or Interpret?
+  bool assemble;
 };
 
 void printAST(std::ostream& out, std::shared_ptr<StmtList> ast, std::string filename)
@@ -82,6 +95,18 @@ void interpret(std::ostream& out, std::shared_ptr<StmtList> ast)
   ast->accept(vtor);
 }
 
+void assemble(std::ostream& out, std::shared_ptr<StmtList> ast)
+{
+  // Create the AssemblyVisitor
+  AssemblyVisitor ator = AssemblyVisitor();
+
+  // Pass the visitor to the AST
+  ast->accept(ator);
+	
+  // Output to assembly
+  ator.output(out);
+}
+
 // Runs the meat and potatoes of the program
 // Parses every file passed in in the files parameter
 void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
@@ -107,6 +132,12 @@ void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
       // parse the file
       std::shared_ptr<StmtList> ast = Parser(lexer).parse();
 
+      if (!ast)
+      {
+    	  std::cerr << "No code was found in '" << filename << "'." << std::endl;
+    	  continue;
+      }
+
       // Stop here if parsing was all that was specified
       if (opt.parse_only())
         continue;
@@ -118,8 +149,14 @@ void run(Options& opt, std::ostream& out, std::deque<std::string>& files)
       // Catch variable errors
       typeAST(out, ast, filename, opt.get_print());
 
-      // Interpret the file
-      interpret(out, ast);
+      if (opt.get_assemble())
+      { // Covert to assembly
+        assemble(out, ast);
+      }
+      else
+      { // Interpret the file
+        interpret(out, ast);
+      }
     }
     catch(Exception e)
     {
@@ -164,6 +201,11 @@ int main(int argc, char *argv[])
       // Only parse the files, checking for syntactical correctness
       opt.set_parse_only(true);
     }
+    else if (arg.compare("-a") == 0)
+    {
+      // Do not interpret, just convert to assembly
+      opt.set_assemble(true);
+    }
     else if (arg.compare("-no-print") == 0)
     {
       // Don't print out the ASTs
@@ -187,7 +229,7 @@ int main(int argc, char *argv[])
   // Check that there are files specified
 	if (files.empty())
 	{
-		std::cerr << "USAGE: " << argv[0] << " [-o output_filename] file [file] [file] [...]" << std::endl;
+		std::cerr << "USAGE: " << argv[0] << " [-no-print] [-a] [-o output_filename] file [file] [file] [...]" << std::endl;
 		return -1;
 	}
 

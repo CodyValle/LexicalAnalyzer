@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+*LexicalAnalyzer
+
+# Other files
+bin/general_testing.txt

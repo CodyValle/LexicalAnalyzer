@@ -3,23 +3,6 @@
 
 #include "all_type.h"
 
-// Possible return types
-enum Type {INT = 0, BOOL, STRING};
-
-// Determines the current type of the all_type variable
-class all_type_visitor : public boost::static_visitor<Type>
-{
-public:
-  Type operator()(const int) const
-    { return INT; }
-
-  Type operator()(const bool) const
-    { return BOOL; }
-
-  Type operator()(const std::string) const
-    { return STRING; }
-};
-
 // Specialized template to perform boolean operators on various types
 // Helps ComplexBoolExpr
 template<typename T1, typename T2>

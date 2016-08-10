@@ -292,8 +292,8 @@ void Interpreter::visit(ComplexBoolExpr& node)
     first = mixed_mode_bool_filter(first, it, node.get_rel()); // store the result of the lhs of the boolean connector
     node.get_rest()->accept(*this); // Get the rest of the boolean expression
 
-    // We know that both first and it are boolean types because they must be so in a boolean expression
-    // so it is safe to use get here.
+    // We know that both first and it are boolean types because they are in a boolean expression,
+    // so it is safe to use boost::get here.
     switch (node.get_con_type())
     {
       case TokenType::OR:

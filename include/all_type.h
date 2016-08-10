@@ -6,6 +6,23 @@
 // Defines a variable of any type
 typedef boost::variant<int, bool, std::string> all_type;
 
+// Possible return types
+enum Type {INT = 0, BOOL, STRING};
+
+// Determines the current type of the all_type variable
+class all_type_visitor : public boost::static_visitor<Type>
+{
+public:
+  Type operator()(const int) const
+    { return INT; }
+
+  Type operator()(const bool) const
+    { return BOOL; }
+
+  Type operator()(const std::string) const
+    { return STRING; }
+};
+
 /// Definitions of classes that convert an all_type object to a different type
 // Converts to an int
 class int_visitor : public boost::static_visitor<int>
