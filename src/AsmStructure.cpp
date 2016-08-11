@@ -6,6 +6,19 @@
 #include "AsmStructure.h"
 
 // Constructor
+Macro::Macro()
+{
+}
+
+// Print operator for a Macro object
+std::ostream& operator<<(std::ostream& out, const Macro& m)
+{
+	for (std::string s: m.instructions)
+		out << s << std::endl;
+	return out;
+}
+
+// Constructor
 Procedure::Procedure(std::string n) :
 	name(n)
 {
@@ -31,6 +44,10 @@ AsmStructure::AsmStructure() :
 // Converts the structure into assembly and puts it in the passed in stream
 void AsmStructure::convert(std::ostream& out)
 {
+	// Add the macros
+	for (Macro& m: macros)
+		out << m << std::endl;
+
 	// .data section first
 	if (constants.size() > 0)
 	{
@@ -91,6 +108,12 @@ void AsmStructure::add_constant(std::string name, bool data)
 void AsmStructure::add_variable(std::string name, int size)
 {
 	variables.push_back(name +": resb " + std::to_string(size));
+}
+
+// Add a macro to the program
+void AsmStructure::add_macro(Macro& m)
+{
+	macros.push_back(m);
 }
 
 // Add a procedure to the program

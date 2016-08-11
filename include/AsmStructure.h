@@ -7,6 +7,24 @@
 #include <list>
 #include <string>
 
+class Macro
+{
+public:
+	// Constructor
+	Macro();
+
+	// Adds a line to the macro
+	void add_instruction(std::string in)
+		{ instructions.push_back(in); }
+
+private:
+	// List of instrutions for the macro
+	std::list<std::string> instructions;
+
+	// To access private members without accessors
+	friend std::ostream& operator<<(std::ostream&, const Macro&);
+};
+
 class Procedure
 {
 public:
@@ -15,7 +33,7 @@ public:
 
 	// Add a string instruction
 	void add_instruction(std::string in)
-		{ instructions.push_back(in); }; // std::cerr << "Adding instruction: " << in << std::endl; std::cerr << "Last instruction: " << instructions.back() << std::endl;
+		{ instructions.push_back(in); };
 
 	std::string get_name()
 		{ return name; }
@@ -56,6 +74,9 @@ public:
 	// Add a procedure to the program
 	void add_procedure(Procedure&);
 
+	// Add a macro to the program
+	void add_macro(Macro&);
+
 private:
 	// List of lines in .data section
 	std::list<std::string> constants;
@@ -65,6 +86,9 @@ private:
 
 	// List of procedures
 	std::list<Procedure> procedures;
+
+	// List of macros
+	std::list<Macro> macros;
 };
 
 #endif // ASMSTRUCTURE_H_INCLUDED
