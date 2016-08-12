@@ -48,9 +48,10 @@ private:
   // The current procedure being created
   Procedure* proc;
 
-  // What is the visitor currently doing?
-  Mode mode;
+  // The type of the current expression
+  Type type;
 
+  // Tracks identifiers and types
   std::unordered_map<std::string,Type> id_map;
 };
 

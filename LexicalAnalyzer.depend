@@ -163,7 +163,7 @@
 	<iostream>
 	"ast.h"
 
-1469171959 v:\projects\c++\lexicalanalyzer\include\ast.h
+1469265998 v:\projects\c++\lexicalanalyzer\include\ast.h
 	<deque>
 	<string>
 	<ostream>
@@ -182,7 +182,7 @@
 	<exception>
 	<string>
 
-1469262561 source:v:\projects\c++\lexicalanalyzer\src\lexer.cpp
+1469265998 source:v:\projects\c++\lexicalanalyzer\src\lexer.cpp
 	<iostream>
 	<istream>
 	<sstream>
@@ -197,7 +197,7 @@
 	<istream>
 	"token.h"
 
-1468531224 source:v:\projects\c++\lexicalanalyzer\src\main.cpp
+1470970601 source:v:\projects\c++\lexicalanalyzer\src\main.cpp
 	<iostream>
 	<fstream>
 	<memory>
@@ -208,14 +208,15 @@
 	"PrintVisitor.h"
 	"TypeVisitor.h"
 	"Interpreter.h"
+	"AssemblyVisitor.h"
 
-1469257837 v:\projects\c++\lexicalanalyzer\include\parser.h
+1469265998 v:\projects\c++\lexicalanalyzer\include\parser.h
 	<memory>
 	"lexer.h"
 	"token.h"
 	"ast.h"
 
-1469172003 source:v:\projects\c++\lexicalanalyzer\src\parser.cpp
+1469265998 source:v:\projects\c++\lexicalanalyzer\src\parser.cpp
 	<iostream>
 	<sstream>
 	<string>
@@ -279,13 +280,13 @@
 
 1465425240 nt.h"
 
-1468533411 v:\projects\c++\lexicalanalyzer\include\typevisitor.h
+1469265998 v:\projects\c++\lexicalanalyzer\include\typevisitor.h
 	<forward_list>
 	"ast.h"
 	"environment.h"
 	"iddata.h"
 
-1469168687 v:\projects\c++\lexicalanalyzer\include\environment.h
+1469265998 v:\projects\c++\lexicalanalyzer\include\environment.h
 	<iostream>
 	<memory>
 	<unordered_map>
@@ -295,7 +296,7 @@
 	<iostream>
 	"environment.h"
 
-1469263508 source:v:\projects\c++\lexicalanalyzer\src\typevisitor.cpp
+1469265998 source:v:\projects\c++\lexicalanalyzer\src\typevisitor.cpp
 	<iostream>
 	<sstream>
 	"TypeVisitor.h"
@@ -452,15 +453,15 @@
 	"ast.h"
 	"environment.h"
 
-1468533070 source:v:\projects\c++\lexicalanalyzer\src\iddata.cpp
+1469265998 source:v:\projects\c++\lexicalanalyzer\src\iddata.cpp
 	<iostream>
 	"iddata.h"
 
-1468531224 v:\projects\c++\lexicalanalyzer\include\iddata.h
+1469265998 v:\projects\c++\lexicalanalyzer\include\iddata.h
 	<iostream>
 	"token.h"
 
-1469263554 source:v:\projects\c++\lexicalanalyzer\src\interpreter.cpp
+1470970601 source:v:\projects\c++\lexicalanalyzer\src\interpreter.cpp
 	<iostream>
 	<sstream>
 	<string>
@@ -469,19 +470,19 @@
 	"exception.h"
 	"mixedModeFilter.h"
 
-1469222467 v:\projects\c++\lexicalanalyzer\include\interpreter.h
+1469265998 v:\projects\c++\lexicalanalyzer\include\interpreter.h
 	<forward_list>
 	"ast.h"
 	"environment.h"
 	"vardata.h"
 	"all_type.h"
 
-1469256693 v:\projects\c++\lexicalanalyzer\include\vardata.h
+1470970601 v:\projects\c++\lexicalanalyzer\include\vardata.h
 	<iostream>
 	"token.h"
 	"all_type.h"
 
-1469167720 source:v:\projects\c++\lexicalanalyzer\src\vardata.cpp
+1470970601 source:v:\projects\c++\lexicalanalyzer\src\vardata.cpp
 	<iostream>
 	"vardata.h"
 
@@ -3857,9 +3858,34 @@
 	<boost/core/swap.hpp>
 	<boost/optional/optional_fwd.hpp>
 
-1469230635 v:\projects\c++\lexicalanalyzer\include\all_type.h
+1470970601 v:\projects\c++\lexicalanalyzer\include\all_type.h
 	"boost/variant.hpp"
 
-1469260846 v:\projects\c++\lexicalanalyzer\include\mixedmodefilter.h
+1470970601 v:\projects\c++\lexicalanalyzer\include\mixedmodefilter.h
+	"all_type.h"
+
+1470988183 source:v:\projects\c++\lexicalanalyzer\src\asmstructure.cpp
+	<algorithm>
+	<sstream>
+	"AsmStructure.h"
+
+1471019671 v:\projects\c++\lexicalanalyzer\include\asmstructure.h
+	<iostream>
+	<list>
+	<string>
+
+1471019436 source:v:\projects\c++\lexicalanalyzer\src\assemblyvisitor.cpp
+	<iostream>
+	<sstream>
+	<string>
+	"boost/optional.hpp"
+	"AssemblyVisitor.h"
+	"token.h"
+	"ast.h"
+
+1470954238 v:\projects\c++\lexicalanalyzer\include\assemblyvisitor.h
+	<unordered_map>
+	"ast.h"
+	"AsmStructure.h"
 	"all_type.h"
 
