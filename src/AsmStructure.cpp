@@ -85,6 +85,20 @@ void AsmStructure::add_variable(std::string name, int size)
 	variables.push_back(name +": resb " + std::to_string(size));
 }
 
+// Adds a buffer variable to the program
+void AsmStructure::add_buffer_variable()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add the buffer
+		add_variable("buffer", 255);
+	}
+}
+
 // Add a procedure to the program
 void AsmStructure::add_procedure(Procedure* p)
 {
@@ -104,13 +118,13 @@ void AsmStructure::add_print_proc()
 		add_constant("LF", 10, true);
 
 		// Add the print buffer
-		add_variable("printbuf", 255);
+		add_buffer_variable();
 
 		// Add the print procedure
 		Procedure* proc = new Procedure("print");
 		proc->add_instruction("mov rax,4");
 		proc->add_instruction("mov rbx,1");
-		proc->add_instruction("mov rcx,printbuf");
+		proc->add_instruction("mov rcx,buffer");
 		proc->add_instruction("int 80h");
 		proc->add_instruction("ret");
 		add_procedure(proc);
@@ -306,16 +320,16 @@ void AsmStructure::add_readint_proc()
 		added = true; // Prevent this from running again
 
 		// Add dependencies
-		add_variable("readintbuffer", 255);
+		add_buffer_variable();
 
 		// Add the procedure
 		Procedure* proc = new Procedure("readint");
 		proc->add_instruction("mov edx, 255");
-		proc->add_instruction("mov ecx,readintbuffer");
+		proc->add_instruction("mov ecx,buffer");
 		proc->add_instruction("mov ebx,0");
 		proc->add_instruction("mov eax,3");
 		proc->add_instruction("int 80h");
-		proc->add_instruction("mov eax,readintbuffer");
+		proc->add_instruction("mov eax,buffer");
 		proc->add_instruction("call atoi");
 		proc->add_instruction("ret");
 		add_procedure(proc);
@@ -364,6 +378,23 @@ void AsmStructure::add_atoi_proc()
 		proc->add_instruction("pop edx");
 		proc->add_instruction("pop ecx");
 		proc->add_instruction("pop ebx");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
+// Adds the strcpy procedure to the program
+void AsmStructure::add_strcpy_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add the procedure
+		Procedure* proc = new Procedure("strcpy");
+		proc->add_instruction(";TODO");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}

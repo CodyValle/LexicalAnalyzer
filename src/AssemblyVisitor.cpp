@@ -199,17 +199,20 @@ void AssemblyVisitor::visit(VarDecStmt& node)
 
 	if (node.get_assign())
 	{
+    node.get_assign()->accept(*this); // Loads the value into the eax
     switch (type)
     {
     case INT:
     case BOOL:
-      node.get_assign()->accept(*this); // Loads the value into the eax
       proc->add_instruction("mov " + node.get_id().get_lexeme() + ",eax"); // Move the value into the variable
       break;
 
     case STRING:
-      proc->add_instruction("mov eax," + node.get_id().get_lexeme()); // Load the address of the destination into eax
-      node.get_assign()->accept(*this); // Loads the value into the destination
+      proc->add_instruction("push eax"); // Store the address
+      proc->add_instruction("mov eax," + node.get_id().get_lexeme()); // Write to the variable address
+      proc->add_instruction("pop ebx"); // Load where to read from
+      asms->add_strcpy_proc();
+      proc->add_instruction("call strcpy"); // Copy the string over
       break;
     }
 	}
@@ -222,8 +225,24 @@ void AssemblyVisitor::visit(AssignStmt& node)
 	if (node.get_index())
 		node.get_index()->accept(*this);
 
-	node.get_assign()->accept(*this); // Loads eax with the value to store
-	proc->add_instruction("mov " + node.get_id().get_lexeme() + ",eax");
+  node.get_assign()->accept(*this); // Loads eax with the value to store
+  switch (node.get_id().get_type())
+  {
+  case TokenType::INT:
+  case TokenType::BOOL:
+    proc->add_instruction("mov " + node.get_id().get_lexeme() + ",eax"); // Save it
+    break;
+
+  case TokenType::STRING:
+    proc->add_instruction("push eax"); // Store the address
+    proc->add_instruction("mov eax," + node.get_id().get_lexeme()); // Write to the variable address
+    proc->add_instruction("pop ebx"); // Load where to read from
+    asms->add_strcpy_proc();
+    proc->add_instruction("call strcpy"); // Copy the string over
+    break;
+
+  default: break;
+  }
 }
 
 // Accepts a SimpleExpr reference
@@ -252,13 +271,15 @@ void AssemblyVisitor::visit(SimpleExpr& node)
 
 
   case TokenType::STRING:
+  {
+    static unsigned count = 0; // Keep track of the number of constant strings
     type = Type::STRING;
-//    proc->add_instruction("push eax");
-//    proc->add_instruction("xor eax,eax");
-//    proc->add_instruction("push eax");
-//    proc->add_instruction(""); // Copy the lexeme onto the stack
-//    proc->add_instruction("pop eax");
+
+    // Load the string address into eax
+    asms->add_constant("strconst" + std::to_string(count), node.get_term().get_lexeme());
+    proc->add_instruction("mov eax," + "strconst" + std::to_string(count++));
     break;
+  }
 
   default: break;
   }
@@ -308,9 +329,8 @@ void AssemblyVisitor::visit(ReadExpr& node)
     break;
 
   case STRING:
-//    asms->add_readstr_proc();
-//    proc->add_instruction("pop eax");
-//    proc->add_instruction("call readstr");
+    asms->add_readstr_proc();
+    proc->add_instruction("call readstr"); // Loads eax with the address of a filled buffer
     break;
   }
 }
@@ -320,36 +340,122 @@ void AssemblyVisitor::visit(ComplexExpr& node)
 {
 	node.get_first_op()->accept(*this); // Loads the first expression into eax
 	proc->add_instruction("push eax"); // Saves the value from the first op
+	Type first_type = type;
 	node.get_rest()->accept(*this); // Loads the rest into eax
 
 	// Perform the arithmetical operation
-	switch (node.get_rel().get_type())
+	switch (first_type)
 	{
-	case TokenType::PLUS:
-    proc->add_instruction("pop ebx");
-		proc->add_instruction("add eax,ebx");
-		break;
+  case INT:
+  case BOOL:
+    switch (type)
+    {
+    case INT:
+    case BOOL:
+      switch (node.get_rel().get_type())
+      {
+      case TokenType::PLUS:
+        proc->add_instruction("pop ebx");
+        proc->add_instruction("add eax,ebx");
+        break;
 
-	case TokenType::MINUS:
-	  proc->add_instruction("push eax");
-    proc->add_instruction("pop ebx");
-    proc->add_instruction("pop eax");
-		proc->add_instruction("sub eax,ebx");
-		break;
+      case TokenType::MINUS:
+        proc->add_instruction("push eax");
+        proc->add_instruction("pop ebx");
+        proc->add_instruction("pop eax");
+        proc->add_instruction("sub eax,ebx");
+        break;
 
-	case TokenType::DIVIDE:
-	  proc->add_instruction("push eax");
-    proc->add_instruction("pop ebx");
-    proc->add_instruction("pop eax");
-		proc->add_instruction("div ebx");
-		break;
+      case TokenType::DIVIDE:
+        proc->add_instruction("push eax");
+        proc->add_instruction("pop ebx");
+        proc->add_instruction("pop eax");
+        proc->add_instruction("div ebx");
+        break;
 
-	case TokenType::MULTIPLY:
-    proc->add_instruction("pop ebx");
-		proc->add_instruction("mul ebx");
-		break;
+      case TokenType::MULTIPLY:
+        proc->add_instruction("pop ebx");
+        proc->add_instruction("mul ebx");
+        break;
 
-	default: break;
+      default: break;
+      }
+      break;
+
+    case STRING:
+      // (int | bool) REL string is unsupported
+      break;
+    }
+    break;
+
+  case STRING:
+    switch (type)
+    {
+    case INT:
+      switch (node.get_rel().get_type())
+      {
+      case TokenType::PLUS:
+        /// TODO
+        // Convert int to string
+        // Append
+        break;
+
+      case TokenType::MULTIPLY:
+        /// TODO
+        // Append string int times (don't forget negatives)
+        break;
+
+      case TokenType::MINUS:
+      case TokenType::DIVIDE:
+        // string (- | /) int is unsupported
+        break;
+
+      default: break;
+      }
+      break;
+
+    case BOOL:
+      switch (node.get_rel().get_type())
+      {
+      case TokenType::PLUS:
+        /// TODO
+        // Convert bool to string
+        // Append
+        break;
+
+      case TokenType::MULTIPLY:
+        /// TODO
+        // string = bool ? string : ""
+        break;
+
+      case TokenType::MINUS:
+      case TokenType::DIVIDE:
+        // string (- | /) int is unsupported
+        break;
+
+      default: break;
+      }
+      break;
+
+    case STRING:
+      switch (node.get_rel().get_type())
+      {
+      case TokenType::PLUS:
+        /// TODO
+        // Append
+        break;
+
+      case TokenType::MINUS:
+      case TokenType::DIVIDE:
+      case TokenType::MULTIPLY:
+        // string (- | * | /) string is unsupported
+        break;
+
+      default: break;
+      }
+      break;
+    }
+    break;
 	}
 }
 

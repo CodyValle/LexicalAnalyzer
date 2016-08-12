@@ -56,6 +56,9 @@ public:
 	// Add a procedure to the program
 	void add_procedure(Procedure*);
 
+	// Adds a buffer variable to the program
+	void add_buffer_variable();
+
 	// Adds the print procedure to the program
 	void add_print_proc();
 
@@ -82,6 +85,9 @@ public:
 
 	// Adds the atoi procedure to the program
 	void add_atoi_proc();
+
+	// Adds the strcpy procedure to the program
+	void add_strcpy_proc();
 
 private:
 	// List of lines in .data section
