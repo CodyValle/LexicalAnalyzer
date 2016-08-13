@@ -277,7 +277,7 @@ void AssemblyVisitor::visit(SimpleExpr& node)
 
     // Load the string address into eax
     asms->add_constant("strconst" + std::to_string(count), node.get_term().get_lexeme());
-    proc->add_instruction("mov eax," + "strconst" + std::to_string(count++));
+    proc->add_instruction("mov eax,strconst" + std::to_string(count++));
     break;
   }
 
@@ -345,35 +345,33 @@ void AssemblyVisitor::visit(ComplexExpr& node)
 
 	// Perform the arithmetical operation
 	switch (first_type)
-	{
-  case INT:
-  case BOOL:
+	{ /// All unsupported cases can be removed. They will never be called due to previous type checks.
+  case INT: // int is the first argument
+  case BOOL: // bool is the first argument
     switch (type)
     {
-    case INT:
-    case BOOL:
+    case INT: // (int | bool) REL int
+    case BOOL: // (int | bool) REL bool
       switch (node.get_rel().get_type())
       {
-      case TokenType::PLUS:
+      case TokenType::PLUS: // (int | bool) + (int | bool)
         proc->add_instruction("pop ebx");
         proc->add_instruction("add eax,ebx");
         break;
 
-      case TokenType::MINUS:
-        proc->add_instruction("push eax");
-        proc->add_instruction("pop ebx");
+      case TokenType::MINUS: // (int | bool) - (int | bool)
+        proc->add_instruction("mov ebx,eax");
         proc->add_instruction("pop eax");
         proc->add_instruction("sub eax,ebx");
         break;
 
-      case TokenType::DIVIDE:
-        proc->add_instruction("push eax");
-        proc->add_instruction("pop ebx");
+      case TokenType::DIVIDE: // (int | bool) / (int | bool)
+        proc->add_instruction("mov ebx,eax");
         proc->add_instruction("pop eax");
         proc->add_instruction("div ebx");
         break;
 
-      case TokenType::MULTIPLY:
+      case TokenType::MULTIPLY:  // (int | bool) / (int | bool)
         proc->add_instruction("pop ebx");
         proc->add_instruction("mul ebx");
         break;
@@ -382,73 +380,87 @@ void AssemblyVisitor::visit(ComplexExpr& node)
       }
       break;
 
-    case STRING:
-      // (int | bool) REL string is unsupported
+    case STRING: // (int | bool) REL string
+      // Unsupported
       break;
     }
     break;
 
-  case STRING:
+  case STRING: // string is the first argument
     switch (type)
     {
-    case INT:
+    case INT: // string REL int
       switch (node.get_rel().get_type())
       {
-      case TokenType::PLUS:
-        /// TODO
-        // Convert int to string
-        // Append
+      case TokenType::PLUS: // string + int
+        proc->add_instruction("mov eax,ebx");
+        asms->add_itoa_proc();
+        proc->add_instruction("call itoa");
+        proc->add_instruction("mov ebx,eax"); // Address of the string of integers into ebx
+        proc->add_instruction("pop eax"); // Get the first operand back
+        asms->add_append_proc();
+        proc->add_instruction("call append");
         break;
 
-      case TokenType::MULTIPLY:
-        /// TODO
-        // Append string int times (don't forget negatives)
+      case TokenType::MULTIPLY: // string * int
+        proc->add_instruction("mov ebx,eax");
+        proc->add_instruction("pop eax");
+        asms->add_strmulint_proc();
+        proc->add_instruction("call strmulint");
         break;
 
-      case TokenType::MINUS:
-      case TokenType::DIVIDE:
-        // string (- | /) int is unsupported
+      case TokenType::MINUS: // string - int
+      case TokenType::DIVIDE: // string / int
+        // Unsupported
         break;
 
       default: break;
       }
       break;
 
-    case BOOL:
+    case BOOL: // string REL bool
       switch (node.get_rel().get_type())
       {
-      case TokenType::PLUS:
-        /// TODO
-        // Convert bool to string
-        // Append
+      case TokenType::PLUS: // string + bool
+        proc->add_instruction("mov ebx,eax");
+        proc->add_instruction("pop eax");
+        asms->add_straddbool_proc();
+        proc->add_instruction("call straddbool");
         break;
 
-      case TokenType::MULTIPLY:
-        /// TODO
-        // string = bool ? string : ""
+      case TokenType::MULTIPLY: // string * bool
+        proc->add_instruction("mov ebx,eax");
+        proc->add_instruction("pop eax");
+        proc->add_instruction("strmulbool:");
+        proc->add_instruction("cmp ebx,1"); // is the bool true?
+        proc->add_instruction("jne .done");
+        proc->add_instruction("mov [eax],0");
+        proc->add_instruction(".done");
         break;
 
-      case TokenType::MINUS:
-      case TokenType::DIVIDE:
-        // string (- | /) int is unsupported
+      case TokenType::MINUS: // string - bool
+      case TokenType::DIVIDE: // string / bool
+        // Unsupported
         break;
 
       default: break;
       }
       break;
 
-    case STRING:
+    case STRING: // string REL string
       switch (node.get_rel().get_type())
       {
-      case TokenType::PLUS:
-        /// TODO
-        // Append
+      case TokenType::PLUS: // string + string
+        proc->add_instruction("mov ebx,eax");
+        proc->add_instruction("pop eax"); // Pull the first argument off the stack
+        asms->add_append_proc();
+        proc->add_instruction("call append"); // Appends ebx to eax
         break;
 
-      case TokenType::MINUS:
-      case TokenType::DIVIDE:
-      case TokenType::MULTIPLY:
-        // string (- | * | /) string is unsupported
+      case TokenType::MINUS: // string - string
+      case TokenType::DIVIDE: // string * string
+      case TokenType::MULTIPLY: // string / string
+        // Unsupported
         break;
 
       default: break;
@@ -475,80 +487,109 @@ void AssemblyVisitor::visit(ComplexBoolExpr& node)
 
 	node.get_second_op()->accept(*this); // Load eax with the second operand
 
-	proc->add_instruction("pop ebx"); // Get the first operand
-
   proc->add_instruction("comparison:"); // Remain local
 	// Load eax with the result
 	switch (first_type)
-	{
-  case INT:
+	{ /// All unsupported cases can be removed. They will never be called due to previous type checks.
+  case INT: // integer is the first operand
+    proc->add_instruction("pop ebx"); // Get the first operand
     switch (type)
     {
-    case INT: // integer rel integer
+    case INT: // integer REL integer
       proc->add_instruction("cmp ebx,eax"); // Compare the two
       switch (node.get_rel())
       {
-      case TokenType::EQUAL:
+      case TokenType::EQUAL: // int == int
         proc->add_instruction("je .comptrue");
         break;
 
-      case TokenType::NOT_EQUAL:
+      case TokenType::NOT_EQUAL: // int != int
         proc->add_instruction("jne .comptrue");
         break;
 
-      case TokenType::GREATER_THAN:
+      case TokenType::GREATER_THAN: // int < int
         proc->add_instruction("jg .comptrue");
         break;
 
-      case TokenType::GREATER_THAN_EQUAL:
+      case TokenType::GREATER_THAN_EQUAL: // int <= int
         proc->add_instruction("jge .comptrue");
         break;
 
-      case TokenType::LESS_THAN:
+      case TokenType::LESS_THAN: // int > int
         proc->add_instruction("jl .comptrue");
         break;
 
-      case TokenType::LESS_THAN_EQUAL:
+      case TokenType::LESS_THAN_EQUAL: // int >= int
         proc->add_instruction("jle .comptrue");
         break;
 
       default: break;
       }
-      // Same for all cases
-      proc->add_instruction("jmp .compfalse");
-      proc->add_instruction(".comptrue");
-      proc->add_instruction("mov eax,1");
-      proc->add_instruction("jmp .done");
-      proc->add_instruction(".compfalse:");
-      proc->add_instruction("mov eax,0");
-      proc->add_instruction(".done");
       break;
 
-    case BOOL: // integer rel boolean
-    case STRING: // integer rel string
+    case BOOL: // integer REL boolean
+    case STRING: // integer REL string
       // Unsupported
       break;
     }
     break;
 
-  case BOOL:
-    // Unsupported, oddly
+  case BOOL: // bool is the first operand
+    // Unsupported
     break;
 
-  case STRING:
+  case STRING: // string is the first operand
+    proc->add_instruction("mov ebx, eax"); // Second operand in ebx
+    proc->add_instruction("pop eax"); // Get the first operand
+    asms->add_strcmp_proc();
+    proc->add_instruction("call strcmp"); // Loads eax with -1 (lt), 0 (eq), 1(gt)
+    proc->add_instruction("cmp eax,0");
     switch (type)
     {
-    case INT: // string rel integer
-    case BOOL: // string rel boolean
+    case INT: // string REL integer
+    case BOOL: // string REL boolean
       // Unsupported
       break;
 
-    case STRING: // string rel string
-      /// TODO
+    case STRING: // string REL string
+      switch (node.get_rel())
+      {
+      case TokenType::EQUAL: // string == string
+        proc->add_instruction("je .comptrue");
+        break;
+
+      case TokenType::NOT_EQUAL: // string != string
+        proc->add_instruction("jne .comptrue");
+        break;
+
+      case TokenType::GREATER_THAN: // string < string
+        proc->add_instruction("jl .comptrue");
+        break;
+
+      case TokenType::GREATER_THAN_EQUAL: // string <= string
+        proc->add_instruction("jle .comptrue");
+        break;
+
+      case TokenType::LESS_THAN: // string > string
+        proc->add_instruction("jg .comptrue");
+        break;
+
+      case TokenType::LESS_THAN_EQUAL: // string >= string
+        proc->add_instruction("jge .comptrue");
+        break;
+
+      default: break;
+      }
       break;
     }
     break;
 	}
+  // Same for all cases
+  proc->add_instruction("mov eax,0");
+  proc->add_instruction("jmp .done");
+  proc->add_instruction(".comptrue");
+  proc->add_instruction("mov eax,1");
+  proc->add_instruction(".done");
 
 	// Do boolean connector
 	if (node.get_rest())

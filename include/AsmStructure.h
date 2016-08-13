@@ -38,6 +38,9 @@ public:
 	// Constructor
 	AsmStructure();
 
+	// Destructor
+	~AsmStructure();
+
 	// Converts the structure into assembly as puts it in the passed in stream
 	void convert(std::ostream&);
 
@@ -58,6 +61,9 @@ public:
 
 	// Adds a buffer variable to the program
 	void add_buffer_variable();
+
+	// Adds bool string constants to the program
+	void add_bool_constants();
 
 	// Adds the print procedure to the program
 	void add_print_proc();
@@ -86,8 +92,23 @@ public:
 	// Adds the atoi procedure to the program
 	void add_atoi_proc();
 
+	// Adds the itoa procedure to the program
+	void add_itoa_proc();
+
 	// Adds the strcpy procedure to the program
 	void add_strcpy_proc();
+
+	// Adds the strcmp procedure to the program
+	void add_strcmp_proc();
+
+	// Adds the append procedure to the program
+	void add_append_proc();
+
+	// Adds the strmulint procedure to the program
+	void add_strmulint_proc();
+
+	// Adds the straddbool procedure to the program
+	void add_straddbool_proc();
 
 private:
 	// List of lines in .data section

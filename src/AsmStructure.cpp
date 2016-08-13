@@ -28,6 +28,12 @@ AsmStructure::AsmStructure() :
 {
 }
 
+// Destructor
+AsmStructure::~AsmStructure()
+{
+  std::for_each(procedures.begin(), procedures.end(), [](Procedure* p){ delete p; });
+}
+
 // Converts the structure into assembly and puts it in the passed in stream
 void AsmStructure::convert(std::ostream& out)
 {
@@ -103,6 +109,21 @@ void AsmStructure::add_buffer_variable()
 void AsmStructure::add_procedure(Procedure* p)
 {
 	procedures.push_back(p);
+}
+
+// Adds bool string constants to the program
+void AsmStructure::add_bool_constants()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add some constants
+		add_constant("boolt", "true");
+		add_constant("boolf", "false");
+	}
 }
 
 // Adds the print procedure to the program
@@ -218,8 +239,7 @@ void AsmStructure::add_bprint_proc()
 		added = true; // Prevent this from running again
 
 		// Add dependencies
-		add_constant("boolt", "true");
-		add_constant("boolf", "false");
+		add_bool_constants();
 		add_sprint_proc();
 
 		// Add the procedure
@@ -383,6 +403,23 @@ void AsmStructure::add_atoi_proc()
 	}
 }
 
+// Adds the itoa procedure to the program
+void AsmStructure::add_itoa_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add the procedure
+		Procedure* proc = new Procedure("itoa");
+		proc->add_instruction(";TODO");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
 // Adds the strcpy procedure to the program
 void AsmStructure::add_strcpy_proc()
 {
@@ -399,3 +436,84 @@ void AsmStructure::add_strcpy_proc()
 		add_procedure(proc);
 	}
 }
+
+// Adds the strcmp procedure to the program
+void AsmStructure::add_strcmp_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add the procedure
+		Procedure* proc = new Procedure("strcmp");
+		proc->add_instruction(";TODO");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
+// Adds the append procedure to the program
+void AsmStructure::add_append_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add the procedure
+		Procedure* proc = new Procedure("append");
+		proc->add_instruction(";TODO");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
+// Adds the strmulint procedure to the program
+void AsmStructure::add_strmulint_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add the procedure
+		Procedure* proc = new Procedure("strmulint");
+    proc->add_instruction(";TODO");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
+// Adds the straddbool procedure to the program
+void AsmStructure::add_straddbool_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add dependencies
+		add_bool_constants();
+		add_append_proc();
+
+		// Add the procedure
+		Procedure* proc = new Procedure("straddbool");
+    proc->add_instruction("cmp ebx,1");
+    proc->add_instruction("je .true");
+    proc->add_instruction("mov ebx,boolf");
+    proc->add_instruction("jmp .done");
+    proc->add_instruction(".true");
+    proc->add_instruction("mov ebx,boolt");
+    proc->add_instruction(".done:");
+    proc->add_instruction("call append");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
+
