@@ -74,8 +74,8 @@ public:
 	// Adds the bprint procedure to the program
 	void add_bprint_proc();
 
-	// Adds the iprint procedure to the program
-	void add_iprint_proc();
+	// Adds the uiprint procedure to the program
+	void add_uiprint_proc();
 
 	// Adds the sprintLF procedure to the program
 	void add_printLF_proc();

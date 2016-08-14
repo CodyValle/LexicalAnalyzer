@@ -185,8 +185,8 @@ void AsmStructure::add_sprint_proc()
 	}
 }
 
-// Adds the iprint procedure to the program
-void AsmStructure::add_iprint_proc()
+// Adds the uiprint procedure to the program
+void AsmStructure::add_uiprint_proc()
 {
   // Run this code only once
 	static bool added = false;
@@ -198,7 +198,7 @@ void AsmStructure::add_iprint_proc()
 		add_sprint_proc();
 
 		// Add the procedure
-		Procedure* proc = new Procedure("iprint");
+		Procedure* proc = new Procedure("uiprint");
 		proc->add_instruction("push eax");
 		proc->add_instruction("push ecx");
 		proc->add_instruction("push edx");

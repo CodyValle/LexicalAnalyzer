@@ -5,7 +5,7 @@
 		<Option title="LexicalAnalyzer" />
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
-		<Option compiler="mingw-64_compiler" />
+		<Option compiler="gcc" />
 		<MakeCommands>
 			<Build command="" />
 			<CompileFile command="" />
@@ -20,7 +20,7 @@
 				<Option working_dir="bin" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="mingw-64_compiler" />
+				<Option compiler="gcc" />
 				<Option parameters=" -a general_testing.txt " />
 				<Option projectLinkerOptionsRelation="-1" />
 				<Option projectLibDirsRelation="-1" />
@@ -42,7 +42,7 @@
 				<Option working_dir="bin" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
-				<Option compiler="mingw-64_compiler" />
+				<Option compiler="gcc" />
 				<Option parameters="assign_test.txt general_testing.txt if_test.txt input_test.txt loop_test.txt output_test.txt" />
 				<Compiler>
 					<Add option="-O2" />
@@ -52,15 +52,6 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Compiler>
-			<Add option="-pedantic-errors" />
-			<Add option="-pedantic" />
-			<Add option="-Wextra" />
-			<Add option="-Wall" />
-			<Add option="-std=c++14" />
-			<Add directory="include" />
-			<Add directory="C:/dev/boost_1_61_0" />
-		</Compiler>
 		<Unit filename="README">
 			<Option target="Release" />
 		</Unit>

@@ -50,15 +50,15 @@ void AssemblyVisitor::visit(StmtList& node)
 
 	// Run the statements
 	for (std::shared_ptr<Stmt> s: node.get_stmts())
-		s->accept(*this);
+		s->accept(*this); // May modify proc
 
   // Close the procedure, as long as it isn't _start
   if (local_proc->get_name().compare("_start") != 0)
     local_proc->add_instruction("ret");
   else
-  {
-    local_proc->add_instruction("mov rbx,0");
-    local_proc->add_instruction("quit: mov rax,1");
+  { // CLose _start
+    local_proc->add_instruction("xor ebx,ebx");
+    local_proc->add_instruction("quit: mov eax,1");
     local_proc->add_instruction("int 80h");
   }
 }
@@ -141,8 +141,8 @@ void AssemblyVisitor::visit(PrintStmt& node)
 	switch (type)
 	{
   case INT:
-    asms->add_iprint_proc();
-    proc->add_instruction("call iprint");
+    asms->add_uiprint_proc();
+    proc->add_instruction("call uiprint");
     break;
 
   case BOOL:
@@ -181,9 +181,11 @@ void AssemblyVisitor::visit(VarDecStmt& node)
 	{
 	case TokenType::BOOL:
 		var_type = Type::BOOL;
+		asms->add_variable(node.get_id().get_lexeme(), 1);
+		break;
 
 	case TokenType::INT:
-		asms->add_variable(node.get_id().get_lexeme(), 1);
+		asms->add_variable(node.get_id().get_lexeme(), 4); // 32-bit numbers
 		break;
 
 	case TokenType::STRING:
@@ -204,7 +206,7 @@ void AssemblyVisitor::visit(VarDecStmt& node)
     {
     case INT:
     case BOOL:
-      proc->add_instruction("mov " + node.get_id().get_lexeme() + ",eax"); // Move the value into the variable
+      proc->add_instruction("mov [" + node.get_id().get_lexeme() + "],eax"); // Move the value into the variable
       break;
 
     case STRING:
@@ -226,14 +228,14 @@ void AssemblyVisitor::visit(AssignStmt& node)
 		node.get_index()->accept(*this);
 
   node.get_assign()->accept(*this); // Loads eax with the value to store
-  switch (node.get_id().get_type())
+  switch (type)
   {
-  case TokenType::INT:
-  case TokenType::BOOL:
-    proc->add_instruction("mov " + node.get_id().get_lexeme() + ",eax"); // Save it
+  case INT:
+  case BOOL: /// bools are only one byte; this won't work
+    proc->add_instruction("mov [" + node.get_id().get_lexeme() + "],eax"); // Save it
     break;
 
-  case TokenType::STRING:
+  case STRING:
     proc->add_instruction("push eax"); // Store the address
     proc->add_instruction("mov eax," + node.get_id().get_lexeme()); // Write to the variable address
     proc->add_instruction("pop ebx"); // Load where to read from
@@ -252,7 +254,7 @@ void AssemblyVisitor::visit(SimpleExpr& node)
   {
   case TokenType::ID:
     type = id_map[node.get_term().get_lexeme()]; // Assign type
-    proc->add_instruction("mov eax," + node.get_term().get_lexeme()); // Move known data to eax
+    proc->add_instruction("mov eax,[" + node.get_term().get_lexeme() + "]"); // Move known data to eax
     break;
 
   case TokenType::INT:
@@ -480,6 +482,7 @@ void AssemblyVisitor::visit(SimpleBoolExpr& node)
 // Accepts a ComplexBoolExpr reference
 void AssemblyVisitor::visit(ComplexBoolExpr& node)
 {
+  static unsigned count = 0; // Count the comparisons
 	node.get_first_op()->accept(*this); // Loads eax with the first operand
 
 	proc->add_instruction("push eax"); // Save for later
@@ -487,7 +490,7 @@ void AssemblyVisitor::visit(ComplexBoolExpr& node)
 
 	node.get_second_op()->accept(*this); // Load eax with the second operand
 
-  proc->add_instruction("comparison:"); // Remain local
+  proc->add_instruction("comparison" + std::to_string(count++) + ":"); // Remain local
 	// Load eax with the result
 	switch (first_type)
 	{ /// All unsupported cases can be removed. They will never be called due to previous type checks.
@@ -587,9 +590,9 @@ void AssemblyVisitor::visit(ComplexBoolExpr& node)
   // Same for all cases
   proc->add_instruction("mov eax,0");
   proc->add_instruction("jmp .done");
-  proc->add_instruction(".comptrue");
+  proc->add_instruction(".comptrue:");
   proc->add_instruction("mov eax,1");
-  proc->add_instruction(".done");
+  proc->add_instruction(".done:");
 
 	// Do boolean connector
 	if (node.get_rest())
