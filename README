@@ -1,5 +1,14 @@
 This project is an Independent Study to develop a compiler/interpreter/etc.
 
+Current Status:
+-Working across the all types.
+-Some expressions are not implemented: string * int, string BOOLEAN_RELATION string
+--strcmp, strmulint assembly procedures needed.
+-Lists are not implemented.
+-All variables are global, local scopes are not supported.
+-32-bit only
+-Apostrophes do not work in strings.
+
 
 The language followed by the current master is described by:
 

@@ -31,4 +31,6 @@
 # Other files
 bin/general_testing.txt
 go
-
+out.asm
+out
+test

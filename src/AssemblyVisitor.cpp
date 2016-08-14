@@ -236,9 +236,8 @@ void AssemblyVisitor::visit(AssignStmt& node)
     break;
 
   case STRING:
-    proc->add_instruction("push eax"); // Store the address
+    proc->add_instruction("mov ebx,eax"); // Where to read from
     proc->add_instruction("mov eax," + node.get_id().get_lexeme()); // Write to the variable address
-    proc->add_instruction("pop ebx"); // Load where to read from
     asms->add_strcpy_proc();
     proc->add_instruction("call strcpy"); // Copy the string over
     break;
@@ -254,7 +253,17 @@ void AssemblyVisitor::visit(SimpleExpr& node)
   {
   case TokenType::ID:
     type = id_map[node.get_term().get_lexeme()]; // Assign type
-    proc->add_instruction("mov eax,[" + node.get_term().get_lexeme() + "]"); // Move known data to eax
+    switch (type)
+    {
+    case INT:
+    case BOOL:
+      proc->add_instruction("mov eax,[" + node.get_term().get_lexeme() + "]"); // Move known data to eax
+      break;
+
+    case STRING:
+      proc->add_instruction("mov eax," + node.get_term().get_lexeme() + ""); // Move address of data to eax
+      break;
+    }
     break;
 
   case TokenType::INT:
@@ -395,7 +404,7 @@ void AssemblyVisitor::visit(ComplexExpr& node)
       switch (node.get_rel().get_type())
       {
       case TokenType::PLUS: // string + int
-        proc->add_instruction("mov eax,ebx");
+        type = STRING;
         asms->add_itoa_proc();
         proc->add_instruction("call itoa");
         proc->add_instruction("mov ebx,eax"); // Address of the string of integers into ebx

@@ -69,7 +69,7 @@ void AsmStructure::convert(std::ostream& out)
 // Add a string constant to the program
 void AsmStructure::add_constant(std::string name, std::string data)
 {
-	constants.push_back(name +": db '" + data + "'");
+	constants.push_back(name +": db '" + data + "',0");
 	constants.push_back(name +"len: equ $-" + name); // Length of the string
 }
 
@@ -121,8 +121,8 @@ void AsmStructure::add_bool_constants()
 		added = true; // Prevent this from running again
 
 		// Add some constants
-		add_constant("boolt", "true");
-		add_constant("boolf", "false");
+		add_constant("boolt", (std::string)"true");
+		add_constant("boolf", (std::string)"false");
 	}
 }
 
@@ -249,7 +249,7 @@ void AsmStructure::add_bprint_proc()
 		proc->add_instruction("mov eax,boolt");
 		proc->add_instruction("call sprint");
 		proc->add_instruction("ret");
-		proc->add_instruction(".false");
+		proc->add_instruction(".false:");
 		proc->add_instruction("mov eax,boolf");
 		proc->add_instruction("call sprint");
 		proc->add_instruction("ret");
@@ -320,7 +320,7 @@ void AsmStructure::add_readstr_proc()
 
 		// Add the procedure
 		Procedure* proc = new Procedure("readstr");
-		proc->add_instruction("mov edx, 255");
+		proc->add_instruction("mov edx,255");
 		proc->add_instruction("mov ecx,eax");
 		proc->add_instruction("mov ebx,0");
 		proc->add_instruction("mov eax,3");
@@ -344,7 +344,7 @@ void AsmStructure::add_readint_proc()
 
 		// Add the procedure
 		Procedure* proc = new Procedure("readint");
-		proc->add_instruction("mov edx, 255");
+		proc->add_instruction("mov edx,255");
 		proc->add_instruction("mov ecx,buffer");
 		proc->add_instruction("mov ebx,0");
 		proc->add_instruction("mov eax,3");
@@ -412,9 +412,31 @@ void AsmStructure::add_itoa_proc()
 	{
 		added = true; // Prevent this from running again
 
+		// Add dependencies
+		add_buffer_variable();
+
 		// Add the procedure
 		Procedure* proc = new Procedure("itoa");
-		proc->add_instruction(";TODO");
+		proc->add_instruction("push ebx");
+		proc->add_instruction("push ecx");
+		proc->add_instruction("push edx");
+		proc->add_instruction("push esi");
+		proc->add_instruction("mov ebx,buffer+255");
+		proc->add_instruction("mov [ebx],byte 0");
+		proc->add_instruction(".divloop:");
+		proc->add_instruction("dec ebx");
+		proc->add_instruction("mov edx,0");
+		proc->add_instruction("mov esi,10");
+		proc->add_instruction("idiv esi");
+		proc->add_instruction("add edx,0x30");
+		proc->add_instruction("mov [ebx],dl");
+		proc->add_instruction("cmp eax,0");
+		proc->add_instruction("jnz .divloop");
+		proc->add_instruction("mov eax,ebx");
+		proc->add_instruction("pop esi");
+		proc->add_instruction("pop edx");
+		proc->add_instruction("pop ecx");
+		proc->add_instruction("pop ebx");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}
@@ -429,9 +451,20 @@ void AsmStructure::add_strcpy_proc()
 	{
 		added = true; // Prevent this from running again
 
+		// Add dependencies
+		add_strlen_proc();
+
 		// Add the procedure
 		Procedure* proc = new Procedure("strcpy");
-		proc->add_instruction(";TODO");
+		proc->add_instruction("push eax");
+		proc->add_instruction("mov eax,ebx");
+		proc->add_instruction("call strlen");
+		proc->add_instruction("mov ecx,eax");
+		proc->add_instruction("add ecx,1");
+		proc->add_instruction("pop eax");
+		proc->add_instruction("mov esi,ebx");
+		proc->add_instruction("mov edi,eax");
+		proc->add_instruction("rep movsb");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}
@@ -463,9 +496,26 @@ void AsmStructure::add_append_proc()
 	{
 		added = true; // Prevent this from running again
 
+		// Add dependencies
+		add_strlen_proc();
+
 		// Add the procedure
 		Procedure* proc = new Procedure("append");
-		proc->add_instruction(";TODO");
+		proc->add_instruction("push eax");
+		proc->add_instruction("push eax");
+		proc->add_instruction("call strlen");
+		proc->add_instruction("mov ecx,eax");
+		proc->add_instruction("pop eax");
+		proc->add_instruction("add eax,ecx");
+		proc->add_instruction("push eax");
+		proc->add_instruction("mov eax,ebx");
+		proc->add_instruction("call strlen");
+		proc->add_instruction("mov ecx,eax");
+		proc->add_instruction("pop eax");
+		proc->add_instruction("mov esi,ebx");
+		proc->add_instruction("mov edi,eax");
+		proc->add_instruction("rep movsb");
+		proc->add_instruction("pop eax");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}
