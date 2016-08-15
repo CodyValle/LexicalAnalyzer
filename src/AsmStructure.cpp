@@ -481,7 +481,35 @@ void AsmStructure::add_strcmp_proc()
 
 		// Add the procedure
 		Procedure* proc = new Procedure("strcmp");
-		proc->add_instruction(";TODO");
+		proc->add_instruction("push ebx");
+		proc->add_instruction("push ecx");
+		proc->add_instruction(".cmploop:");
+		proc->add_instruction("cmp [eax],byte 0");
+		proc->add_instruction("je .teststr2");
+		proc->add_instruction("cmp [ebx],byte 0");
+		proc->add_instruction("je .more");
+		proc->add_instruction("jmp .maincmp");
+		proc->add_instruction(".teststr2:");
+		proc->add_instruction("cmp [ebx],byte 0");
+		proc->add_instruction("jne .less");
+		proc->add_instruction("mov eax,0x00000000");
+		proc->add_instruction("jmp .done");
+		proc->add_instruction(".maincmp:");
+		proc->add_instruction("mov cx,[ebx]");
+		proc->add_instruction("cmp [eax],cx");
+		proc->add_instruction("jl .less");
+		proc->add_instruction("jg .more");
+		proc->add_instruction("inc eax");
+		proc->add_instruction("inc ebx");
+		proc->add_instruction("jmp .cmploop");
+		proc->add_instruction(".less:");
+		proc->add_instruction("mov eax,0xFFFFFFFF");
+		proc->add_instruction("jmp .done");
+		proc->add_instruction(".more:");
+		proc->add_instruction("mov eax,0x00000001");
+		proc->add_instruction(".done:");
+		proc->add_instruction("pop ecx");
+		proc->add_instruction("pop ebx");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}

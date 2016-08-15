@@ -105,6 +105,8 @@ void AssemblyVisitor::visit(IfStmt& node)
 
 	if (node.get_else())
   {
+    proc->add_instruction("cmp eax,1"); // Performs comparison
+      proc->add_instruction("je " + label); // Jumps if 1 (true) because an if block ran
     node.get_else()->accept(*this);
     proc = local_proc; // Restore the original state
   }
@@ -551,11 +553,6 @@ void AssemblyVisitor::visit(ComplexBoolExpr& node)
     break;
 
   case STRING: // string is the first operand
-    proc->add_instruction("mov ebx, eax"); // Second operand in ebx
-    proc->add_instruction("pop eax"); // Get the first operand
-    asms->add_strcmp_proc();
-    proc->add_instruction("call strcmp"); // Loads eax with -1 (lt), 0 (eq), 1(gt)
-    proc->add_instruction("cmp eax,0");
     switch (type)
     {
     case INT: // string REL integer
@@ -564,6 +561,11 @@ void AssemblyVisitor::visit(ComplexBoolExpr& node)
       break;
 
     case STRING: // string REL string
+      proc->add_instruction("mov ebx, eax"); // Second operand in ebx
+      proc->add_instruction("pop eax"); // Get the first operand
+      asms->add_strcmp_proc();
+      proc->add_instruction("call strcmp"); // Loads eax with -1 (lt), 0 (eq), 1(gt)
+      proc->add_instruction("cmp eax,0");
       switch (node.get_rel())
       {
       case TokenType::EQUAL: // string == string
