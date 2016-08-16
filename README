@@ -2,12 +2,17 @@ This project is an Independent Study to develop a compiler/interpreter/etc.
 
 Current Status:
 -Working across the all types and boolean relations.
--Some expressions are not implemented: string * int
---strmulint assembly procedure needed.
+-string * int is working,but has caveats.
+--Restricted to using the first 8 bits of the int. Possible range is [-128, 127].
+--Strings are limited to lengths of 255, otherwise segfault.
+--modifies the string, even without an assignment.
 -Lists are not implemented.
 -All variables are global, local scopes are not supported.
+--Variables in smaller environments will clash with their global counterparts.
 -32-bit only
 -Apostrophes do not work in strings.
+-Expressions are solved in left-to-right order. e.g. 5 * 1 - 2 = -5
+-Explicitly negative numbers are not supported.
 
 
 The language followed by the current master is described by:

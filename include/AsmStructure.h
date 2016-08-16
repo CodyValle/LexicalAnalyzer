@@ -104,6 +104,9 @@ public:
 	// Adds the append procedure to the program
 	void add_append_proc();
 
+	// Adds the strrev procedure to the program
+	void add_strrev_proc();
+
 	// Adds the strmulint procedure to the program
 	void add_strmulint_proc();
 

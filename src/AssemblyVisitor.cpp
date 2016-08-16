@@ -403,6 +403,7 @@ void AssemblyVisitor::visit(ComplexExpr& node)
     switch (type)
     {
     case INT: // string REL int
+      type = STRING;
       switch (node.get_rel().get_type())
       {
       case TokenType::PLUS: // string + int

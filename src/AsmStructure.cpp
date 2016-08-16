@@ -549,6 +549,56 @@ void AsmStructure::add_append_proc()
 	}
 }
 
+// Adds the strrev procedure to the program
+void AsmStructure::add_strrev_proc()
+{
+  // Run this code only once
+	static bool added = false;
+	if (!added)
+	{
+		added = true; // Prevent this from running again
+
+		// Add dependencies
+		add_strlen_proc();
+
+		// Add the procedure
+		Procedure* proc = new Procedure("strrev");
+    proc->add_instruction("push eax");
+    proc->add_instruction("push ebx");
+    proc->add_instruction("push ecx");
+    proc->add_instruction("push edx");
+		proc->add_instruction("push eax");
+		proc->add_instruction("mov ebx,eax");
+		proc->add_instruction("mov ecx,2");
+		proc->add_instruction("call strlen");
+		proc->add_instruction("add ebx,eax");
+		proc->add_instruction("sub ebx,1");
+		proc->add_instruction("idiv ecx");
+		proc->add_instruction("mov ecx,eax");
+		proc->add_instruction("pop eax");
+		proc->add_instruction(".loop:");
+		proc->add_instruction("cmp ecx,0");
+		proc->add_instruction("je .done");
+		proc->add_instruction("dec ecx");
+		proc->add_instruction("mov dl,[ebx]");
+		proc->add_instruction("push dx");
+		proc->add_instruction("mov dl,[eax]");
+		proc->add_instruction("mov [ebx],dl");
+		proc->add_instruction("pop dx");
+		proc->add_instruction("mov [eax],dl");
+		proc->add_instruction("dec ebx");
+		proc->add_instruction("inc eax");
+		proc->add_instruction("jmp .loop");
+		proc->add_instruction(".done:");
+    proc->add_instruction("pop edx");
+    proc->add_instruction("pop ecx");
+    proc->add_instruction("pop ebx");
+    proc->add_instruction("pop eax");
+		proc->add_instruction("ret");
+		add_procedure(proc);
+	}
+}
+
 // Adds the strmulint procedure to the program
 void AsmStructure::add_strmulint_proc()
 {
@@ -558,9 +608,49 @@ void AsmStructure::add_strmulint_proc()
 	{
 		added = true; // Prevent this from running again
 
+		// Add dependencies
+		add_strrev_proc();
+
 		// Add the procedure
 		Procedure* proc = new Procedure("strmulint");
-    proc->add_instruction(";TODO");
+    proc->add_instruction("push eax");
+    proc->add_instruction("push ebx");
+    proc->add_instruction("push ecx");
+    proc->add_instruction("push edx");
+    proc->add_instruction("push esi");
+    proc->add_instruction("push edi");
+    proc->add_instruction("cmp bl,0");
+    proc->add_instruction("jge .notneg");
+    proc->add_instruction("call strrev");
+    proc->add_instruction("not bl");
+    proc->add_instruction("inc bl");
+    proc->add_instruction(".notneg:");
+    proc->add_instruction("mov dl,bl");
+    proc->add_instruction("mov ebx,eax");
+    proc->add_instruction("call strlen");
+    proc->add_instruction("mov ecx,eax");
+    proc->add_instruction("mov eax,ebx");
+    proc->add_instruction(".bigloop:");
+    proc->add_instruction("cmp dl,0");
+    proc->add_instruction("je .done");
+    proc->add_instruction("dec dl");
+    proc->add_instruction("push ecx");
+    proc->add_instruction("push ebx");
+    proc->add_instruction("mov esi,ebx");
+    proc->add_instruction("mov edi,eax");
+    proc->add_instruction("rep movsb");
+    proc->add_instruction("pop ebx");
+    proc->add_instruction("pop ecx");
+    proc->add_instruction("add eax,ecx");
+    proc->add_instruction("jmp .bigloop");
+    proc->add_instruction(".done:");
+    proc->add_instruction("mov [eax],byte 0");
+    proc->add_instruction("pop edi");
+    proc->add_instruction("pop esi");
+    proc->add_instruction("pop edx");
+    proc->add_instruction("pop ecx");
+    proc->add_instruction("pop ebx");
+    proc->add_instruction("pop eax");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}
