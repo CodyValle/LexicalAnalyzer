@@ -287,10 +287,18 @@ void AssemblyVisitor::visit(SimpleExpr& node)
   {
     static unsigned count = 0; // Keep track of the number of constant strings
     type = Type::STRING;
+    std::string strconst = "strconst" + std::to_string(count++);
 
     // Load the string address into eax
-    asms->add_constant("strconst" + std::to_string(count), node.get_term().get_lexeme());
-    proc->add_instruction("mov eax,strconst" + std::to_string(count++));
+    asms->add_constant(strconst, node.get_term().get_lexeme());
+    proc->add_instruction("push ebx");
+    proc->add_instruction("mov ebx," + strconst);
+		asms->add_buffer_variable();
+    proc->add_instruction("mov eax,buffer");
+    asms->add_strcpy_proc();
+    proc->add_instruction("call strcpy");
+    proc->add_instruction("mov eax,buffer");
+    proc->add_instruction("pop ebx");
     break;
   }
 
