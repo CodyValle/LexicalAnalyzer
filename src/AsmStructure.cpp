@@ -341,6 +341,7 @@ void AsmStructure::add_readint_proc()
 
 		// Add dependencies
 		add_buffer_variable();
+		add_atoi_proc();
 
 		// Add the procedure
 		Procedure* proc = new Procedure("readint");
