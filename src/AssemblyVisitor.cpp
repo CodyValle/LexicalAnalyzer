@@ -338,21 +338,21 @@ void AssemblyVisitor::visit(ReadExpr& node)
 
   // Get the user's input and
   // convert to the proper type, if necessary
-  switch (type)
+  switch (node.get_type())
   {
-  case INT:
+  case TokenType::READINT:
     asms->add_readint_proc();
     proc->add_instruction("call readint"); // Reads the input and puts the value in eax
+    type = INT;
     break;
 
-  case BOOL:
-    // There is no readbool function.
-    break;
-
-  case STRING:
+  case TokenType::READSTR:
     asms->add_readstr_proc();
     proc->add_instruction("call readstr"); // Loads eax with the address of a filled buffer
+    type = STRING;
     break;
+
+  default: break;
   }
 }
 

@@ -5,7 +5,7 @@ Current Status:
 -string * int is working, but has caveats.
 --Restricted to using the first 8 bits of the int. Possible range is [-128, 127].
 --Strings are limited to lengths of 255, otherwise segfault.
---Modifies the string, even without an assignment.
+--Modifies the string variable, even without an assignment.
 -Lists are not implemented.
 -All variables are global, local scopes are not supported.
 --Variables in smaller environments will clash with their global counterparts.
@@ -13,6 +13,12 @@ Current Status:
 -Apostrophes do not work in strings.
 -Expressions are solved in right-to-left order. e.g. 5 * 1 - 2 = -5
 -Explicitly negative numbers are not supported.
+
+Working compiler Tests:
+-In the bin/tests folder.
+--max.txt
+--summation.txt
+-All tests work with the interpreter.
 
 
 The language followed by the current master is described by:
