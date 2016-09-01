@@ -425,8 +425,13 @@ void AssemblyVisitor::visit(ComplexExpr& node)
         break;
 
       case TokenType::MULTIPLY: // string * int
-        proc->add_instruction("mov ebx,eax");
-        proc->add_instruction("pop eax");
+        proc->add_instruction("pop ebx");
+        proc->add_instruction("push eax");
+        asms->add_buffer_variable();
+        proc->add_instruction("mov eax,buffer");
+        asms->add_strcpy_proc();
+        proc->add_instruction("call strcpy");
+        proc->add_instruction("pop ebx");
         asms->add_strmulint_proc();
         proc->add_instruction("call strmulint");
         break;

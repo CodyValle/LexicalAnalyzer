@@ -318,13 +318,27 @@ void AsmStructure::add_readstr_proc()
 	{
 		added = true; // Prevent this from running again
 
+		// Add dependencies
+		add_buffer_variable();
+
 		// Add the procedure
 		Procedure* proc = new Procedure("readstr");
+    proc->add_instruction("push ebx");
+    proc->add_instruction("push ecx");
+    proc->add_instruction("push edx");
 		proc->add_instruction("mov edx,255");
-		proc->add_instruction("mov ecx,eax");
+		proc->add_instruction("mov ecx,buffer");
 		proc->add_instruction("mov ebx,0");
 		proc->add_instruction("mov eax,3");
 		proc->add_instruction("int 80h");
+		proc->add_instruction("mov eax,buffer");
+		proc->add_instruction("mov ebx,eax");
+		proc->add_instruction("call strlen");
+		proc->add_instruction("mov [ebx+eax-1],byte 0");
+		proc->add_instruction("mov eax,buffer");
+		proc->add_instruction("pop edx");
+		proc->add_instruction("pop ecx");
+		proc->add_instruction("pop ebx");
 		proc->add_instruction("ret");
 		add_procedure(proc);
 	}
@@ -574,6 +588,7 @@ void AsmStructure::add_strrev_proc()
 		proc->add_instruction("call strlen");
 		proc->add_instruction("add ebx,eax");
 		proc->add_instruction("sub ebx,1");
+		proc->add_instruction("xor edx,edx");
 		proc->add_instruction("idiv ecx");
 		proc->add_instruction("mov ecx,eax");
 		proc->add_instruction("pop eax");

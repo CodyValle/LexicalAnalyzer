@@ -1,15 +1,15 @@
 # Performs string manipulation
 
 # Variable declaration
-string[] strs = ["", "", ""]; # Stores the strings and the manipulations
-
-# Get the first string
-strs[0] = readstr("What's your name? ");
+string input = readstr("Whats your name? ");
+string repeat;
+string reverse;
 
 # Calculations
-strs[1] = strs[0] * 2; # Concatenates the string with itself
-strs[2] = strs[0] * 0 - 1; # Evaluates to string * -1, which reverses the string
+repeat = input * 2; # Concatenates the string with itself
+reverse = input * 0 - 1; # Evaluates to string * -1, which reverses the string
 
 # Results
-println("Your name repeated: " + strs[1] + ".");
-println("Your name reversed: " + strs[2] + ".");
+println("Your name is: " + input);
+println("Your name repeated: " + repeat);
+println("Your name reversed: " + reverse);

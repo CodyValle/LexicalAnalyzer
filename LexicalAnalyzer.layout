@@ -87,7 +87,7 @@
 			<Cursor1 position="364" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/AssemblyVisitor.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/AssemblyVisitor.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="11408" topLine="384" />
 		</Cursor>
@@ -222,7 +222,7 @@
 			<Cursor1 position="166" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/AsmStructure.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/AsmStructure.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="11712" topLine="403" />
 		</Cursor>
