@@ -1,0 +1,25 @@
+# Calculates the first n fibonacci numbers.
+
+# Variable declaration
+var n = readint("How many numbers? ");
+if n >= 2 then
+	println("1: 0");
+	println("2: 1");
+	
+	int first = 0;
+	int second = 1;
+	int temp;
+
+	int i = 2;
+	while i < n do
+		i = i + 1;
+		
+		temp = second;
+		second = first + second;
+		first = temp;
+		
+		print(i);
+		print(": ");
+		println(second);
+	end
+end
